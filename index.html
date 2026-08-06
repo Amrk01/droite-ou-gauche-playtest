@@ -130,6 +130,25 @@
     margin: 10px 0; font-weight: bold; color: #fff; box-shadow: 4px 4px 0 var(--noir);
     font-size: 1.35rem;
   }
+  /* ---- règles ---- */
+  .regles details {
+    border: 3px solid var(--noir); border-radius: 12px; background: #fff;
+    margin: 10px 0; overflow: hidden;
+  }
+  .regles summary {
+    padding: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+    cursor: pointer; font-size: .85rem; list-style: none;
+  }
+  .regles summary::before { content: "▸ "; }
+  .regles details[open] summary::before { content: "▾ "; }
+  .regles .corps { padding: 0 12px 12px; font-size: .78rem; }
+  .regles .corps p { margin: 7px 0; }
+  .regles .corps ul { margin: 7px 0 7px 16px; }
+  .regles .corps li { margin: 5px 0; }
+  .regles .flav { font-style: italic; color: #888; }
+  .regles .cl { color: var(--rouge); font-weight: bold; }
+  .regles .cp { color: var(--bleu); font-weight: bold; }
+  .regles .sub { font-weight: bold; text-transform: uppercase; font-size: .72rem; letter-spacing: 1px; margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -226,12 +245,105 @@
     </div>
     <div id="evt-modal"></div>
   </section>
+
+  <!-- ================= RÈGLES ================= -->
+  <section id="v-regles" class="view regles">
+    <p class="hint">Un party game de 3 à 6 joueur·euses où l'on place les choses de la vie à droite ou à gauche, chacun·e sur sa roulette politique. Parce que tout est politique.</p>
+
+    <details>
+      <summary>La roulette</summary>
+      <div class="corps">
+        <p>6 crans politiques — 10 %, 50 %, 5000 % de gauche et de droite — plus une case à part : « ni de droite ni de gauche ».</p>
+        <p>Deux positions sont à <b>1 cran d'écart</b> si elles sont adjacentes sur le cadran, y compris entre 10 % gauche et 10 % droite : pas de zone tampon entre les camps.</p>
+        <p>La case « ni de droite ni de gauche » n'est adjacente à rien : elle ne se devine qu'exactement.</p>
+        <p class="flav">Exemple : le guide a mis 50 % de gauche → réponses valides : 10 %, 50 % et 5000 % de gauche.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:var(--rouge)">Mode de gauche — collaboratif</summary>
+      <div class="corps">
+        <p class="flav">Validez ensemble 8 cartes sur 15. Vous gagnez ensemble ou vous perdez ensemble, comme dans la vraie lutte de la vraie vie — sauf que là, vous pouvez gagner.</p>
+        <p class="sub">Mise en place</p>
+        <ul>
+          <li>Faites une pile de 15 cartes items et glissez-y une carte événement toutes les 5 cartes (les événements ne comptent pas dans les 15).</li>
+          <li>Chacun·e prend une roulette.</li>
+          <li>Désignez un premier « guide suprême » : la personne qui a manifesté le plus récemment, ou celle qui a photobombé Zemmour.</li>
+        </ul>
+        <p class="sub">Un tour</p>
+        <ul>
+          <li>Le guide suprême pioche une carte, choisit une des deux faces, lit l'item à voix haute et laisse la carte au milieu de la table.</li>
+          <li>Il place l'item sur sa roulette, la pose face cachée… et ne peut plus rien dire.</li>
+          <li>Les autres débattent librement de ce que le guide en pense, sans jamais mentionner les tranches exactes sur lesquelles iels comptent voter.</li>
+          <li>Chacun·e règle sa roulette sur la position supposée du guide et la pose face cachée. Quand tout le monde a posé, on retourne tout en même temps :</li>
+        </ul>
+        <ul>
+          <li><b>Tout le monde à 0 ou 1 cran du guide :</b> carte gagnée ! Placez-la dans la pile des victoires arrachées à la techno-bourgeoisie.</li>
+          <li><b>Moins de la moitié des votant·es à plus d'1 cran :</b> carte défaussée. Pas de pénalité, mais une carte de moins pour atteindre les 8.</li>
+          <li><b>La moitié ou plus à plus d'1 cran :</b> carte défaussée ET une carte retirée de la pile des victoires (s'il y en a).</li>
+          <li><b>Une majorité a voté « ni de droite ni de gauche » à tort :</b> la partie est immédiatement perdue, et tout le monde est de droite.</li>
+        </ul>
+        <p>Le rôle de guide suprême tourne ensuite dans le sens des aiguilles d'une montre. Vers la gauche, évidemment.</p>
+        <p class="sub">Fin de partie</p>
+        <p>Victoire à la 8e carte gagnée. Défaite dès qu'atteindre 8 devient impossible (gagnées + restantes &lt; 8).</p>
+        <p class="sub">Variante « radicalisation » (optionnelle)</p>
+        <p>Faites 3 piles de 5 cartes. À chaque pile terminée, la difficulté monte : pile 2, plus de droit au débat ; pile 3, écart de 0 cran exigé.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary style="color:var(--bleu)">Mode de droite — compétitif</summary>
+      <div class="corps">
+        <p class="flav">Accumulez 5 cartes avant les autres. Chacun pour soi et le marché pour tous. Le principe est pompé sans vergogne sur les jeux type Blanc Manger Coco : privatiser les bonnes idées des autres fait partie du mode. (NDLR : l'écriture inclusive n'existe pas dans ce mode.)</p>
+        <p class="sub">Mise en place</p>
+        <ul>
+          <li>Chaque joueur pioche 5 cartes items, puis mélangez 5 cartes événements dans la pioche.</li>
+          <li>Désignez un premier « boss » : la personne qui possède le plus de biens immobiliers, ou simplement celle qui vous accueille parce que « ELLE EST CHEZ ELLE ».</li>
+        </ul>
+        <p class="sub">Une manche</p>
+        <ul>
+          <li>Le boss fait tourner la roulette et dévoile le bord politique tiré au centre de la table. Si elle tombe sur « ni de droite ni de gauche » : manche spéciale — jouez la carte la plus désespérément apolitique de votre main.</li>
+          <li>Chacun choisit dans sa main la carte — recto ou verso — qui incarne le mieux ce bord, et la pose face cachée.</li>
+          <li>Le boss mélange les cartes reçues, les révèle, et élit la plus convaincante selon lui, sans avoir à argumenter (c'est le boss).</li>
+          <li>Le gagnant place la carte élue dans sa pile de victoires et devient le prochain boss. Les autres cartes sont défaussées, puis tout le monde repioche pour revenir à 5 cartes.</li>
+          <li>Quand un joueur pioche une carte événement, il la pose au centre de la table et continue de piocher. Tous les événements posés s'appliquent à la manche qui démarre — oui, tous en même temps ; si deux événements se contredisent, le boss tranche (c'est le boss). Après la manche, remélangez-les dans la pioche.</li>
+        </ul>
+        <p class="sub">Le renversement du boss</p>
+        <p>Si le verdict du boss est un scandale inentendable, les autres joueurs peuvent, avant la manche suivante, voter son renversement en mode conseil des actionnaires. Il faut l'unanimité des joueurs hors boss — y compris le gagnant désigné, qui renonce donc à sa carte (la vertu a un prix). Alors :</p>
+        <ul>
+          <li>personne ne gagne la manche, toutes les cartes jouées sont défaussées ;</li>
+          <li>le boss renversé perd une carte de sa pile de victoires (s'il en a) ;</li>
+          <li>le rôle de boss passe à la personne suivante.</li>
+        </ul>
+        <p class="sub">Fin de partie</p>
+        <p>Le premier joueur à 5 cartes gagne, et a le droit de faire un discours de victoire que tout le monde écoute dans la jalousie de l'accumulation.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Cartes événements</summary>
+      <div class="corps">
+        <p>Chaque carte a deux effets, un par mode.</p>
+        <ul>
+          <li><b>Minute de silence</b> — <span class="cl">Collaboratif :</span> personne ne peut parler avant le vote. <span class="cp">Compétitif :</span> la manche entière se joue en silence ; le premier qui parle est exclu de la manche.</li>
+          <li><b>Les fascistes sont les vrais antifascistes</b> — <span class="cl">Collaboratif :</span> gauche et droite sont inversées pour ce tour. <span class="cp">Compétitif :</span> jouez la carte qui incarne le mieux le bord opposé à celui tiré.</li>
+          <li><b>Coalition de gouvernement</b> — <span class="cl">Collaboratif :</span> on gagne jusqu'à 2 crans d'écart, mais uniquement dans le même camp. <span class="cp">Compétitif :</span> le boss élit deux cartes gagnantes, chacune rapporte.</li>
+          <li><b>Pensée unique</b> — <span class="cl">Collaboratif :</span> aucun écart accepté ce tour-ci. <span class="cp">Compétitif :</span> pas de délibération : la première carte posée sur la table gagne la manche.</li>
+          <li><b>Consensus</b> — <span class="cl">Collaboratif :</span> si une seule personne se trompe de camp, le tour est perdu. <span class="cp">Compétitif :</span> à définir.</li>
+          <li><b>Nationalisation</b> — <span class="cl">Collaboratif :</span> la carte compte double. <span class="cp">Compétitif :</span> la carte gagnée va au joueur qui a le moins de cartes (redistribution).</li>
+          <li><b>Privatisation</b> — <span class="cl">Collaboratif :</span> si ce tour est perdu, vous perdez deux cartes. <span class="cp">Compétitif :</span> le gagnant prend sa carte et en vole une gagnée à l'adversaire de son choix.</li>
+          <li><b>Dissolution</b> — effets à inventer (on a l'embarras du choix).</li>
+        </ul>
+      </div>
+    </details>
+  </section>
 </main>
 
 <nav>
   <button data-v="roulette" class="on">Roulette</button>
-  <button data-v="gauche">Mode de gauche</button>
-  <button data-v="droite">Mode de droite</button>
+  <button data-v="gauche">Gauche</button>
+  <button data-v="droite">Droite</button>
+  <button data-v="regles">Règles</button>
 </nav>
 
 <script>

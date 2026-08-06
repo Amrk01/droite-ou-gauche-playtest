@@ -201,8 +201,20 @@
     <div id="spin-out"></div>
 
     <h2>Ma main</h2>
-    <p class="hint">5 cartes, recto/verso — touche une carte pour la retourner, re-touche pour la choisir. Chaque joueur gère sa main sur son téléphone.</p>
+    <p class="hint">5 cartes, recto/verso — touche une carte pour la retourner, re-touche pour la choisir, puis « jouer » : ton téléphone devient la carte, tu le poses face cachée au centre. Le boss mélange les téléphones et les retourne.</p>
     <button class="btn mini" id="btn-main">Distribuer ma main</button>
+    <div id="played-zone" style="display:none">
+      <div class="cache-ecran">
+        <div class="poing">🤫</div>
+        <p>CARTE JOUÉE</p>
+        <p style="font-size:.65rem;color:#999;margin-top:8px">pose ton téléphone face cachée au centre de la table</p>
+      </div>
+      <button class="btn bleu" id="btn-rev-carte">Révéler (le boss retourne)</button>
+    </div>
+    <div id="reveal-zone" style="display:none">
+      <div class="carte"><div class="face-tag">proposition</div><div class="item" id="reveal-item"></div></div>
+      <button class="btn mini" id="btn-reprendre">Reprendre ma main</button>
+    </div>
     <div class="main-cartes" id="main-zone"></div>
     <div id="main-actions"></div>
     <div class="score">
@@ -485,7 +497,23 @@ function renderMain() {
        ${main.length < 5 ? `<button class="btn mini" id="btn-repioche">Repiocher à 5</button>` : ""}`
     : "";
   const bj = $("btn-jouer");
-  if (bj) bj.onclick = () => { if (sel < 0) return; main.splice(sel, 1); sel = -1; renderMain(); };
+  if (bj) bj.onclick = () => {
+    if (sel < 0) return;
+    const jouee = main[sel];
+    main.splice(sel, 1); sel = -1;
+    $("main-zone").style.display = "none"; $("main-actions").style.display = "none";
+    $("played-zone").style.display = "block";
+    $("btn-rev-carte").onclick = () => {
+      $("played-zone").style.display = "none";
+      $("reveal-item").textContent = jouee.face === "r" ? jouee.c.r : (jouee.c.v || jouee.c.r);
+      $("reveal-zone").style.display = "block";
+    };
+    $("btn-reprendre").onclick = () => {
+      $("reveal-zone").style.display = "none";
+      $("main-zone").style.display = "grid"; $("main-actions").style.display = "block";
+      renderMain();
+    };
+  };
   const br = $("btn-repioche");
   if (br) br.onclick = () => piocher(5 - main.length);
 }

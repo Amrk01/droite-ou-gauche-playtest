@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1c1c1e">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Droite ou Gauche : playtest v2</title>
+<title>Droite ou Gauche — playtest</title>
 <style>
   :root {
     --rouge: #d2232a;
@@ -59,7 +59,10 @@
   .btn.mini { padding: 9px; font-size: .78rem; margin: 5px 0; }
   .btn.ghost { background: none; border-style: dashed; color: #888; border-color: #aaa; }
   .btn:disabled { opacity: .35; }
-  .nini { font-family: "Comic Sans MS", "Chalkboard SE", cursive; text-transform: none; }
+  .nini-btn {
+    font-family: "Comic Sans MS", "Chalkboard SE", cursive;
+    text-transform: none; font-weight: bold;
+  }
   .carte {
     background: #fff; border: 3px solid var(--noir); border-radius: 14px;
     padding: 18px 14px; text-align: center; margin: 10px 0;
@@ -72,7 +75,9 @@
   .evt p { font-size: .8rem; text-align: left; margin: 6px 0; }
   .evt .cl { color: var(--rouge); font-weight: bold; }
   .evt .cp { color: var(--bleu); font-weight: bold; }
-  .score { display: flex; gap: 8px; margin: 10px 0; }
+  .score {
+    display: flex; gap: 8px; margin: 10px 0;
+  }
   .score div {
     flex: 1; border: 3px solid var(--noir); border-radius: 10px; background: #fff;
     text-align: center; padding: 8px 4px;
@@ -84,11 +89,7 @@
     border: 3px dashed var(--rouge); background: #fff2f2; border-radius: 10px;
     padding: 8px; font-size: .75rem; margin: 8px 0; text-align: center;
   }
-  .or {
-    text-align: center; font-size: .72rem; font-weight: bold; letter-spacing: 1px;
-    border: 2px solid var(--noir); border-radius: 8px; padding: 6px; margin: 8px 0;
-    background: #fff;
-  }
+  /* ---- roulette ---- */
   #dial { width: 100%; height: auto; display: block; margin: 6px auto 0; }
   #dial path { cursor: pointer; transition: opacity .15s; }
   #dial path.dim { opacity: .25; }
@@ -109,7 +110,7 @@
     text-align: center; border: 3px solid var(--noir); border-radius: 14px;
     padding: 30px 14px; margin: 10px 0; box-shadow: 4px 4px 0 var(--noir);
   }
-  .fin h3 { font-size: 1.2rem; margin-bottom: 8px; }
+  .fin h3 { font-size: 1.3rem; margin-bottom: 8px; }
   .main-cartes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
   .mc {
     border: 3px solid var(--noir); border-radius: 10px; background: #fff;
@@ -119,27 +120,17 @@
   .mc.sel { outline: 4px solid var(--bleu); }
   .mc .t { font-weight: bold; font-size: .85rem; }
   .mc .flip { font-size: .58rem; color: #999; margin-top: 6px; text-transform: uppercase; }
+  .adj {
+    font-family: inherit; font-weight: bold; font-size: .8rem;
+    border: 2px solid var(--noir); background: #fff; border-radius: 6px;
+    width: 30px; height: 24px; cursor: pointer; line-height: 1;
+  }
   .spin-res {
     text-align: center; padding: 34px 12px; border-radius: 14px; border: 3px solid var(--noir);
     margin: 10px 0; font-weight: bold; color: #fff; box-shadow: 4px 4px 0 var(--noir);
     font-size: 1.35rem;
   }
-  .compteur { display: flex; align-items: center; gap: 10px; border: 3px solid var(--noir); border-radius: 10px; background: #fff; padding: 8px 10px; margin: 6px 0; }
-  .compteur .lab { flex: 1; font-size: .78rem; font-weight: bold; }
-  .compteur b { font-size: 1.2rem; min-width: 26px; text-align: center; }
-  .compteur button {
-    font-family: inherit; font-weight: bold; font-size: .95rem;
-    border: 2px solid var(--noir); background: #fff; border-radius: 6px;
-    width: 38px; height: 32px; cursor: pointer;
-  }
-  select, input[type=text] {
-    font-family: inherit; font-size: .9rem; font-weight: bold;
-    border: 3px solid var(--noir); border-radius: 8px; background: #fff;
-    padding: 8px; width: 100%; margin: 4px 0; text-transform: uppercase;
-  }
-  .setup-row { display: flex; gap: 8px; }
-  .setup-row > div { flex: 1; }
-  .setup-row label { font-size: .62rem; text-transform: uppercase; letter-spacing: 1px; color: #777; }
+  /* ---- règles ---- */
   .regles details {
     border: 3px solid var(--noir); border-radius: 12px; background: #fff;
     margin: 10px 0; overflow: hidden;
@@ -148,8 +139,8 @@
     padding: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
     cursor: pointer; font-size: .85rem; list-style: none;
   }
-  .regles summary::before { content: "\25B8  "; }
-  .regles details[open] summary::before { content: "\25BE  "; }
+  .regles summary::before { content: "▸ "; }
+  .regles details[open] summary::before { content: "▾ "; }
   .regles .corps { padding: 0 12px 12px; font-size: .78rem; }
   .regles .corps p { margin: 7px 0; }
   .regles .corps ul { margin: 7px 0 7px 16px; }
@@ -158,27 +149,21 @@
   .regles .cl { color: var(--rouge); font-weight: bold; }
   .regles .cp { color: var(--bleu); font-weight: bold; }
   .regles .sub { font-weight: bold; text-transform: uppercase; font-size: .72rem; letter-spacing: 1px; margin-top: 12px; }
-  .tablo { overflow-x: auto; margin: 8px 0; }
-  .tablo table { border-collapse: collapse; font-size: .66rem; width: 100%; }
-  .tablo th, .tablo td { border: 2px solid var(--noir); padding: 5px 4px; text-align: center; }
-  .tablo td:first-child { text-align: left; }
-  .tablo .def { background: #e8edf9; }
-  .tablo .vic { background: #fde8ea; }
 </style>
 </head>
 <body>
 <header>
   <h1><span class="g">DROITE</span> OU <span class="d">GAUCHE</span></h1>
-  <p>Là où les extrêmes se rejoignent · appli de playtest v2 (règles v3)</p>
+  <p>Là où les extrêmes se rejoignent — appli de playtest</p>
 </header>
 
 <main>
   <!-- ================= ROULETTE ================= -->
   <section id="v-roulette" class="view on">
     <div id="rl-pick">
-      <p class="hint">Mode de gauche : choisis en secret la position du guide, pose ta roulette face cachée. Chaque joueur·euse utilise son propre téléphone.</p>
+      <p class="hint">Choisis ta position en secret, puis pose ta roulette face cachée. Chaque joueur·euse utilise son propre téléphone.</p>
       <svg id="dial" viewBox="0 0 320 175"></svg>
-      <div class="or">TOUJOURS SELON LE GUIDE OU LE BOSS</div>
+      <button class="btn mini nini-btn" id="btn-nini">ni de droite ni de gauche</button>
       <button class="btn rouge" id="btn-poser" disabled>Poser face cachée</button>
     </div>
     <div id="rl-cache" style="display:none">
@@ -199,39 +184,27 @@
   <!-- ================= MODE DE GAUCHE ================= -->
   <section id="v-gauche" class="view">
     <div id="cl-avant">
-      <p class="hint">Amassez un pot d'acquis sociaux sur 10 cartes. Un seul téléphone gère la partie (celui du peuple).</p>
-      <div class="setup-row">
-        <div>
-          <label>Nombre de joueur·euses</label>
-          <select id="cl-nb">
-            <option value="3">3</option>
-            <option value="4" selected>4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-        </div>
-      </div>
+      <p class="hint">Le mode collaboratif : validez 8 cartes sur 15, ensemble. Un seul téléphone gère la pile (celui du peuple).</p>
       <button class="btn rouge" id="btn-cl-start">Lancer la lutte</button>
     </div>
     <div id="cl-partie" style="display:none">
       <div class="score">
-        <div><b id="sc-pot">0</b><span>jetons au pot</span></div>
-        <div><b id="sc-obj">30</b><span>victoire à</span></div>
-        <div><b id="sc-num">1</b><span>carte / 10</span></div>
+        <div><b id="sc-win">0</b><span>victoires / 8</span>
+          <div style="display:flex;gap:6px;justify-content:center;margin-top:4px">
+            <button class="adj" id="btn-win-moins">−</button>
+            <button class="adj" id="btn-win-plus">+</button>
+          </div>
+        </div>
+        <div><b id="sc-rest">15</b><span>restantes</span></div>
+        <div><b id="sc-num">1</b><span>tour</span></div>
       </div>
       <div id="cl-evt-actif"></div>
       <div id="cl-zone"></div>
-      <div id="cl-recolte" style="display:none">
-        <h2>La récolte</h2>
-        <div class="compteur">
-          <span class="lab">Cases exactes (2 jetons)</span>
-          <button id="ex-moins">-</button><b id="ex-n">0</b><button id="ex-plus">+</button>
-        </div>
-        <div class="compteur">
-          <span class="lab">À 1 cran (1 jeton)</span>
-          <button id="ad-moins">-</button><b id="ad-n">0</b><button id="ad-plus">+</button>
-        </div>
-        <button class="btn mini rouge" id="btn-tour-ok">Valider le tour (+<span id="tour-jetons">0</span> jetons)</button>
+      <div id="cl-boutons" style="display:none">
+        <button class="btn mini rouge" id="btn-ok">Gagnée (tout le monde à 0-1 cran)</button>
+        <button class="btn mini" id="btn-def">Défaussée (moins de la moitié à côté)</button>
+        <button class="btn mini" id="btn-def2">Défaussée −1 victoire (la moitié ou plus)</button>
+        <button class="btn mini nini-btn" id="btn-catastrophe">majorité ni-ni à tort (défaite)</button>
       </div>
       <button class="btn ghost mini" id="btn-undo">annuler le dernier coup (révisionnisme)</button>
       <button class="btn ghost mini" id="btn-cl-reset">abandonner la partie</button>
@@ -242,151 +215,101 @@
   <!-- ================= MODE DE DROITE ================= -->
   <section id="v-droite" class="view">
     <h2>La table</h2>
-    <p class="hint">Un seul téléphone tire (celui du capital).</p>
+    <p class="hint">Le boss fait tourner la roulette. Un seul téléphone tire (celui du capital).</p>
     <button class="btn bleu" id="btn-spin">Faire tourner la roulette</button>
     <div id="spin-out"></div>
-    <button class="btn mini" id="btn-evt-boss">Le boss retourne un événement</button>
-    <div id="evt-boss-zone"></div>
 
-    <h2>Ma partie</h2>
-    <div id="partie-setup">
-      <p class="hint">Le code de partie garantit des mains sans doublon entre les téléphones. Le boss génère un code, l'annonce, chacun le saisit avec son numéro de place (dans l'ordre à partir de la gauche du boss).</p>
-      <input type="text" id="in-code" placeholder="CODE DE PARTIE" maxlength="16" autocomplete="off">
-      <div class="setup-row">
-        <div>
-          <label>Joueurs</label>
-          <select id="in-nb">
-            <option value="3">3</option>
-            <option value="4" selected>4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-        </div>
-        <div>
-          <label>Mon numéro</label>
-          <select id="in-num">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-        </div>
+    <h2>Ma main</h2>
+    <p class="hint">5 cartes, recto/verso — touche une carte pour la retourner, re-touche pour la choisir, puis « jouer » : ton téléphone devient la carte, tu le poses face cachée au centre. Le boss mélange les téléphones et les retourne.</p>
+    <button class="btn mini" id="btn-main">Distribuer ma main</button>
+    <div id="played-zone" style="display:none">
+      <div class="cache-ecran">
+        <div class="poing">🤫</div>
+        <p>CARTE JOUÉE</p>
+        <p style="font-size:.65rem;color:#999;margin-top:8px">pose ton téléphone face cachée au centre de la table</p>
       </div>
-      <button class="btn mini bleu" id="btn-join">Rejoindre la partie</button>
-      <button class="btn mini" id="btn-gen">Générer un code (boss)</button>
-      <button class="btn ghost mini" id="btn-solo">jouer sans code (doublons possibles)</button>
+      <button class="btn bleu" id="btn-rev-carte">Révéler (le boss retourne)</button>
     </div>
-    <div id="partie-info" style="display:none">
-      <div class="bandeau" id="partie-label" style="border-color:var(--bleu);background:#eef2fb"></div>
-      <button class="btn ghost mini" id="btn-quit">changer de partie</button>
+    <div id="reveal-zone" style="display:none">
+      <div class="carte"><div class="face-tag">proposition</div><div class="item" id="reveal-item"></div></div>
+      <button class="btn mini" id="btn-reprendre">Reprendre ma main</button>
     </div>
-
-    <div id="main-bloc" style="display:none">
-      <h2>Ma main</h2>
-      <p class="hint">Touche une carte pour la retourner, re-touche pour la choisir, puis joue : ton téléphone devient la carte, posé face cachée au centre. Le boss mélange les téléphones et les retourne.</p>
-      <button class="btn mini" id="btn-main">Distribuer ma main</button>
-      <div id="played-zone" style="display:none">
-        <div class="cache-ecran">
-          <div class="poing">🤫</div>
-          <p>CARTE JOUÉE</p>
-          <p style="font-size:.65rem;color:#999;margin-top:8px">pose ton téléphone face cachée au centre de la table</p>
-        </div>
-        <button class="btn bleu" id="btn-rev-carte">Révéler (le boss retourne)</button>
-      </div>
-      <div id="reveal-zone" style="display:none">
-        <div class="carte"><div class="face-tag">proposition</div><div class="item" id="reveal-item"></div></div>
-        <button class="btn mini" id="btn-reprendre">Reprendre ma main</button>
-      </div>
-      <div class="main-cartes" id="main-zone"></div>
-      <div id="main-actions"></div>
-      <div class="score">
-        <div><b id="sc-mes">0</b><span>mes victoires / 5</span></div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:14px">
-          <button class="btn mini" style="width:44px;margin:0" id="btn-vic-moins">-</button>
-          <button class="btn mini bleu" style="width:44px;margin:0" id="btn-vic-plus">+</button>
-        </div>
+    <div class="main-cartes" id="main-zone"></div>
+    <div id="main-actions"></div>
+    <div class="score">
+      <div><b id="sc-mes">0</b><span>mes victoires / 5</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px">
+        <button class="btn mini" style="width:44px;margin:0" id="btn-vic-moins">−</button>
+        <button class="btn mini bleu" style="width:44px;margin:0" id="btn-vic-plus">+</button>
       </div>
     </div>
+    <div id="evt-modal"></div>
   </section>
 
-  <!-- ================= RÈGLES (v3) ================= -->
+  <!-- ================= RÈGLES ================= -->
   <section id="v-regles" class="view regles">
     <p class="hint">Un party game de 3 à 6 joueur·euses où l'on place les choses de la vie à droite ou à gauche, chacun·e sur sa roulette politique. Parce que tout est politique.</p>
-    <div class="or">LA RÈGLE D'OR : vous ne votez jamais votre propre avis, vous devinez le sien. « Toujours selon le guide ou le boss »</div>
 
     <details>
       <summary>La roulette</summary>
       <div class="corps">
-        <p>6 crans politiques : 10 %, 50 %, 5000 % de gauche et de droite, plus une case à part : « ni de droite ni de gauche ».</p>
+        <p>6 crans politiques — 10 %, 50 %, 5000 % de gauche et de droite — plus une case à part : « ni de droite ni de gauche ».</p>
         <p>Deux positions sont à <b>1 cran d'écart</b> si elles sont adjacentes sur le cadran, y compris entre 10 % gauche et 10 % droite : pas de zone tampon entre les camps.</p>
-        <p>La case « ni de droite ni de gauche » n'existe pas en mode de gauche. Elle n'existe qu'en mode de droite. Voilà.</p>
-        <p class="flav">Exemple : le guide a mis 50 % de gauche. Réponses à 1 cran ou moins : 10 %, 50 % et 5000 % de gauche.</p>
+        <p>La case « ni de droite ni de gauche » n'est adjacente à rien : elle ne se devine qu'exactement.</p>
+        <p class="flav">Exemple : le guide a mis 50 % de gauche → réponses valides : 10 %, 50 % et 5000 % de gauche.</p>
       </div>
     </details>
 
     <details>
-      <summary style="color:var(--rouge)">Mode de gauche (collaboratif)</summary>
+      <summary style="color:var(--rouge)">Mode de gauche — collaboratif</summary>
       <div class="corps">
-        <p class="flav">Amassez ensemble un pot d'acquis sociaux sur 10 cartes. Vous gagnez ensemble ou vous perdez ensemble, comme dans la vraie lutte de la vraie vie, sauf que là, vous pouvez gagner.</p>
+        <p class="flav">Validez ensemble 8 cartes sur 15. Vous gagnez ensemble ou vous perdez ensemble, comme dans la vraie lutte de la vraie vie — sauf que là, vous pouvez gagner.</p>
         <p class="sub">Mise en place</p>
         <ul>
-          <li>Faites une pile de 10 cartes items. Glissez-y une carte événement après la 5e carte, et une autre juste avant la dernière : le coup de théâtre s'applique au dernier tour. (Les événements ne comptent pas dans les 10.)</li>
-          <li>Posez les jetons en banque au centre. Chacun·e prend une roulette.</li>
-          <li>Désignez un premier « guide suprême » : la personne qui a manifesté le plus récemment.</li>
+          <li>Faites une pile de 15 cartes items et glissez-y une carte événement toutes les 5 cartes (les événements ne comptent pas dans les 15).</li>
+          <li>Chacun·e prend une roulette.</li>
+          <li>Désignez un premier « guide suprême » : la personne qui a manifesté le plus récemment, ou celle qui a photobombé Zemmour.</li>
         </ul>
         <p class="sub">Un tour</p>
         <ul>
-          <li>Le guide suprême pioche une carte, choisit un des deux items, le lit à voix haute et laisse la carte au milieu de la table.</li>
-          <li>Il place l'item sur le spectre gauche-droite de sa roulette, la pose face cachée… et ne peut plus rien dire.</li>
+          <li>Le guide suprême pioche une carte, choisit une des deux faces, lit l'item à voix haute et laisse la carte au milieu de la table.</li>
+          <li>Il place l'item sur sa roulette, la pose face cachée… et ne peut plus rien dire.</li>
           <li>Les autres débattent librement de ce que le guide en pense, sans jamais mentionner les tranches exactes sur lesquelles iels comptent voter.</li>
-          <li>Chacun·e règle sa roulette sur la position supposée du guide et la pose face cachée. Quand tout le monde a posé, on retourne tout en même temps.</li>
-          <li>Si la carte piochée est un événement : lisez-le à voix haute, il s'applique au tour suivant, puis il est défaussé.</li>
+          <li>Chacun·e règle sa roulette sur la position supposée du guide et la pose face cachée. Quand tout le monde a posé, on retourne tout en même temps :</li>
         </ul>
-        <p class="sub">La récolte</p>
         <ul>
-          <li><b>Case exacte : 2 jetons</b> dans le pot commun.</li>
-          <li><b>À 1 cran d'écart : 1 jeton.</b></li>
-          <li><b>Plus loin : rien.</b> Et l'estime de vos camarades en prend un coup.</li>
+          <li><b>Tout le monde à 0 ou 1 cran du guide :</b> carte gagnée ! Placez-la dans la pile des victoires arrachées à la techno-bourgeoisie.</li>
+          <li><b>Moins de la moitié des votant·es à plus d'1 cran :</b> carte défaussée. Pas de pénalité, mais une carte de moins pour atteindre les 8.</li>
+          <li><b>La moitié ou plus à plus d'1 cran :</b> carte défaussée ET une carte retirée de la pile des victoires (s'il y en a).</li>
+          <li><b>Une majorité a voté « ni de droite ni de gauche » à tort :</b> la partie est immédiatement perdue, et tout le monde est de droite.</li>
         </ul>
-        <p>Le pot est commun : ce sont vos acquis sociaux. Le rôle de guide suprême tourne dans le sens des aiguilles d'une montre. Vers la gauche, évidemment.</p>
+        <p>Le rôle de guide suprême tourne ensuite dans le sens des aiguilles d'une montre. Vers la gauche, évidemment.</p>
         <p class="sub">Fin de partie</p>
-        <p>Après la 10e carte, comptez le pot et lisez votre verdict (intitulés provisoires, les chiffres non) :</p>
-        <div class="tablo"><table>
-          <tr><th>Verdict</th><th>3 j.</th><th>4 j.</th><th>5 j.</th><th>6 j.</th></tr>
-          <tr class="def"><td>« Tout le monde est de droite, en fait. » (défaite)</td><td>0-11</td><td>0-17</td><td>0-23</td><td>0-29</td></tr>
-          <tr class="def"><td>« Congrès de Reims : vous vous êtes bien engueulés. » (défaite)</td><td>12-19</td><td>18-29</td><td>24-39</td><td>30-49</td></tr>
-          <tr class="vic"><td><b>« Programme commun signé. » (VICTOIRE)</b></td><td>20-27</td><td>30-41</td><td>40-55</td><td>50-69</td></tr>
-          <tr class="vic"><td>« Front populaire. » (victoire historique)</td><td>28-35</td><td>42-53</td><td>56-71</td><td>70-89</td></tr>
-          <tr class="vic"><td>« Le Grand Soir. Personne ne vous croira. »</td><td>36-40</td><td>54-60</td><td>72-80</td><td>90-100</td></tr>
-        </table></div>
-        <p class="flav">Repère : la victoire demande en moyenne 1 jeton par votant·e et par tour. Le 50 % prudent ne suffit pas, il faudra des cases exactes.</p>
+        <p>Victoire à la 8e carte gagnée. Défaite dès qu'atteindre 8 devient impossible (gagnées + restantes &lt; 8).</p>
         <p class="sub">Variante « radicalisation » (optionnelle)</p>
-        <p>Coupez la pile en deux : les 5 dernières cartes se jouent sans droit au débat.</p>
+        <p>Faites 3 piles de 5 cartes. À chaque pile terminée, la difficulté monte : pile 2, plus de droit au débat ; pile 3, écart de 0 cran exigé.</p>
       </div>
     </details>
 
     <details>
-      <summary style="color:var(--bleu)">Mode de droite (compétitif)</summary>
+      <summary style="color:var(--bleu)">Mode de droite — compétitif</summary>
       <div class="corps">
         <p class="flav">Accumulez 5 cartes avant les autres. Chacun pour soi et le marché pour tous. Le principe est pompé sans vergogne sur les jeux type Blanc Manger Coco : privatiser les bonnes idées des autres fait partie du mode. (NDLR : l'écriture inclusive n'existe pas dans ce mode.)</p>
         <p class="sub">Mise en place</p>
         <ul>
-          <li>Chaque joueur pioche 5 cartes items.</li>
-          <li>Posez la pile des cartes événements face cachée au centre, à portée du boss.</li>
+          <li>Chaque joueur pioche 5 cartes items, puis mélangez 5 cartes événements dans la pioche.</li>
           <li>Désignez un premier « boss » : la personne qui possède le plus de biens immobiliers, ou simplement celle qui vous accueille parce que « ELLE EST CHEZ ELLE ».</li>
         </ul>
         <p class="sub">Une manche</p>
         <ul>
-          <li>S'il le décide, le boss commence par retourner une carte événement (ou plusieurs, s'il assume), sans les regarder avant. Les événements sont le chaos, et le chaos est un instrument de pouvoir comme un autre : ça peut très bien se retourner contre lui. Tout s'applique à la manche qui démarre, tous en même temps ; si deux événements se contredisent, le boss tranche (c'est le boss). Après la manche, remélangez-les dans la pile d'événements.</li>
-          <li>Le boss fait tourner la roulette au hasard, face cachée, puis dévoile le bord politique tiré au centre de la table. Si elle tombe sur « ni de droite ni de gauche » : manche spéciale, jouez la carte la plus désespérément apolitique de votre main.</li>
-          <li>Chacun choisit dans sa main la carte (recto ou verso) qui incarne le mieux ce bord, et la pose face cachée.</li>
+          <li>Le boss fait tourner la roulette et dévoile le bord politique tiré au centre de la table. Si elle tombe sur « ni de droite ni de gauche » : manche spéciale — jouez la carte la plus désespérément apolitique de votre main.</li>
+          <li>Chacun choisit dans sa main la carte — recto ou verso — qui incarne le mieux ce bord, et la pose face cachée.</li>
           <li>Le boss mélange les cartes reçues, les révèle, et élit la plus convaincante selon lui, sans avoir à argumenter (c'est le boss).</li>
           <li>Le gagnant place la carte élue dans sa pile de victoires et devient le prochain boss. Les autres cartes sont défaussées, puis tout le monde repioche pour revenir à 5 cartes.</li>
+          <li>Quand un joueur pioche une carte événement, il la pose au centre de la table et continue de piocher. Tous les événements posés s'appliquent à la manche qui démarre — oui, tous en même temps ; si deux événements se contredisent, le boss tranche (c'est le boss). Après la manche, remélangez-les dans la pioche.</li>
         </ul>
         <p class="sub">Le renversement du boss</p>
-        <p>Si le verdict du boss est un scandale inentendable, les autres joueurs peuvent, avant la manche suivante, voter son renversement en mode conseil des actionnaires. Il faut l'unanimité des joueurs hors boss, y compris le gagnant désigné, qui renonce donc à sa carte (la vertu a un prix). Alors :</p>
+        <p>Si le verdict du boss est un scandale inentendable, les autres joueurs peuvent, avant la manche suivante, voter son renversement en mode conseil des actionnaires. Il faut l'unanimité des joueurs hors boss — y compris le gagnant désigné, qui renonce donc à sa carte (la vertu a un prix). Alors :</p>
         <ul>
           <li>personne ne gagne la manche, toutes les cartes jouées sont défaussées ;</li>
           <li>le boss renversé perd une carte de sa pile de victoires (s'il en a) ;</li>
@@ -400,8 +323,17 @@
     <details>
       <summary>Cartes événements</summary>
       <div class="corps">
-        <p>Chaque carte a deux effets, un par mode, imprimés sur la même face. Les effets marqués (proposition) restent à valider en équipe.</p>
-        <ul id="liste-evts"></ul>
+        <p>Chaque carte a deux effets, un par mode.</p>
+        <ul>
+          <li><b>Minute de silence</b> — <span class="cl">Collaboratif :</span> personne ne peut parler avant le vote. <span class="cp">Compétitif :</span> la manche entière se joue en silence ; le premier qui parle est exclu de la manche.</li>
+          <li><b>Les fascistes sont les vrais antifascistes</b> — <span class="cl">Collaboratif :</span> gauche et droite sont inversées pour ce tour. <span class="cp">Compétitif :</span> jouez la carte qui incarne le mieux le bord opposé à celui tiré.</li>
+          <li><b>Coalition de gouvernement</b> — <span class="cl">Collaboratif :</span> on gagne jusqu'à 2 crans d'écart, mais uniquement dans le même camp. <span class="cp">Compétitif :</span> le boss élit deux cartes gagnantes, chacune rapporte.</li>
+          <li><b>Pensée unique</b> — <span class="cl">Collaboratif :</span> aucun écart accepté ce tour-ci. <span class="cp">Compétitif :</span> pas de délibération : la première carte posée sur la table gagne la manche.</li>
+          <li><b>Consensus</b> — <span class="cl">Collaboratif :</span> si une seule personne se trompe de camp, le tour est perdu. <span class="cp">Compétitif :</span> à définir.</li>
+          <li><b>Nationalisation</b> — <span class="cl">Collaboratif :</span> la carte compte double. <span class="cp">Compétitif :</span> la carte gagnée va au joueur qui a le moins de cartes (redistribution).</li>
+          <li><b>Privatisation</b> — <span class="cl">Collaboratif :</span> si ce tour est perdu, vous perdez deux cartes. <span class="cp">Compétitif :</span> le gagnant prend sa carte et en vole une gagnée à l'adversaire de son choix.</li>
+          <li><b>Dissolution</b> — effets à inventer (on a l'embarras du choix).</li>
+        </ul>
       </div>
     </details>
   </section>
@@ -420,57 +352,26 @@ const CARDS = [{"r": "Espadrilles", "v": "Mocassins à gland"}, {"r": "Dragon Ba
 const EVENTS = [
   { n: "Minute de silence", cl: "Personne ne peut parler avant le vote.", cp: "La manche entière se joue en silence ; le premier qui parle est exclu de la manche." },
   { n: "Les fascistes sont les vrais antifascistes", cl: "Gauche et droite sont inversées pour ce tour.", cp: "Jouez la carte qui incarne le mieux le bord opposé à celui tiré." },
-  { n: "Coalition de gouvernement", cl: "Ce tour, un écart de 2 crans rapporte aussi 1 jeton, mais uniquement dans le même camp.", cp: "Le boss élit deux cartes gagnantes, chacune rapporte." },
-  { n: "Pensée unique", cl: "Seule la case exacte rapporte des jetons ce tour.", cp: "Pas de délibération : la première carte posée sur la table gagne la manche." },
-  { n: "Consensus", cl: "Si une seule personne se trompe de camp, le tour ne rapporte rien.", cp: "La carte gagnante doit faire l'unanimité, boss compris ; sinon personne ne marque.", pp: ["cp"] },
-  { n: "Nationalisation", cl: "Les jetons de ce tour comptent double.", cp: "La carte gagnée va au joueur qui a le moins de cartes (redistribution)." },
-  { n: "Privatisation", cl: "Si ce tour rapporte 0 jeton, retirez 2 jetons du pot.", cp: "Le gagnant prend sa carte et en vole une gagnée à l'adversaire de son choix." },
-  { n: "Dissolution", cl: "Nouvelles élections : le rôle de guide passe immédiatement au suivant, et on rejoue le même item.", cp: "Tout le monde défausse sa main et repioche 5 cartes.", pp: ["cl", "cp"] },
-  { n: "Tirage au sort", cl: "Pas de débat ce tour ; après révélation, on tire un vote au sort et il rapporte ses jetons multipliés par le nombre de votant·es.", cp: "Le boss ne choisit pas : la carte gagnante est tirée au sort parmi celles jouées.", pp: ["cl", "cp"] },
-  { n: "Référendum", cl: "Si le tour rapporte 0 jeton, revotez une fois : visiblement la question était mal posée.", cp: "Les joueurs hors boss élisent la carte gagnante à la majorité ; le boss regarde.", pp: ["cl", "cp"] },
-  { n: "49.3", cl: "Le tour est adopté sans vote : ajoutez 1 jeton par votant·e au pot et passez à la carte suivante.", cp: "Le verdict du boss est irrévocable : aucun renversement possible cette manche.", pp: ["cl", "cp"] },
+  { n: "Coalition de gouvernement", cl: "On gagne jusqu'à 2 crans d'écart, mais uniquement dans le même camp.", cp: "Le boss élit deux cartes gagnantes, chacune rapporte." },
+  { n: "Pensée unique", cl: "Aucun écart accepté ce tour-ci.", cp: "Pas de délibération : la première carte posée sur la table gagne la manche." },
+  { n: "Consensus", cl: "Si une seule personne se trompe de camp, le tour est perdu.", cp: "(à définir — improvisez, c'est un playtest)" },
+  { n: "Nationalisation", cl: "La carte compte double.", cp: "La carte gagnée va au joueur qui a le moins de cartes (redistribution)." },
+  { n: "Privatisation", cl: "Si ce tour est perdu, vous perdez deux cartes.", cp: "Le gagnant prend sa carte et en vole une gagnée à l'adversaire de son choix." },
+  { n: "Dissolution", cl: "(effets à inventer — improvisez, c'est un playtest)", cp: "(effets à inventer — improvisez, c'est un playtest)" },
 ];
 
 const SLICES = [
-  { id: "g3", label: "5000%", camp: "GAUCHE", hex: "#b00b1e" },
-  { id: "g2", label: "50%",   camp: "GAUCHE", hex: "#e8495d" },
-  { id: "g1", label: "10%",   camp: "GAUCHE", hex: "#f293a2" },
-  { id: "d1", label: "10%",   camp: "DROITE", hex: "#92b4e3" },
-  { id: "d2", label: "50%",   camp: "DROITE", hex: "#3e63c4" },
-  { id: "d3", label: "5000%", camp: "DROITE", hex: "#1a2e6e" },
+  { id: "g3", label: "5000%", camp: "GAUCHE", color: "var(--g3)", hex: "#b00b1e" },
+  { id: "g2", label: "50%",   camp: "GAUCHE", color: "var(--g2)", hex: "#e8495d" },
+  { id: "g1", label: "10%",   camp: "GAUCHE", color: "var(--g1)", hex: "#f293a2" },
+  { id: "d1", label: "10%",   camp: "DROITE", color: "var(--d1)", hex: "#92b4e3" },
+  { id: "d2", label: "50%",   camp: "DROITE", color: "var(--d2)", hex: "#3e63c4" },
+  { id: "d3", label: "5000%", camp: "DROITE", color: "var(--d3)", hex: "#1a2e6e" },
 ];
 const NINI = { id: "nini", label: "NI DE DROITE NI DE GAUCHE", camp: "", hex: "#ffffff" };
 
-const VERDICTS = [
-  { max: 6,  t: "« Tout le monde est de droite, en fait. »", s: "Défaite.", win: false },
-  { max: 10, t: "« Congrès de Reims. »", s: "Vous vous êtes bien engueulés. Défaite.", win: false },
-  { max: 14, t: "« Programme commun signé. »", s: "VICTOIRE.", win: true },
-  { max: 18, t: "« Front populaire. »", s: "Victoire historique.", win: true },
-  { max: 99, t: "« Le Grand Soir. »", s: "Personne ne vous croira.", win: true },
-];
-
 const $ = (id) => document.getElementById(id);
-function shuffle(a, rnd) { a = a.slice(); const r = rnd || Math.random; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-
-/* RNG déterministe pour le code de partie */
-function xmur3(str) {
-  let h = 1779033703 ^ str.length;
-  for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
-  return function () { h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return (h ^= h >>> 16) >>> 0; };
-}
-function mulberry32(a) {
-  return function () {
-    let t = (a += 0x6D2B79F5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function seededOrder(code) {
-  const seed = xmur3(code.trim().toUpperCase())();
-  const rnd = mulberry32(seed);
-  return shuffle(CARDS.map((_, i) => i), rnd);
-}
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
 /* ---------- navigation ---------- */
 document.querySelectorAll("nav button").forEach(b => {
@@ -482,14 +383,7 @@ document.querySelectorAll("nav button").forEach(b => {
   };
 });
 
-/* ---------- liste des événements (onglet règles) ---------- */
-$("liste-evts").innerHTML = EVENTS.map(e => {
-  const pcl = e.pp && e.pp.includes("cl") ? " (proposition)" : "";
-  const pcp = e.pp && e.pp.includes("cp") ? " (proposition)" : "";
-  return `<li><b>${e.n}</b>. <span class="cl">Collaboratif${pcl} :</span> ${e.cl} <span class="cp">Compétitif${pcp} :</span> ${e.cp}</li>`;
-}).join("");
-
-/* ---------- roulette (vote secret, mode de gauche) ---------- */
+/* ---------- roulette ---------- */
 let choix = null;
 (function buildDial() {
   const cx = 160, cy = 165, r = 150;
@@ -516,96 +410,106 @@ let choix = null;
 })();
 
 function selectSlice(i) {
-  choix = SLICES[i];
+  choix = (i === "nini") ? NINI : SLICES[i];
   $("dial").querySelectorAll("path").forEach(p => {
     p.classList.toggle("dim", parseInt(p.dataset.i, 10) !== i);
   });
+  $("btn-nini").style.outline = (i === "nini") ? "4px solid var(--noir)" : "none";
   $("btn-poser").disabled = false;
 }
+$("btn-nini").onclick = () => {
+  $("dial").querySelectorAll("path").forEach(p => p.classList.add("dim"));
+  selectSlice("nini");
+};
 $("btn-poser").onclick = () => { $("rl-pick").style.display = "none"; $("rl-cache").style.display = "block"; };
 $("btn-annuler").onclick = () => { $("rl-cache").style.display = "none"; $("rl-pick").style.display = "block"; };
 $("btn-reveler").onclick = () => {
   $("rl-cache").style.display = "none"; $("rl-res").style.display = "block";
   const box = $("res-box");
-  box.style.background = choix.hex;
-  box.style.color = (choix.id === "g1" || choix.id === "d1") ? "var(--noir)" : "#fff";
-  box.innerHTML = `<div class="pct">${choix.label}</div><div class="camp">${choix.camp}</div>`;
+  if (choix.id === "nini") {
+    box.style.background = "#fff"; box.style.color = "var(--noir)";
+    box.innerHTML = `<div class="camp" style="font-family:'Comic Sans MS','Chalkboard SE',cursive">ni de droite<br>ni de gauche</div>`;
+  } else {
+    box.style.background = choix.hex;
+    box.style.color = (choix.id === "g1" || choix.id === "d1") ? "var(--noir)" : "#fff";
+    box.innerHTML = `<div class="pct">${choix.label}</div><div class="camp">${choix.camp}</div>`;
+  }
 };
 $("btn-revote").onclick = () => {
   $("rl-res").style.display = "none"; $("rl-pick").style.display = "block";
   choix = null; $("btn-poser").disabled = true;
   $("dial").querySelectorAll("path").forEach(p => p.classList.remove("dim"));
+  $("btn-nini").style.outline = "none";
 };
 
-/* ---------- mode de gauche (jetons, règles v3) ---------- */
+/* ---------- mode de gauche ---------- */
 let cl = null, clHist = [];
-function clSnap() { clHist.push(JSON.stringify(cl)); if (clHist.length > 40) clHist.shift(); }
-
+function clSnap() { clHist.push(JSON.stringify(cl)); if (clHist.length > 30) clHist.shift(); }
 $("btn-cl-start").onclick = () => {
-  const nb = parseInt($("cl-nb").value, 10);
-  const items = shuffle(CARDS).slice(0, 10);
+  const items = shuffle(CARDS).slice(0, 15);
   const evts = shuffle(EVENTS).slice(0, 2);
   const pile = [];
   items.forEach((c, i) => {
-    if (i === 5) pile.push({ type: "evt", e: evts[0] });
-    if (i === 9) pile.push({ type: "evt", e: evts[1] });
     pile.push({ type: "item", c });
+    if (i === 4 || i === 9) pile.push({ type: "evt", e: evts[i === 4 ? 0 : 1] });
   });
-  cl = { pile, idx: 0, pot: 0, carte: 1, nb, votants: nb - 1, evtActif: null, fini: false };
+  cl = { pile, idx: 0, win: 0, rest: 15, tour: 1, evtActif: null, fini: null };
   clHist = [];
   $("cl-avant").style.display = "none"; $("cl-fin").style.display = "none";
   $("cl-partie").style.display = "block";
   clRender();
 };
-
-let exN = 0, adN = 0;
-function majRecolte() {
-  const v = cl ? cl.votants : 0;
-  if (exN > v) exN = v;
-  if (exN + adN > v) adN = v - exN;
-  $("ex-n").textContent = exN;
-  $("ad-n").textContent = adN;
-  $("tour-jetons").textContent = 2 * exN + adN;
-}
-$("ex-plus").onclick = () => { exN++; majRecolte(); };
-$("ex-moins").onclick = () => { exN = Math.max(0, exN - 1); majRecolte(); };
-$("ad-plus").onclick = () => { adN++; majRecolte(); };
-$("ad-moins").onclick = () => { adN = Math.max(0, adN - 1); majRecolte(); };
-
 function clRender() {
   if (!cl) return;
   if (cl.fini) return clFin();
-  $("sc-pot").textContent = cl.pot;
-  $("sc-obj").textContent = 10 * cl.votants;
-  $("sc-num").textContent = cl.carte;
+  $("sc-win").textContent = cl.win;
+  $("sc-rest").textContent = cl.rest;
+  $("sc-num").textContent = cl.tour;
   const cur = cl.pile[cl.idx];
   const zone = $("cl-zone");
   $("cl-evt-actif").innerHTML = cl.evtActif
-    ? `<div class="bandeau">ÉVÉNEMENT ACTIF : <b>${cl.evtActif.n}</b>. ${cl.evtActif.cl}</div>` : "";
-  if (!cur) { cl.fini = true; return clFin(); }
+    ? `<div class="bandeau">ÉVÉNEMENT ACTIF : <b>${cl.evtActif.n}</b> — ${cl.evtActif.cl}</div>` : "";
+  if (!cur) { cl.fini = "defaite"; return clFin(); }
   if (cur.type === "evt") {
-    zone.innerHTML = `<div class="carte evt"><h3>ÉVÉNEMENT<br>${cur.e.n}</h3><p><span class="cl">Collaboratif${cur.e.pp && cur.e.pp.includes("cl") ? " (proposition)" : ""} :</span> ${cur.e.cl}</p></div>
+    zone.innerHTML = `<div class="carte evt"><h3>ÉVÉNEMENT<br>${cur.e.n}</h3><p><span class="cl">Collaboratif :</span> ${cur.e.cl}</p></div>
       <button class="btn mini" id="btn-evt-ok">C'est noté (appliqué au prochain tour)</button>`;
-    $("cl-recolte").style.display = "none";
+    $("cl-boutons").style.display = "none";
     $("btn-evt-ok").onclick = () => { clSnap(); cl.evtActif = cur.e; cl.idx++; clRender(); };
   } else {
     zone.innerHTML = `
-      <div class="carte"><div class="face-tag">item A</div><div class="item">${cur.c.r}</div></div>
-      ${cur.c.v ? `<div class="carte"><div class="face-tag">item B</div><div class="item">${cur.c.v}</div></div>` : ""}
-      <p class="hint">Le guide suprême choisit un item, le lit, place sa roulette et se tait. Débattez, votez, retournez tout. Puis comptez la récolte ci-dessous.</p>`;
-    exN = 0; adN = 0;
-    $("cl-recolte").style.display = "block";
-    majRecolte();
+      <div class="carte"><div class="face-tag">face A</div><div class="item">${cur.c.r}</div></div>
+      ${cur.c.v ? `<div class="carte"><div class="face-tag">face B</div><div class="item">${cur.c.v}</div></div>` : ""}
+      <p class="hint">Le guide suprême choisit une face, la lit à voix haute, place sa roulette… et se tait.</p>`;
+    $("cl-boutons").style.display = "block";
   }
 }
-$("btn-tour-ok").onclick = () => {
+function clOutcome(kind) {
   if (!cl || cl.fini || !cl.pile[cl.idx] || cl.pile[cl.idx].type !== "item") return;
   clSnap();
-  cl.pot += 2 * exN + adN;
   cl.evtActif = null;
-  cl.idx++; cl.carte++;
-  if (cl.carte > 10 && !cl.pile[cl.idx]) cl.fini = true;
+  if (kind === "win") { cl.win++; }
+  if (kind === "def2" && cl.win > 0) { cl.win--; }
+  cl.rest--; cl.idx++; cl.tour++;
+  if (cl.win >= 8) cl.fini = "victoire";
+  else if (cl.win + cl.rest < 8) cl.fini = "defaite";
   clRender();
+}
+$("btn-ok").onclick = () => clOutcome("win");
+$("btn-def").onclick = () => clOutcome("def");
+$("btn-def2").onclick = () => clOutcome("def2");
+$("btn-catastrophe").onclick = () => {
+  if (!confirm("Une majorité a voté « ni de droite ni de gauche » à tort ?")) return;
+  clSnap(); cl.fini = "nini"; clRender();
+};
+$("btn-win-plus").onclick = () => {
+  if (!cl || cl.fini) return;
+  clSnap(); cl.win++;
+  if (cl.win >= 8) cl.fini = "victoire";
+  clRender();
+};
+$("btn-win-moins").onclick = () => {
+  if (!cl || cl.fini || cl.win === 0) return;
+  clSnap(); cl.win--; clRender();
 };
 $("btn-undo").onclick = () => {
   if (!clHist.length) return;
@@ -620,15 +524,19 @@ $("btn-cl-reset").onclick = () => {
 function clFin() {
   $("cl-partie").style.display = "none";
   const f = $("cl-fin"); f.style.display = "block";
-  const parVotant = cl.pot / cl.votants;
-  const v = VERDICTS.find(x => parVotant < x.max);
-  f.innerHTML = `<div class="fin" style="background:${v.win ? "#fde8ea" : "#e8edf9"}">
-      <h3>${v.t}</h3>
-      <p>${v.s}</p>
-      <p style="margin-top:8px;font-size:.8rem">${cl.pot} jetons au pot, objectif ${10 * cl.votants}.</p>
-      <p class="hint">(intitulés provisoires, réécriture en cours)</p>
-    </div>
-    <button class="btn ${v.win ? "rouge" : "bleu"}" id="btn-encore">Rejouer</button>`;
+  if (cl.fini === "victoire") {
+    f.innerHTML = `<div class="fin" style="background:#ffe8ea"><h3>LA LUTTE PAIE ✊</h3>
+      <p>${cl.win} cartes arrachées à la techno-bourgeoisie.</p></div>
+      <button class="btn rouge" id="btn-encore">Rejouer</button>`;
+  } else if (cl.fini === "nini") {
+    f.innerHTML = `<div class="fin"><h3 style="font-family:'Comic Sans MS','Chalkboard SE',cursive">ni de droite ni de gauche…</h3>
+      <p>La partie est perdue. Tout le monde est de droite.</p></div>
+      <button class="btn" id="btn-encore">Rejouer (et assumer)</button>`;
+  } else {
+    f.innerHTML = `<div class="fin" style="background:#e8edf9"><h3>DÉFAITE</h3>
+      <p>Atteindre 8 est devenu mathématiquement impossible. Comme souvent.</p></div>
+      <button class="btn bleu" id="btn-encore">Rejouer</button>`;
+  }
   $("btn-encore").onclick = () => { $("cl-fin").style.display = "none"; $("cl-avant").style.display = "block"; };
 }
 
@@ -642,103 +550,42 @@ $("btn-spin").onclick = () => {
     paintBord(out, b, true);
     if (++n > 14) {
       clearInterval(iv);
-      paintBord(out, BORDS[Math.floor(Math.random() * BORDS.length)], false);
+      const fin = BORDS[Math.floor(Math.random() * BORDS.length)];
+      paintBord(out, fin, false);
     }
   }, 90);
 };
 function paintBord(out, b, temp) {
   if (b.id === "nini") {
     out.innerHTML = `<div class="spin-res" style="background:#fff;color:var(--noir)">
-      <span class="nini">ni de droite ni de gauche</span>
+      <span style="font-family:'Comic Sans MS','Chalkboard SE',cursive">ni de droite ni de gauche</span>
       ${temp ? "" : `<p style="font-size:.7rem;margin-top:10px;font-weight:normal">Manche spéciale : jouez la carte la plus désespérément apolitique de votre main.</p>`}</div>`;
   } else {
     out.innerHTML = `<div class="spin-res" style="background:${b.hex};${(b.id === "g1" || b.id === "d1") ? "color:var(--noir)" : ""}">${b.label} ${b.camp}</div>`;
   }
 }
 
-/* événements du boss : pile cachée, tirage à l'aveugle */
-let evtPile = [];
-$("btn-evt-boss").onclick = () => {
-  if (!evtPile.length) evtPile = shuffle(EVENTS);
-  const e = evtPile.pop();
-  const pcp = e.pp && e.pp.includes("cp") ? " (proposition)" : "";
-  $("evt-boss-zone").insertAdjacentHTML("afterbegin",
-    `<div class="carte evt"><h3>${e.n}</h3>
-      <p><span class="cp">Compétitif${pcp} :</span> ${e.cp}</p>
-    </div>`);
-  $("evt-boss-zone").insertAdjacentHTML("beforeend",
-    $("btn-evt-fin") ? "" : `<p class="hint" id="evt-hint">Tout s'applique à la manche qui démarre, tous en même temps ; si contradiction, le boss tranche.</p>
-     <button class="btn ghost mini" id="btn-evt-fin">manche jouée : remélanger les événements</button>`);
-  const bf = $("btn-evt-fin");
-  if (bf) bf.onclick = () => { evtPile = []; $("evt-boss-zone").innerHTML = ""; };
-};
-
-/* code de partie : pioche partagée sans doublon */
-const CODEMOTS = ["MELON", "TRACT", "APERO", "CUMUL", "MOTION", "CONGRES", "SECTION", "BUREAU", "TENDANCE", "MEGAPHONE", "PREAVIS", "CORTEGE"];
-let partie = null; /* {code, nb, num, ordre, ptr} ou {solo:true} */
-
-$("btn-gen").onclick = () => {
-  const code = CODEMOTS[Math.floor(Math.random() * CODEMOTS.length)] + "-" + (10 + Math.floor(Math.random() * 90));
-  $("in-code").value = code;
-};
-$("btn-join").onclick = () => {
-  const code = $("in-code").value.trim().toUpperCase();
-  const nb = parseInt($("in-nb").value, 10);
-  const num = parseInt($("in-num").value, 10);
-  if (!code) { alert("Saisis un code de partie (ou génère-le si tu es le boss)."); return; }
-  if (num > nb) { alert("Ton numéro dépasse le nombre de joueurs."); return; }
-  partie = { code, nb, num, ordre: seededOrder(code), ptr: num - 1 };
-  $("partie-label").innerHTML = `Partie <b>${code}</b> : joueur ${num} sur ${nb}. Mains garanties sans doublon.`;
-  demarrerMain();
-};
-$("btn-solo").onclick = () => {
-  partie = { solo: true, ordre: shuffle(CARDS.map((_, i) => i)), ptr: 0 };
-  $("partie-label").innerHTML = `Partie libre, sans code : des doublons entre téléphones sont possibles.`;
-  demarrerMain();
-};
-function demarrerMain() {
-  $("partie-setup").style.display = "none";
-  $("partie-info").style.display = "block";
-  $("main-bloc").style.display = "block";
-  main = []; sel = -1;
-  renderMain();
-}
-$("btn-quit").onclick = () => {
-  partie = null; main = []; sel = -1;
-  $("partie-setup").style.display = "block";
-  $("partie-info").style.display = "none";
-  $("main-bloc").style.display = "none";
-};
-
-function tirerCarte() {
-  if (!partie) return null;
-  const step = partie.solo ? 1 : partie.nb;
-  if (partie.ptr >= partie.ordre.length) {
-    alert("Pioche épuisée pour cette partie : générez un nouveau code et redistribuez.");
-    return null;
-  }
-  const c = CARDS[partie.ordre[partie.ptr]];
-  partie.ptr += step;
-  return c;
-}
-
-let main = [], sel = -1;
+let pioche = [], main = [], sel = -1;
 $("btn-main").onclick = () => {
-  if (!partie) return;
-  const step = partie.solo ? 1 : partie.nb;
-  partie.ptr = partie.solo ? 0 : partie.num - 1;
-  if (partie.solo) partie.ordre = shuffle(CARDS.map((_, i) => i));
-  main = []; sel = -1;
+  pioche = shuffle(CARDS); main = []; sel = -1;
   piocher(5);
-  $("btn-main").textContent = "Nouvelle main (repart du début du code)";
+  $("btn-main").textContent = "Nouvelle main (remélange tout)";
 };
 function piocher(nb) {
   for (let i = 0; i < nb; i++) {
-    const c = tirerCarte();
-    if (!c) break;
-    main.push({ c, face: "r" });
+    if (!pioche.length) pioche = shuffle(CARDS);
+    if (Math.random() < 0.04) montrerEvt();
+    main.push({ c: pioche.pop(), face: "r" });
   }
   renderMain();
+}
+function montrerEvt() {
+  const e = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+  $("evt-modal").innerHTML = `<div class="carte evt"><h3>ÉVÉNEMENT PIOCHÉ !<br>${e.n}</h3>
+    <p><span class="cp">Compétitif :</span> ${e.cp}</p>
+    <p class="hint">Annonce-le à la table : il s'applique à la manche qui démarre, puis remélangez-le.</p></div>
+    <button class="btn mini" onclick="document.getElementById('evt-modal').innerHTML=''">OK, posé au centre</button>`;
+  $("evt-modal").scrollIntoView({ behavior: "smooth" });
 }
 function renderMain() {
   const z = $("main-zone");
@@ -746,7 +593,7 @@ function renderMain() {
     const txt = m.face === "r" ? m.c.r : (m.c.v || m.c.r);
     return `<div class="mc ${sel === i ? "sel" : ""}" data-i="${i}">
       <div class="t">${txt}</div>
-      ${m.c.v ? `<div class="flip">retourner</div>` : `<div class="flip">face unique</div>`}
+      ${m.c.v ? `<div class="flip">↻ retourner</div>` : `<div class="flip">face unique</div>`}
     </div>`;
   }).join("");
   z.querySelectorAll(".mc").forEach(el => {
@@ -784,7 +631,7 @@ function renderMain() {
 }
 $("btn-vic-plus").onclick = () => {
   const b = $("sc-mes"); b.textContent = Math.min(5, +b.textContent + 1);
-  if (+b.textContent === 5) alert("5 cartes. Tu as gagné : fais ton discours de victoire, tout le monde écoute dans la jalousie de l'accumulation.");
+  if (+b.textContent === 5) alert("5 cartes ! Tu as gagné. Fais ton discours de victoire, tout le monde écoute dans la jalousie de l'accumulation.");
 };
 $("btn-vic-moins").onclick = () => { const b = $("sc-mes"); b.textContent = Math.max(0, +b.textContent - 1); };
 </script>

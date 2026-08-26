@@ -158,7 +158,7 @@
 <body>
 <header>
   <h1><span class="g">DROITE</span> OU <span class="d">GAUCHE</span></h1>
-  <p>Là où les extrêmes se rejoignent · appli de playtest v3 (règles v4)</p>
+  <p>Là où les extrêmes se rejoignent · appli de playtest v3.1 (règles v4.1)</p>
 </header>
 
 <main>
@@ -211,10 +211,9 @@
   <!-- ================= MODE DE DROITE ================= -->
   <section id="v-droite" class="view">
     <h2>La table</h2>
-    <p class="hint">Un seul téléphone tire (celui du capital).</p>
+    <p class="hint">Un seul téléphone tire (celui du capital). LEZEXTREMES : un 8000 % au tirage déclenche un événement.</p>
     <button class="btn bleu" id="btn-spin">Faire tourner la roulette</button>
     <div id="spin-out"></div>
-    <button class="btn mini" id="btn-evt-boss">Le boss retourne un événement</button>
     <div id="evt-boss-zone"></div>
 
     <h2>Ma partie</h2>
@@ -271,7 +270,7 @@
       <div class="main-cartes" id="main-zone"></div>
       <div id="main-actions"></div>
       <div class="score">
-        <div><b id="sc-mes">0</b><span>mes victoires / 5</span></div>
+        <div><b id="sc-mes">0</b><span id="sc-mes-label">mes victoires / 5</span></div>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px">
           <button class="btn mini" style="width:44px;margin:0" id="btn-vic-moins">-</button>
           <button class="btn mini bleu" style="width:44px;margin:0" id="btn-vic-plus">+</button>
@@ -289,14 +288,14 @@
       <summary>Les règles en bref</summary>
       <div class="corps">
         <p><span class="cl">Mode de gauche (collaboratif).</span> Le guide suprême lit un item et le place en secret sur sa roulette. Les autres débattent, puis votent chacun·e sur sa roulette, face cachée. On retourne tout : si la position la plus votée est sur la case du guide ou à 1 cran, la carte est gagnée. 10 cartes, puis comptez vos victoires : 6 c'est gagné, 10 c'est le Grand Soir.</p>
-        <p><span class="cp">Mode de droite (compétitif).</span> Le boss fait tourner la roulette et dévoile un bord politique. Chacun joue de sa main la carte qui l'incarne le mieux, face cachée. Le boss élit la meilleure sans argumenter : son gagnant l'empoche et devient boss. Premier à 5 cartes.</p>
+        <p><span class="cp">Mode de droite (compétitif).</span> Le boss fait tourner la roulette et dévoile un bord politique. Chacun joue de sa main la carte qui l'incarne le mieux, face cachée. Le boss élit la meilleure sans argumenter : son gagnant l'empoche et devient boss. Premier à 5 cartes (à 4 dès 5 joueurs).</p>
       </div>
     </details>
 
     <details>
       <summary>La roulette</summary>
       <div class="corps">
-        <p>8 crans politiques : 10 %, 50 %, 100 % et 8000 % de gauche et de droite, plus une case à part : « ni de droite ni de gauche ».</p>
+        <p>8 crans politiques : 10 %, 50 %, 100 % et 8000 % de gauche et de droite.</p>
         <p>Deux positions sont à <b>1 cran d'écart</b> si elles sont adjacentes sur le cadran, y compris entre 10 % gauche et 10 % droite : pas de zone tampon entre les camps.</p>
         <p class="flav">Exemple : le guide a mis 100 % de gauche. Positions à 1 cran ou moins : 50 %, 100 % et 8000 % de gauche.</p>
       </div>
@@ -345,21 +344,20 @@
         </ul>
         <p class="sub">Une manche</p>
         <ul>
-          <li>S'il le décide, le boss commence par retourner une carte événement (ou plusieurs, s'il assume), sans les regarder avant. Les événements sont le chaos, et le chaos est un instrument de pouvoir comme un autre : ça peut très bien se retourner contre lui. Tout s'applique à la manche qui démarre ; après la manche, remélangez-les dans la pile d'événements.</li>
-          <li>Le boss fait tourner la roulette au hasard, face cachée, puis dévoile le bord politique tiré au centre de la table. Si elle tombe sur « ni de droite ni de gauche » : manche spéciale, jouez la carte la plus désespérément apolitique de votre main.</li>
+          <li>Le boss fait tourner la roulette au hasard, face cachée, puis dévoile le bord politique tiré au centre de la table.</li>
+          <li><b>LEZEXTREMES :</b> si le bord tiré est un 8000 %, de gauche ou de droite, le boss retourne aussitôt une carte événement, sans la regarder avant. Quand les extrêmes sortent, l'actualité s'emballe. L'événement s'applique à la manche qui démarre ; après la manche, remélangez-le dans la pile.</li>
           <li>Chacun choisit dans sa main la carte (recto ou verso) qui incarne le mieux ce bord, et la pose face cachée.</li>
           <li>Le boss mélange les cartes reçues, les révèle, et élit la plus convaincante selon lui, sans avoir à argumenter (c'est le boss).</li>
           <li>Le gagnant place la carte élue dans sa pile de victoires et devient le prochain boss. Les autres cartes sont défaussées, puis tout le monde repioche pour revenir à 5 cartes.</li>
         </ul>
-        <p class="sub">Le renversement du boss</p>
-        <p>Si le verdict du boss est un scandale inentendable, les autres joueurs peuvent, avant la manche suivante, voter son renversement en mode conseil des actionnaires. Il faut l'unanimité des joueurs hors boss, y compris le gagnant désigné, qui renonce donc à sa carte (la vertu a un prix). Alors :</p>
+        <p class="sub">Le renversement du boss : l'AG des actionnaires</p>
+        <p>Si le verdict du boss est un scandale inentendable, n'importe quel joueur peut convoquer l'assemblée générale des actionnaires, avant que la manche suivante ne commence. L'AG doit élire, à la majorité des joueurs hors boss, une AUTRE carte parmi celles jouées cette manche.</p>
         <ul>
-          <li>personne ne gagne la manche, toutes les cartes jouées sont défaussées ;</li>
-          <li>le boss renversé perd une carte de sa pile de victoires (s'il en a) ;</li>
-          <li>le rôle de boss passe à la personne suivante.</li>
+          <li>Une majorité se forme : la carte élue gagne la manche à la place de l'autre, son propriétaire devient le prochain boss, et le boss renversé perd une carte de sa pile de victoires (s'il en a). L'humiliation.</li>
+          <li>Aucune majorité ne se forme : le verdict du boss tient, et la séance est levée.</li>
         </ul>
         <p class="sub">Fin de partie</p>
-        <p>Le premier joueur à 5 cartes gagne, et a le droit de faire un discours de victoire que tout le monde écoute dans la jalousie de l'accumulation.</p>
+        <p>Le premier joueur à 5 cartes gagne (à 5 ou 6 joueurs : 4 cartes), et a le droit de faire un discours de victoire que tout le monde écoute dans la jalousie de l'accumulation.</p>
       </div>
     </details>
 
@@ -380,6 +378,7 @@
           <li><b>Deux événements d'affilée.</b> Les effets se cumulent. S'ils se contredisent, le dernier retourné l'emporte.</li>
           <li><b>Un événement sort alors qu'il ne reste plus de carte item.</b> Il est ignoré : l'actualité continue sans vous.</li>
           <li><b>Le guide suprême ne connaît aucun des deux items.</b> Il défausse la carte et en repioche une autre. S'il en connaît un des deux, il joue celui-là : on ne choisit pas toujours ses combats.</li>
+          <li><b>L'AG des actionnaires à 3 joueurs.</b> Deux votants, dont le gagnant désigné : la majorité ne se forme jamais. C'est triste, mais c'est la démocratie actionnariale.</li>
           <li><b>La pioche du mode de droite est épuisée.</b> Remélangez la défausse.</li>
           <li><b>Variante « radicalisation » (optionnelle).</b> Les 3 dernières cartes items se jouent sans droit au débat.</li>
         </ul>
@@ -422,8 +421,6 @@ const SLICES = [
   { id: "d3", label: "100%",  camp: "DROITE", hex: "#1a2e6e" },
   { id: "d4", label: "8000%", camp: "DROITE", hex: "#0f1e47" },
 ];
-const NINI = { id: "nini", label: "NI DE DROITE NI DE GAUCHE", camp: "", hex: "#ffffff" };
-
 const VERDICTS = [
   { min: 0,  t: "Tout le monde est de droite.", win: false },
   { min: 6,  t: "Il n'y a pas de petite victoire.", win: true },
@@ -601,7 +598,7 @@ function clFin() {
 }
 
 /* ---------- mode de droite ---------- */
-const BORDS = SLICES.concat([NINI]);
+const BORDS = SLICES;
 $("btn-spin").onclick = () => {
   const out = $("spin-out");
   let n = 0;
@@ -610,37 +607,30 @@ $("btn-spin").onclick = () => {
     paintBord(out, b, true);
     if (++n > 14) {
       clearInterval(iv);
-      paintBord(out, BORDS[Math.floor(Math.random() * BORDS.length)], false);
+      const fin = BORDS[Math.floor(Math.random() * BORDS.length)];
+      paintBord(out, fin, false);
+      if (fin.id === "g4" || fin.id === "d4") lezextremes();
     }
   }, 90);
 };
 function paintBord(out, b, temp) {
-  if (b.id === "nini") {
-    out.innerHTML = `<div class="spin-res" style="background:#fff;color:var(--noir)">
-      <span class="nini">ni de droite ni de gauche</span>
-      ${temp ? "" : `<p style="font-size:.7rem;margin-top:10px;font-weight:normal">Manche spéciale : jouez la carte la plus désespérément apolitique de votre main.</p>`}</div>`;
-  } else {
-    out.innerHTML = `<div class="spin-res" style="background:${b.hex};${(b.id === "g1" || b.id === "d1") ? "color:var(--noir)" : ""}">${b.label} ${b.camp}</div>`;
-  }
+  out.innerHTML = `<div class="spin-res" style="background:${b.hex};${(b.id === "g1" || b.id === "d1") ? "color:var(--noir)" : ""}">${b.label} ${b.camp}</div>`;
 }
 
-/* événements du boss : pile cachée, tirage à l'aveugle */
+/* LEZEXTREMES : un 8000 % au tirage retourne un événement */
 let evtPile = [];
-$("btn-evt-boss").onclick = () => {
+function lezextremes() {
   if (!evtPile.length) evtPile = shuffle(EVENTS);
   const e = evtPile.pop();
   const pcp = e.pp && e.pp.includes("cp") ? " (proposition)" : "";
-  $("evt-boss-zone").insertAdjacentHTML("afterbegin",
-    `<div class="carte evt"><h3>${e.n}</h3>
+  $("evt-boss-zone").innerHTML =
+    `<div class="carte evt"><h3>LEZEXTREMES<br>${e.n}</h3>
       <p><span class="cp">Compétitif${pcp} :</span> ${e.cp}</p>
-    </div>`);
-  if (!$("btn-evt-fin")) {
-    $("evt-boss-zone").insertAdjacentHTML("beforeend",
-      `<p class="hint">Tout s'applique à la manche qui démarre ; si contradiction, le boss tranche.</p>
-       <button class="btn ghost mini" id="btn-evt-fin">manche jouée : remélanger les événements</button>`);
-    $("btn-evt-fin").onclick = () => { evtPile = []; $("evt-boss-zone").innerHTML = ""; };
-  }
-};
+      <p class="hint">Quand les extrêmes sortent, l'actualité s'emballe. L'événement s'applique à la manche qui démarre.</p>
+    </div>
+    <button class="btn ghost mini" id="btn-evt-fin">manche jouée : remélanger l'événement</button>`;
+  $("btn-evt-fin").onclick = () => { evtPile = []; $("evt-boss-zone").innerHTML = ""; };
+}
 
 /* code de partie : pioche partagée sans doublon */
 const CODEMOTS = ["MELON", "TRACT", "APERO", "CUMUL", "MOTION", "CONGRES", "SECTION", "BUREAU", "TENDANCE", "MEGAPHONE", "PREAVIS", "CORTEGE"];
@@ -670,6 +660,7 @@ function demarrerMain() {
   $("partie-info").style.display = "block";
   $("main-bloc").style.display = "block";
   main = []; sel = -1;
+  majCibleLabel();
   renderMain();
 }
 $("btn-quit").onclick = () => {
@@ -750,9 +741,12 @@ function renderMain() {
   const br = $("btn-repioche");
   if (br) br.onclick = () => piocher(5 - main.length);
 }
+function cibleVictoires() { return (partie && !partie.solo && partie.nb >= 5) ? 4 : 5; }
+function majCibleLabel() { $("sc-mes-label").textContent = "mes victoires / " + cibleVictoires(); }
 $("btn-vic-plus").onclick = () => {
-  const b = $("sc-mes"); b.textContent = Math.min(5, +b.textContent + 1);
-  if (+b.textContent === 5) alert("5 cartes. Tu as gagné : fais ton discours de victoire, tout le monde écoute dans la jalousie de l'accumulation.");
+  const cible = cibleVictoires();
+  const b = $("sc-mes"); b.textContent = Math.min(cible, +b.textContent + 1);
+  if (+b.textContent === cible) alert(cible + " cartes. Tu as gagné : fais ton discours de victoire, tout le monde écoute dans la jalousie de l'accumulation.");
 };
 $("btn-vic-moins").onclick = () => { const b = $("sc-mes"); b.textContent = Math.max(0, +b.textContent - 1); };
 </script>

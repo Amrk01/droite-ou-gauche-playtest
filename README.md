@@ -9,3 +9,4 @@ Chaque joueur·euse ouvre la page sur son téléphone :
 - **Mode de droite** (compétitif) : tirage du bord politique par le boss, main de 5 cartes recto/verso par joueur.
 
 Un seul fichier, aucune dépendance : `index.html`.
+

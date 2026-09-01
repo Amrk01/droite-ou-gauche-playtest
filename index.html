@@ -158,22 +158,22 @@
 <body>
 <header>
   <h1><span class="g">DROITE</span> OU <span class="d">GAUCHE</span></h1>
-  <p>Là où les extrêmes se rejoignent · appli de playtest v3.4 (règles v4.2)</p>
+  <p>Là où les extrêmes se rejoignent · appli de playtest v3.5 (règles v4.2, boussole)</p>
 </header>
 
 <main>
-  <!-- ================= ROULETTE ================= -->
+  <!-- ================= BOUSSOLE ================= -->
   <section id="v-roulette" class="view on">
     <div id="rl-pick">
-      <p class="hint">Mode de gauche : place l'item selon le guide, pose ta roulette face cachée. Chaque joueur·euse utilise son propre téléphone.</p>
+      <p class="hint">Mode de gauche : place l'item selon lea camarade, pose ta boussole face cachée. Chaque joueur·euse utilise son propre téléphone.</p>
       <svg id="dial" viewBox="0 0 320 175"></svg>
-      <div class="or">TOUJOURS SELON LE GUIDE OU LE BOSS</div>
+      <div class="or">TOUJOURS SELON LEA CAMARADE OU LE BOSS</div>
       <button class="btn rouge" id="btn-poser" disabled>Poser face cachée</button>
     </div>
     <div id="rl-cache" style="display:none">
       <div class="cache-ecran">
         <div class="poing">✊</div>
-        <p>ROULETTE POSÉE</p>
+        <p>BOUSSOLE POSÉE</p>
         <p style="font-size:.65rem;color:#999;margin-top:8px">a voté.</p>
       </div>
       <button class="btn bleu" id="btn-reveler">Révéler (3, 2, 1…)</button>
@@ -199,7 +199,7 @@
       <div id="cl-evt-actif"></div>
       <div id="cl-zone"></div>
       <div id="cl-boutons" style="display:none">
-        <button class="btn mini rouge" id="btn-ok">Gagnée : la majorité à 0-1 cran du guide</button>
+        <button class="btn mini rouge" id="btn-ok">Gagnée : la majorité à 0-1 cran de lea camarade</button>
         <button class="btn mini bleu" id="btn-rate">Perdue (trop loin, ou scission)</button>
       </div>
       <button class="btn ghost mini" id="btn-undo">annuler le dernier coup (révisionnisme)</button>
@@ -212,7 +212,7 @@
   <section id="v-droite" class="view">
     <h2>La table</h2>
     <p class="hint">Un seul téléphone tire (celui du capital). LEZEXTREMES : un 8000 % au tirage déclenche un événement.</p>
-    <button class="btn bleu" id="btn-spin">Faire tourner la roulette</button>
+    <button class="btn bleu" id="btn-spin">Faire tourner la boussole</button>
     <div id="spin-out"></div>
     <div id="evt-boss-zone"></div>
 
@@ -281,23 +281,23 @@
 
   <!-- ================= RÈGLES (v4) ================= -->
   <section id="v-regles" class="view regles">
-    <p class="hint">Un party game de 3 à 6 joueur·euses où l'on place les choses de la vie (le kombucha de Squeezie, les mini carottes d'apéro, Florent Pagny…) à droite ou à gauche, chacun·e sur sa roulette politique. Parce que tout est politique.</p>
-    <div class="or">LA RÈGLE D'OR : vous ne votez jamais votre propre avis, vous devinez le sien. « Toujours selon le guide ou le boss »</div>
+    <p class="hint">Un party game de 3 à 6 joueur·euses où l'on place les choses de la vie (le kombucha de Squeezie, les mini carottes d'apéro, Florent Pagny…) à droite ou à gauche, chacun·e sur sa boussole politique. Parce que tout est politique.</p>
+    <div class="or">LA RÈGLE D'OR : vous ne votez jamais votre propre avis, vous devinez le sien. « Toujours selon lea camarade ou le boss »</div>
 
     <details open>
       <summary>Les règles en bref</summary>
       <div class="corps">
-        <p><span class="cl">Mode de gauche (collaboratif).</span> Le guide suprême lit un item et le place en secret sur sa roulette. Les autres débattent, puis votent chacun·e sur sa roulette, face cachée. On retourne tout : si la majorité est à 1 cran maximum du choix du guide, la carte est gagnée. 10 cartes, puis comptez vos victoires : 6 c'est gagné, 10 c'est le Grand Soir.</p>
-        <p><span class="cp">Mode de droite (compétitif).</span> Le boss fait tourner la roulette et dévoile un bord politique. Chacun joue de sa main la carte qui l'incarne le mieux, face cachée. Le boss élit la meilleure sans argumenter : son gagnant l'empoche et devient boss. Premier à 5 cartes (à 4 dès 5 joueurs).</p>
+        <p><span class="cl">Mode de gauche (collaboratif).</span> Un·e camarade désigné·e lit un item et le place en secret sur sa boussole. Les autres débattent, puis votent chacun·e sur sa boussole, face cachée. On retourne tout : si la majorité est à 1 cran maximum du choix de lea camarade, la carte est gagnée. 10 cartes, puis comptez vos victoires : 6 c'est gagné, 10 c'est le Grand Soir.</p>
+        <p><span class="cp">Mode de droite (compétitif).</span> Le boss fait tourner la boussole et dévoile un bord politique. Chacun joue de sa main la carte qui l'incarne le mieux, face cachée. Le boss élit la meilleure sans argumenter : son gagnant l'empoche et devient boss. Premier à 5 cartes (à 4 dès 5 joueurs).</p>
       </div>
     </details>
 
     <details>
-      <summary>La roulette</summary>
+      <summary>La boussole</summary>
       <div class="corps">
         <p>8 crans politiques : 10 %, 50 %, 100 % et 8000 % de gauche et de droite.</p>
         <p>Deux positions sont à <b>1 cran d'écart</b> si elles sont adjacentes sur le cadran, y compris entre 10 % gauche et 10 % droite : pas de zone tampon entre les camps.</p>
-        <p class="flav">Exemple : le guide a mis 100 % de gauche. Positions à 1 cran ou moins : 50 %, 100 % et 8000 % de gauche.</p>
+        <p class="flav">Exemple : lea camarade a mis 100 % de gauche. Positions à 1 cran ou moins : 50 %, 100 % et 8000 % de gauche.</p>
       </div>
     </details>
 
@@ -308,18 +308,18 @@
         <p class="sub">Mise en place</p>
         <ul>
           <li>Mélangez 10 cartes items et 4 cartes événements en une seule pile.</li>
-          <li>Chacun·e prend une roulette.</li>
-          <li>Désignez un premier « guide suprême » : la personne qui a manifesté le plus récemment.</li>
+          <li>Chacun·e prend une boussole.</li>
+          <li>Désignez d'abord un·e « camarade désigné·e » : la personne qui a manifesté le plus récemment.</li>
         </ul>
         <p class="sub">Un tour</p>
         <ul>
-          <li>Le guide suprême pioche une carte. Si c'est un événement, il le lit à voix haute : l'événement s'applique au tour qui vient, et le guide repioche.</li>
-          <li>Le guide choisit un des deux items, le lit à voix haute et laisse la carte au milieu de la table.</li>
-          <li>Il place l'item sur le spectre gauche-droite de sa roulette, la pose face cachée… et ne peut plus rien dire.</li>
-          <li>Les autres débattent librement de ce que le guide en pense, sans jamais mentionner les tranches exactes sur lesquelles iels comptent voter. « Il pense comme son père » est accepté ; « c'est du 8000 % » est un délit.</li>
-          <li>Chacun·e règle sa roulette sur la position supposée du guide et la pose face cachée. Quand tout le monde a posé, on retourne tout en même temps.</li>
-          <li><b>Si la majorité est à 1 cran d'écart maximum du choix du guide : carte gagnée !</b> Placez-la dans la pile des victoires arrachées à la techno-bourgeoisie. Sinon, la carte est défaussée.</li>
-          <li>Le rôle de guide suprême tourne ensuite dans le sens de l'Histoire. Vers la gauche, évidemment.</li>
+          <li>Lea camarade désigné·e pioche une carte. Si c'est un événement, iel le lit à voix haute : l'événement s'applique au tour qui vient, et lea camarade repioche.</li>
+          <li>Lea camarade choisit un des deux items, le lit à voix haute et laisse la carte au milieu de la table.</li>
+          <li>Iel place l'item sur le spectre gauche-droite de sa boussole, la pose face cachée… et ne peut plus rien dire.</li>
+          <li>Les autres débattent librement de ce que lea camarade en pense, sans jamais mentionner les tranches exactes sur lesquelles iels comptent voter. « Il pense comme son père » est accepté ; « c'est du 8000 % » est un délit.</li>
+          <li>Chacun·e règle sa boussole sur la position supposée de lea camarade et la pose face cachée. Quand tout le monde a posé, on retourne tout en même temps.</li>
+          <li><b>Si la majorité est à 1 cran d'écart maximum du choix de lea camarade : carte gagnée !</b> Placez-la dans la pile des victoires arrachées à la techno-bourgeoisie. Sinon, la carte est défaussée.</li>
+          <li>Le rôle de camarade désigné·e tourne ensuite dans le sens de l'Histoire. Vers la gauche, évidemment.</li>
         </ul>
         <p class="sub">Fin de partie</p>
         <p>Quand la 10e carte item a été jouée, comptez la pile des victoires :</p>
@@ -344,7 +344,7 @@
         </ul>
         <p class="sub">Une manche</p>
         <ul>
-          <li>Le boss fait tourner la roulette au hasard, face cachée, puis dévoile le bord politique tiré au centre de la table.</li>
+          <li>Le boss fait tourner la boussole au hasard, face cachée, puis dévoile le bord politique tiré au centre de la table.</li>
           <li><b>LEZEXTREMES :</b> si le bord tiré est un 8000 %, de gauche ou de droite, le boss retourne aussitôt une carte événement, sans la regarder avant. Quand les extrêmes sortent, l'actualité s'emballe. L'événement s'applique à la manche qui démarre ; après la manche, remélangez-le dans la pile.</li>
           <li>Chacun choisit dans sa main la carte (recto ou verso) qui incarne le mieux ce bord, et la pose face cachée.</li>
           <li>Le boss mélange les cartes reçues, les révèle, et élit la plus convaincante selon lui, sans avoir à argumenter (c'est le boss).</li>
@@ -377,7 +377,7 @@
           <li><b>Égalité au sommet du vote.</b> Deux positions à égalité de voix : c'est la scission, la carte est perdue. À 3 joueur·euses (deux votant·es, donc), pas de scission possible, c'est un couple : la position la plus radicale l'emporte. À radicalité parfaitement égale, la gauche l'emporte. Évidemment.</li>
           <li><b>Deux événements d'affilée.</b> Les effets se cumulent. S'ils se contredisent, le dernier retourné l'emporte.</li>
           <li><b>Un événement sort alors qu'il ne reste plus de carte item.</b> Il est ignoré : l'actualité continue sans vous.</li>
-          <li><b>Le guide suprême ne connaît aucun des deux items.</b> Il défausse la carte et en repioche une autre. S'il en connaît un des deux, il joue celui-là : on ne choisit pas toujours ses combats.</li>
+          <li><b>Lea camarade désigné·e ne connaît aucun des deux items.</b> Iel défausse la carte et en repioche une autre. Si iel en connaît un des deux, iel joue celui-là : on ne choisit pas toujours ses combats.</li>
           <li><b>Coalition de gouvernement à 3 joueurs.</b> Les deux cartes rapportent, mais le boss n'adoube qu'un seul successeur (sinon le troisième jouerait seul la manche suivante et gagnerait d'office).</li>
           <li><b>L'AG des actionnaires à 3 joueurs.</b> Deux votants, dont le gagnant désigné : la majorité ne se forme jamais. C'est triste, mais c'est la démocratie actionnariale.</li>
           <li><b>La pioche du mode de droite est épuisée.</b> Remélangez la défausse.</li>
@@ -389,7 +389,7 @@
 </main>
 
 <nav>
-  <button data-v="roulette" class="on">Roulette</button>
+  <button data-v="roulette" class="on">Boussole</button>
   <button data-v="gauche">Gauche</button>
   <button data-v="droite">Droite</button>
   <button data-v="regles">Règles</button>
@@ -400,15 +400,15 @@ const CARDS = [{"r": "Espadrilles", "v": "Mocassins à gland"}, {"r": "Dragon Ba
 
 const EVENTS = [
   { n: "Minute de silence", cl: "Personne ne peut parler avant le vote.", cp: "La manche entière se joue en silence ; le premier qui parle défausse une carte de sa pile de victoires (s'il en a)." },
-  { n: "Les fascistes sont les vrais antifascistes", cl: "Gauche et droite sont inversées ce tour : le guide place l'item à l'opposé de ce qu'il pense, au cran équivalent (100 % gauche devient 100 % droite). Vous, votez là où il a posé, pas là où il pense. Bon courage.", cp: "Jouez la carte qui incarne le mieux le bord opposé à celui tiré.", pp: ["cl"] },
+  { n: "Les fascistes sont les vrais antifascistes", cl: "Gauche et droite sont inversées ce tour : lea camarade place l'item à l'opposé de ce qu'iel pense, au cran équivalent (100 % gauche devient 100 % droite). Vous, votez là où iel a posé, pas là où iel pense. Bon courage.", cp: "Jouez la carte qui incarne le mieux le bord opposé à celui tiré.", pp: ["cl"] },
   { n: "Coalition de gouvernement", cl: "On gagne jusqu'à 2 crans d'écart, mais uniquement dans le même camp.", cp: "Le boss élit deux cartes gagnantes. Leurs propriétaires deviennent co-boss et devront rendre un verdict commun. Sans accord, la coalition éclate : personne ne gagne la manche, le rôle passe au suivant." },
   { n: "Pensée unique", cl: "Aucun écart accepté ce tour-ci : la case exacte ou rien.", cp: "Pas de délibération : la première carte posée sur la table gagne la manche." },
-  { n: "Consensus", cl: "Si une seule roulette se trompe de camp, le tour est perdu, majorité ou pas.", cp: "Oubliez le bord tiré : jouez la carte la plus désespérément consensuelle de votre main. Le boss élit la plus tiède." },
+  { n: "Consensus", cl: "Si une seule boussole se trompe de camp, le tour est perdu, majorité ou pas.", cp: "Oubliez le bord tiré : jouez la carte la plus désespérément consensuelle de votre main. Le boss élit la plus tiède." },
   { n: "Nationalisation", cl: "Si la carte est gagnée, posez-la de travers : elle compte double au décompte final.", cp: "La carte élue est nationalisée : personne ne l'empoche, elle est défaussée. Son propriétaire devient quand même boss. Le pouvoir, pas l'argent." },
   { n: "Privatisation", cl: "Si ce tour est perdu, retirez aussi une carte de la pile des victoires (s'il y en a).", cp: "Le gagnant prend sa carte et en vole une gagnée à l'adversaire de son choix (qui en a)." },
-  { n: "Dissolution", cl: "On dissout, on revote : le tour se joue normalement, puis le guide passe au suivant, qui replace LE MÊME item selon lui, et on revote. Les deux votes réussis : carte gagnée. Un seul raté : perdue. La rotation reprend ensuite.", cp: "Tout le monde défausse sa main et repioche 5 cartes." },
-  { n: "Tirage au sort", cl: "Pas de débat ce tour. Chacun·e vote en silence et pose sa roulette face cachée. Le guide en pioche une au hasard : elle vote pour tout le monde. Si elle est à 1 cran maximum de son choix, carte gagnée.", cp: "Le boss ne choisit pas : la carte gagnante est tirée au sort parmi celles jouées." },
-  { n: "Référendum", cl: "Avant de voter, la table pose UNE question au guide. Il ne peut répondre que par oui ou par non.", cp: "Les joueurs hors boss élisent la carte gagnante à la majorité ; le boss regarde. En cas d'égalité, le boss départage." },
+  { n: "Dissolution", cl: "On dissout, on revote : le tour se joue normalement, puis le rôle de camarade passe à la personne suivante, qui replace LE MÊME item selon elle, et on revote. Les deux votes réussis : carte gagnée. Un seul raté : perdue. La rotation reprend ensuite.", cp: "Tout le monde défausse sa main et repioche 5 cartes." },
+  { n: "Tirage au sort", cl: "Pas de débat ce tour. Chacun·e vote en silence et pose sa boussole face cachée. Lea camarade en pioche une au hasard : elle vote pour tout le monde. Si elle est à 1 cran maximum de son choix, carte gagnée.", cp: "Le boss ne choisit pas : la carte gagnante est tirée au sort parmi celles jouées." },
+  { n: "Référendum", cl: "Avant de voter, la table pose UNE question à lea camarade. Iel ne peut répondre que par oui ou par non.", cp: "Les joueurs hors boss élisent la carte gagnante à la majorité ; le boss regarde. En cas d'égalité, le boss départage." },
   { n: "49.3", cl: "Le tour est adopté sans vote : la carte est gagnée d'office, passez à la suivante.", cp: "Le verdict du boss est irrévocable : aucun renversement possible cette manche." },
 ];
 
@@ -469,7 +469,7 @@ $("liste-evts").innerHTML = EVENTS.map(e => {
   return `<li><b>${e.n}.</b> <span class="cl">Collaboratif${pcl} :</span> ${e.cl} <span class="cp">Compétitif${pcp} :</span> ${e.cp}</li>`;
 }).join("");
 
-/* ---------- roulette (vote secret, mode de gauche) ---------- */
+/* ---------- boussole (vote secret, mode de gauche) ---------- */
 let choix = null;
 (function buildDial() {
   const cx = 160, cy = 165, r = 150;
@@ -559,7 +559,7 @@ function clRender() {
     zone.innerHTML = `
       <div class="carte"><div class="face-tag">item A</div><div class="item">${cur.c.r}</div></div>
       ${cur.c.v ? `<div class="carte"><div class="face-tag">item B</div><div class="item">${cur.c.v}</div></div>` : ""}
-      <p class="hint">Le guide choisit un item, le lit, place sa roulette et se tait. Débattez, votez, retournez tout en même temps.</p>`;
+      <p class="hint">Lea camarade choisit un item, le lit, place sa boussole et se tait. Débattez, votez, retournez tout en même temps.</p>`;
     $("cl-boutons").style.display = "block";
   }
 }

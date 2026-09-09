@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Gaucheoudroite · Comptes de coédition</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@500;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root { --marine:#1F2048; --rouge:#CF415D; --rose:#F083A0; --bleu:#77ADDB; --fond:#F4F4F7; --carte:#fff; --trait:#E3E4EC; --texte:#1F2048; --texte2:#5B5E7B; --texte3:#8B8EA5; --ok:#1E8E5A; --attention:#A86A12; --s1:#CF415D; --s2:#3D5AC9; --s3:#5AA9D6; --s4:#F083A0; --ft:'Epilogue',system-ui,sans-serif; --fx:'Inter',system-ui,sans-serif; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { color-scheme:light; }
+body { font-family:var(--fx); font-size:15px; line-height:1.5; color:var(--texte); background:var(--fond); -webkit-font-smoothing:antialiased; }
+a { color:inherit; }
+button, input, select, textarea { font:inherit; color:inherit; }
+h1, h2, h3 { font-family:var(--ft); letter-spacing:-.02em; line-height:1.1; }
+h1 { font-weight:800; font-size:1.45rem; }
+h2 { font-weight:800; font-size:1.25rem; margin-bottom:14px; }
+h3 { font-weight:700; font-size:1rem; margin-bottom:8px; }
+.entete { background:var(--marine); color:#fff; padding:14px 20px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.entete h1 span { color:var(--rose); }
+.entete .sous { font-size:.82rem; opacity:.8; }
+.entete .droite { margin-left:auto; display:flex; align-items:center; gap:10px; font-size:.85rem; flex-wrap:wrap; }
+.entete .pastille { background:rgba(255,255,255,.14); border-radius:999px; padding:4px 10px; }
+.entete button { background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:.82rem; }
+.onglets { background:var(--marine); display:flex; gap:2px; padding:0 12px; overflow-x:auto; scrollbar-width:none; }
+.onglets::-webkit-scrollbar { display:none; }
+.onglets button { background:transparent; border:0; color:rgba(255,255,255,.72); font-family:var(--ft); font-weight:700; font-size:.9rem; padding:12px 14px; cursor:pointer; white-space:nowrap; border-bottom:3px solid transparent; }
+.onglets button.on { color:#fff; border-bottom-color:var(--rouge); }
+main { max-width:1180px; margin:0 auto; padding:22px 16px 60px; }
+.vue { display:none; }
+.vue.on { display:block; }
+.grille { display:grid; gap:14px; }
+.g4 { grid-template-columns:repeat(4, minmax(0,1fr)); }
+.g3 { grid-template-columns:repeat(3, minmax(0,1fr)); }
+.g2 { grid-template-columns:repeat(2, minmax(0,1fr)); }
+.carte { background:var(--carte); border:1px solid var(--trait); border-radius:10px; padding:16px 18px; }
+.kpi .lab { font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; color:var(--texte3); font-weight:600; }
+.kpi .val { font-family:var(--ft); font-weight:800; font-size:1.6rem; letter-spacing:-.03em; margin-top:4px; }
+.kpi .val.neg { color:var(--rouge); }
+.kpi .sous { font-size:.8rem; color:var(--texte2); margin-top:2px; }
+.kpi.accent { background:var(--marine); color:#fff; border-color:var(--marine); }
+.kpi.accent .lab, .kpi.accent .sous { color:rgba(255,255,255,.75); }
+.kpi.accent .val.neg { color:var(--rose); }
+.note { font-size:.82rem; color:var(--texte2); }
+.note b { color:var(--texte); }
+.badge { display:inline-block; font-size:.7rem; font-weight:600; padding:2px 7px; border-radius:999px; background:#EEF0F6; color:var(--texte2); vertical-align:middle; }
+.badge.est { background:#FFF3DA; color:var(--attention); }
+.badge.reel { background:#E2F5EA; color:var(--ok); }
+.badge.bd { background:#FDE7EC; color:var(--rouge); }
+.badge.enl { background:#E6ECFB; color:#2F49B8; }
+.badge.propose { background:#FFF3DA; color:var(--attention); }
+.badge.valide { background:#E2F5EA; color:var(--ok); }
+.defile { overflow-x:auto; }
+table { border-collapse:collapse; width:100%; font-size:.86rem; }
+th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--trait); vertical-align:top; white-space:nowrap; }
+th { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--texte3); font-weight:600; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+td.w { white-space:normal; min-width:200px; }
+tr.clic { cursor:pointer; }
+tr.clic:hover td { background:#FAFAFD; }
+tfoot td { font-weight:600; border-top:2px solid var(--marine); }
+.btn { display:inline-block; background:var(--marine); color:#fff; border:0; border-radius:6px; padding:9px 14px; font-weight:600; font-size:.88rem; cursor:pointer; text-decoration:none; }
+.btn.rouge { background:var(--rouge); }
+.btn.clair { background:#EEF0F6; color:var(--texte); }
+.btn.petit { padding:5px 9px; font-size:.78rem; }
+.btn:disabled { opacity:.5; cursor:default; }
+.formulaire { display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); align-items:end; }
+.formulaire label { display:grid; gap:4px; font-size:.75rem; color:var(--texte2); font-weight:600; }
+.formulaire input, .formulaire select, .formulaire textarea, .champ { border:1px solid #C9CBD8; border-radius:6px; padding:8px 10px; background:#fff; width:100%; font-size:.9rem; }
+.formulaire .large { grid-column:1 / -1; }
+.ligne { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.espace { margin-top:16px; }
+.detail { position:fixed; inset:0; background:rgba(31,32,72,.45); display:none; align-items:flex-start; justify-content:flex-end; z-index:50; }
+.detail.on { display:flex; }
+.detail .panneau { background:#fff; width:min(560px, 100%); height:100%; overflow:auto; padding:22px; }
+.detail .fermer { float:right; background:#EEF0F6; border:0; border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:20px; }
+.etapes { list-style:none; }
+.etapes li { display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px dashed var(--trait); font-size:.88rem; }
+.etapes li span:last-child { font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:600; }
+.etapes li.total { border-bottom:0; border-top:2px solid var(--marine); font-weight:700; }
+.etapes li em { display:block; font-style:normal; font-size:.75rem; color:var(--texte3); font-weight:400; }
+.graph { width:100%; height:auto; display:block; overflow:visible; }
+.graph text { font-family:var(--fx); fill:var(--texte2); font-size:12px; }
+.graph .axe { stroke:var(--trait); }
+.graph .lib { fill:var(--texte); font-weight:600; }
+.graph rect.barre { cursor:pointer; }
+.infobulle { position:fixed; pointer-events:none; background:var(--marine); color:#fff; font-size:.78rem; padding:6px 9px; border-radius:6px; display:none; z-index:60; max-width:260px; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+.legende { display:flex; gap:14px; flex-wrap:wrap; font-size:.8rem; color:var(--texte2); margin-top:6px; }
+.legende i { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:-1px; }
+.alerte { background:#FFF3DA; border:1px solid #F0D9A6; color:#6B4B0B; border-radius:8px; padding:10px 14px; font-size:.86rem; }
+.alerte.rouge { background:#FDE7EC; border-color:#F3B6C3; color:#7A1E33; }
+.alerte.ok { background:#E2F5EA; border-color:#B7E3C8; color:#155C3A; }
+.curseur { display:grid; gap:4px; }
+.curseur .val { font-family:var(--ft); font-weight:800; font-size:1.1rem; }
+.curseur input[type=range] { width:100%; accent-color:var(--rouge); }
+pre.releve { white-space:pre-wrap; font-family:var(--fx); font-size:.88rem; line-height:1.55; background:#FAFAFD; border:1px solid var(--trait); border-radius:8px; padding:16px; }
+.voile { position:fixed; inset:0; background:var(--marine); color:#fff; display:none; align-items:center; justify-content:center; z-index:100; padding:20px; }
+.voile.on { display:flex; }
+.voile .boite { background:#fff; color:var(--texte); border-radius:12px; padding:26px; width:min(440px, 100%); }
+.voile .boite h2 { margin-bottom:6px; }
+.voile .boite p { font-size:.88rem; color:var(--texte2); margin-bottom:14px; }
+.voile .boite input, .voile .boite select { width:100%; border:1px solid #C9CBD8; border-radius:6px; padding:10px 12px; margin-bottom:10px; }
+.voile .boite label.case { display:flex; gap:8px; align-items:center; font-size:.85rem; margin-bottom:14px; }
+.voile .boite label.case input { width:auto; margin:0; }
+.erreur { color:var(--rouge); font-size:.85rem; min-height:1.2em; margin-bottom:8px; }
+.journal li { padding:8px 0; border-bottom:1px solid var(--trait); font-size:.86rem; }
+.journal li time { color:var(--texte3); font-size:.78rem; display:block; }
+.pied { text-align:center; font-size:.78rem; color:var(--texte3); margin-top:40px; }
+.mois { border-top:1px solid var(--trait); padding-top:14px; margin-top:14px; }
+@media (max-width:900px) { .g4 { grid-template-columns:repeat(2, minmax(0,1fr)); } .g3, .g2 { grid-template-columns:1fr; } main { padding:16px 12px 60px; } .kpi .val { font-size:1.3rem; } .entete { padding:12px 14px; } .entete .droite { width:100%; } }
+</style>
+</head>
+<body>
+<header class="entete">
+  <div><h1>Gaucheoudroite <span>· comptes de coédition</span></h1><div class="sous">Enlysée × Bandes Détournées · contrat V2 du 2 septembre 2026 · ventes Shopify lues toutes les heures</div></div>
+  <div class="droite"><span class="pastille" id="maj">chargement…</span><span class="pastille" id="qui">…</span><button type="button" id="btn-recharger">Recharger</button><button type="button" id="btn-identite">Changer d'identité</button></div>
+</header>
+<nav class="onglets" id="onglets">
+  <button data-vue="bord" class="on">Tableau de bord</button>
+  <button data-vue="commandes">Commandes</button>
+  <button data-vue="frais">Frais</button>
+  <button data-vue="reel">Réel mensuel</button>
+  <button data-vue="simulation">Simulation</button>
+  <button data-vue="releve">Relevé et versements</button>
+  <button data-vue="parametres">Paramètres</button>
+  <button data-vue="journal">Journal</button>
+</nav>
+<main>
+  <section class="vue on" id="vue-bord"></section>
+  <section class="vue" id="vue-commandes"></section>
+  <section class="vue" id="vue-frais"></section>
+  <section class="vue" id="vue-reel"></section>
+  <section class="vue" id="vue-simulation"></section>
+  <section class="vue" id="vue-releve"></section>
+  <section class="vue" id="vue-parametres"></section>
+  <section class="vue" id="vue-journal"></section>
+  <p class="pied">Calculs selon l'annexe 1 du contrat de coédition. Les montants marqués « estimé » attendent une facture ou un relevé. Aucune donnée personnelle de client n'est stockée.</p>
+</main>
+<div class="detail" id="detail"><div class="panneau" id="detail-corps"></div></div>
+<div class="infobulle" id="infobulle"></div>
+<div class="voile" id="voile"><div class="boite" id="voile-corps"></div></div>
+
+<script>
+(function () {
+'use strict';
+// ---------- constantes et état ----------
+const DEPOT = { owner: 'Amrk01', repo: 'gaucheoudroite-compta', branche: 'main' };
+const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const D = { P: null, ventes: [], frais: [], reel: [], versements: [], journal: [], shas: {} };
+let identite = null, jeton = null, R = null, vueCourante = 'bord', filtreCommandes = 'jeu';
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const r2 = x => Math.round((x + Number.EPSILON) * 100) / 100;
+const eur = x => (x == null || isNaN(x)) ? '–' : x.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+const eurS = x => (x < 0 ? '- ' : '') + eur(Math.abs(x));
+const nb = x => (x == null) ? '–' : Number(x).toLocaleString('fr-FR');
+const pct = x => (x == null || !isFinite(x)) ? '–' : (x * 100).toLocaleString('fr-FR', { maximumFractionDigits: 1 }) + ' %';
+const dateFr = s => s ? new Date(s).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '–';
+const heureFr = s => s ? new Date(s).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+const moisFr = m => { const [a, mo] = m.split('-'); return new Date(a, mo - 1, 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }); };
+const echap = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const maintenant = () => new Date().toISOString();
+const jourLocal = s => new Date(s).toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+const moisLocal = s => jourLocal(s).slice(0, 7);
+const idNouveau = p => p + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
+
+// ---------- stockage : local (fichiers) ou GitHub (dépôt privé) ----------
+const b64utf8 = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const utf8b64 = b => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\s/g, '')), c => c.charCodeAt(0)));
+const enteteGH = () => ({ Authorization: 'Bearer ' + jeton, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' });
+const urlGH = chemin => `https://api.github.com/repos/${DEPOT.owner}/${DEPOT.repo}/contents/data/${chemin}`;
+async function lire(chemin) {
+  if (LOCAL) { const r = await fetch('/data/' + chemin + '?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error('lecture ' + chemin + ' : ' + r.status); return r.json(); }
+  const r = await fetch(urlGH(chemin) + '?ref=' + DEPOT.branche, { headers: { ...enteteGH(), Accept: 'application/vnd.github.raw+json' }, cache: 'no-store' });
+  if (!r.ok) throw new Error('lecture ' + chemin + ' : ' + r.status);
+  return r.json();
+}
+async function lister(dossier) {
+  if (LOCAL) { const r = await fetch('/data/' + dossier + '/?t=' + Date.now()); return (await r.json()).map(x => x.name); }
+  const r = await fetch(urlGH(dossier) + '?ref=' + DEPOT.branche, { headers: enteteGH(), cache: 'no-store' });
+  if (!r.ok) throw new Error('listage ' + dossier + ' : ' + r.status);
+  return (await r.json()).map(x => x.name);
+}
+async function ecrire(chemin, objet, message) {
+  const contenu = JSON.stringify(objet, null, 1);
+  if (LOCAL) { const r = await fetch('/data/' + chemin, { method: 'PUT', body: contenu }); if (!r.ok) throw new Error('écriture locale : ' + r.status); return; }
+  const meta = await fetch(urlGH(chemin) + '?ref=' + DEPOT.branche, { headers: enteteGH(), cache: 'no-store' });
+  const sha = meta.ok ? (await meta.json()).sha : undefined;
+  const r = await fetch(urlGH(chemin), { method: 'PUT', headers: enteteGH(), body: JSON.stringify({ message, content: b64utf8(contenu), sha, branch: DEPOT.branche, committer: { name: (identite ? identite.nom + ' (' + identite.partie + ')' : 'compta') + ' via l\'application', email: 'compta@gaucheoudroite.invalid' } }) });
+  if (r.status === 409 || r.status === 422) throw new Error('Quelqu\'un a modifié ce fichier en même temps. Rechargez puis recommencez.');
+  if (!r.ok) throw new Error('écriture ' + chemin + ' : ' + r.status);
+}
+async function journaliser(quoi) {
+  D.journal.unshift({ quand: maintenant(), qui: identite ? identite.nom + ' (' + identite.partie + ')' : '?', quoi });
+  if (D.journal.length > 500) D.journal.length = 500;
+  try { await ecrire('journal.json', D.journal, 'Journal : ' + quoi.slice(0, 60)); } catch (e) { console.warn(e); }
+}
+async function chargerTout() {
+  $('#maj').textContent = 'chargement…';
+  const [P, frais, reel, versements, journal, mois] = await Promise.all([lire('parametres.json'), lire('frais.json'), lire('reel-mensuel.json'), lire('versements.json'), lire('journal.json'), lister('ventes')]);
+  const fichiers = mois.filter(n => /^\d{4}-\d{2}\.json$/.test(n)).sort();
+  const ventes = (await Promise.all(fichiers.map(f => lire('ventes/' + f)))).flat();
+  Object.assign(D, { P, frais, reel, versements, journal, ventes });
+  const derniere = ventes.reduce((m, c) => c.date > m ? c.date : m, '');
+  $('#maj').textContent = 'dernière commande lue : ' + heureFr(derniere);
+  rendre();
+}
+
+// ---------- déchiffrement du jeton GitHub (phrase de passe partagée) ----------
+async function dechiffrer(blob, phrase) {
+  const enc = new TextEncoder();
+  const cle = await crypto.subtle.importKey('raw', enc.encode(phrase), 'PBKDF2', false, ['deriveKey']);
+  const aes = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: Uint8Array.from(atob(blob.sel), c => c.charCodeAt(0)), iterations: blob.iterations || 600000, hash: 'SHA-256' }, cle, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  const clair = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: Uint8Array.from(atob(blob.iv), c => c.charCodeAt(0)) }, aes, Uint8Array.from(atob(blob.donnees), c => c.charCodeAt(0)));
+  return new TextDecoder().decode(clair).trim();
+}
+async function demanderPhrase(erreur) {
+  return new Promise(resolve => {
+    $('#voile-corps').innerHTML = `<h2>Comptes Gaucheoudroite</h2><p>Entrez la phrase de passe partagée entre l'Enlysée et Bandes Détournées.</p><div class="erreur">${echap(erreur || '')}</div><input type="password" id="phrase" placeholder="phrase de passe" autocomplete="current-password"><label class="case"><input type="checkbox" id="souvenir" checked> Se souvenir sur cet appareil</label><button class="btn rouge" id="ok-phrase">Ouvrir</button>`;
+    $('#voile').classList.add('on'); $('#phrase').focus();
+    const go = () => { const v = $('#phrase').value; const s = $('#souvenir').checked; $('#voile').classList.remove('on'); resolve({ phrase: v, souvenir: s }); };
+    $('#ok-phrase').onclick = go; $('#phrase').onkeydown = e => { if (e.key === 'Enter') go(); };
+  });
+}
+async function ouvrirDepot() {
+  if (LOCAL) return;
+  let blob;
+  try { blob = await (await fetch('jeton.json', { cache: 'no-store' })).json(); } catch (e) { $('#voile-corps').innerHTML = '<h2>Jeton absent</h2><p>Le fichier jeton.json n\'est pas encore déployé à côté de l\'application. Voir le LISEZMOI.</p>'; $('#voile').classList.add('on'); throw e; }
+  let phrase = null; try { phrase = localStorage.getItem('godlj-compta-phrase'); } catch (e) {}
+  let erreur = '';
+  for (;;) {
+    if (!phrase) { const r = await demanderPhrase(erreur); phrase = r.phrase; if (r.souvenir) { try { localStorage.setItem('godlj-compta-phrase', phrase); } catch (e) {} } }
+    try {
+      jeton = await dechiffrer(blob, phrase);
+      const test = await fetch(`https://api.github.com/repos/${DEPOT.owner}/${DEPOT.repo}`, { headers: enteteGH() });
+      if (!test.ok) throw new Error('accès refusé (' + test.status + ')');
+      return;
+    } catch (e) { jeton = null; phrase = null; try { localStorage.removeItem('godlj-compta-phrase'); } catch (x) {} erreur = 'Phrase incorrecte ou jeton révoqué. ' + (e.message || ''); }
+  }
+}
+function demanderIdentite() {
+  return new Promise(resolve => {
+    const pers = (D.P && D.P.personnes) || [{ nom: 'Théophile', partie: 'Enlysée' }, { nom: 'Yann', partie: 'BD' }];
+    $('#voile-corps').innerHTML = `<h2>Qui êtes-vous ?</h2><p>Votre nom est inscrit dans le journal à chaque saisie ou validation.</p><select id="id-select">${pers.map(p => `<option value="${echap(p.nom)}|${echap(p.partie)}">${echap(p.nom)} (${echap(p.partie)})</option>`).join('')}<option value="autre">Autre personne…</option></select><input id="id-nom" placeholder="Prénom" style="display:none"><select id="id-partie" style="display:none"><option>Enlysée</option><option>BD</option></select><button class="btn rouge" id="ok-id">Continuer</button>`;
+    $('#voile').classList.add('on');
+    $('#id-select').onchange = () => { const autre = $('#id-select').value === 'autre'; $('#id-nom').style.display = autre ? '' : 'none'; $('#id-partie').style.display = autre ? '' : 'none'; };
+    $('#ok-id').onclick = () => {
+      let nom, partie;
+      if ($('#id-select').value === 'autre') { nom = $('#id-nom').value.trim(); partie = $('#id-partie').value; if (!nom) return; } else { [nom, partie] = $('#id-select').value.split('|'); }
+      identite = { nom, partie }; try { localStorage.setItem('godlj-compta-identite', JSON.stringify(identite)); } catch (e) {}
+      $('#voile').classList.remove('on'); $('#qui').textContent = nom + ' · ' + partie; resolve();
+    };
+  });
+}
+
+// ---------- moteur de calcul : annexe 1 du contrat ----------
+function interpoler(points, x) {
+  const p = points.slice().sort((a, b) => a[0] - b[0]);
+  if (x <= p[0][0]) return p[0][1];
+  for (let i = 1; i < p.length; i++) if (x <= p[i][0]) { const [x0, y0] = p[i - 1], [x1, y1] = p[i]; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); }
+  return p[p.length - 1][1];
+}
+const groupePort = mode => /chronopost/i.test(mode || '') ? 'Chronopost' : 'La Poste';
+function poidsCommande(c) { return r2(c.lignes.reduce((s, l) => s + (l.poids || 0) * l.qte, 0) + (D.P.port.poids_emballage || 0)); }
+function estimerPort(c) {
+  if (!c.port.mode) return 0;
+  const g = D.P.port.grille[c.port.mode]; const poids = poidsCommande(c);
+  if (!g) return D.P.port.defaut;
+  for (const [max, cout] of g) if (poids <= max) return cout;
+  return g[g.length - 1][1];
+}
+function estimerPaiement(c) {
+  const cfg = D.P.paiement.passerelles[c.paiement.passerelle] || D.P.paiement.defaut;
+  const reel = c.paiement.frais_reel;
+  return { frais: reel != null ? reel : r2(c.ttc * cfg.taux + cfg.fixe), estime: reel == null, commission: c.paiement.passerelle === 'shopify_payments' ? 0 : r2(c.ttc * D.P.paiement.commission_shopify_tiers), libelle: cfg.libelle };
+}
+function coefficientsMois() {
+  // recalage des estimations d'un mois sur les factures réelles saisies (toute la boutique, pas seulement le jeu)
+  const out = {};
+  for (const r of D.reel) {
+    const cmds = D.ventes.filter(c => moisLocal(c.date) === r.mois && !c.annulee && !c.test);
+    const k = { port: {}, paiement: {}, commission: null };
+    for (const [groupe, v] of Object.entries(r.port || {})) { if (!(v && v.ht > 0)) continue; const est = cmds.filter(c => groupePort(c.port.mode) === groupe && c.port.mode).reduce((s, c) => s + estimerPort(c), 0); if (est > 0) k.port[groupe] = v.ht / est; }
+    for (const [pass, v] of Object.entries(r.paiement || {})) { if (!(v && v.ht > 0)) continue; const est = cmds.filter(c => c.paiement.passerelle === pass).reduce((s, c) => s + estimerPaiement(c).frais, 0); if (est > 0) k.paiement[pass] = v.ht / est; }
+    if (r.commission && r.commission.ht > 0) { const est = cmds.reduce((s, c) => s + estimerPaiement(c).commission, 0); if (est > 0) k.commission = r.commission.ht / est; }
+    out[r.mois] = k;
+  }
+  return out;
+}
+function calculerCommande(c, K) {
+  const cat = D.P.catalogue;
+  const lignes = c.lignes.map(l => ({ ...l, jeu: !!(l.produit && cat[l.produit]) }));
+  let htTotal = r2(lignes.reduce((s, l) => s + l.ht, 0));
+  let htJeu = r2(lignes.filter(l => l.jeu).reduce((s, l) => s + l.ht, 0));
+  let tvaJeu = r2(lignes.filter(l => l.jeu).reduce((s, l) => s + l.tva, 0));
+  // remboursements : on retire les lignes remboursées
+  let rembJeu = 0, rembTotal = 0;
+  for (const r of c.remboursements || []) for (const l of r.lignes || []) { rembTotal += l.ht; if (l.produit && cat[l.produit]) rembJeu += l.ht; }
+  htTotal = r2(htTotal - rembTotal); htJeu = r2(htJeu - rembJeu);
+  const remboursee = c.rembourse_ttc > 0 && c.rembourse_ttc >= c.ttc - 0.01;
+  const partJeu = htTotal > 0 ? htJeu / htTotal : 0;
+  const mixte = lignes.some(l => !l.jeu);
+  const mois = moisLocal(c.date), k = K[mois] || { port: {}, paiement: {}, commission: null };
+  const portEst = estimerPort(c), grp = groupePort(c.port.mode);
+  const portCoef = k.port[grp]; const portRetenu = r2(portCoef ? portEst * portCoef : portEst);
+  const pai = estimerPaiement(c);
+  const paiCoef = pai.estime ? k.paiement[c.paiement.passerelle] : null;
+  const fraisRetenu = r2(paiCoef ? pai.frais * paiCoef : pai.frais);
+  const commissionRetenue = r2(k.commission ? pai.commission * k.commission : pai.commission);
+  const manutention = D.P.contrat.manutention_par_commande_ht;
+  const recetteJeu = r2(htJeu + partJeu * c.port.ht);
+  const chargesCommande = r2(portRetenu + manutention + fraisRetenu + commissionRetenue);
+  const chargesJeu = r2(chargesCommande * partJeu);
+  const compte = lignes.filter(l => l.jeu).reduce((a, l) => { const k2 = cat[l.produit]; a.boites += k2.boites * l.qte; a.extensions += k2.extensions * l.qte; a.stickers += k2.stickers * l.qte; a.packs[k2.court] = (a.packs[k2.court] || 0) + l.qte; return a; }, { boites: 0, extensions: 0, stickers: 0, packs: {} });
+  return {
+    c, lignes, mois, htTotal, htJeu, tvaJeu, partJeu, mixte, remboursee, rembJeu, rembTotal,
+    portFactureJeu: r2(partJeu * c.port.ht), recetteJeu,
+    port: { estime: portEst, retenu: portRetenu, recale: !!portCoef, groupe: grp, poids: poidsCommande(c) },
+    paiement: { ...pai, retenu: fraisRetenu, recale: !!paiCoef, commissionRetenue, commissionRecalee: !!k.commission },
+    manutention, chargesCommande, chargesJeu, margeJeu: r2(recetteJeu - chargesJeu), ...compte,
+    encaisseJeuTTC: r2(lignes.filter(l => l.jeu).reduce((s, l) => s + l.ttc, 0) + partJeu * c.port.ttc),
+  };
+}
+function fabricationSimulee(P, tirage) {
+  const f = P.fabrication; const t = tirage || f.tirage;
+  const unitaire = interpoler(f.devis_jeu, t);
+  const jeu = r2(t * unitaire), ext = r2(f.extensions.nb * f.extensions.tirage_par_extension * f.extensions.cout_unitaire), st = r2(f.stickers.tirage * f.stickers.cout_unitaire);
+  return { tirage: t, unitaire: r2(unitaire), jeu, extensions: ext, stickers: st, transport: f.transport_amont, total: r2(jeu + ext + st + f.transport_amont) };
+}
+function fraisValides(cat) { return D.frais.filter(f => f.statut === 'valide' && f.partage === '50/50' && (!cat || (Array.isArray(cat) ? cat.includes(f.categorie) : f.categorie === cat))).reduce((s, f) => s + (f.ht || 0), 0); }
+function calculer(options) {
+  const o = Object.assign({ tirage: D.P.fabrication.tirage, budgetPub: D.P.contrat.budget_pub_campagne_ht, utiliserReel: D.P.fabrication.utiliser_reel_si_disponible }, options || {});
+  const K = coefficientsMois();
+  const debut = D.P.contrat.debut_campagne;
+  const toutes = D.ventes.filter(c => !c.test).map(c => calculerCommande(c, K));
+  const campagne = toutes.filter(x => jourLocal(x.c.date) >= debut && x.boites + x.extensions > 0 && !x.c.annulee && !x.remboursee);
+  const S = campagne.reduce((a, x) => { a.n++; a.boites += x.boites; a.extensions += x.extensions; a.stickers += x.stickers; a.htJeu += x.htJeu; a.tvaJeu += x.tvaJeu; a.portFacture += x.portFactureJeu; a.recettes += x.recetteJeu; a.port += x.port.retenu * x.partJeu; a.manutention += x.manutention * x.partJeu; a.paiement += (x.paiement.retenu + x.paiement.commissionRetenue) * x.partJeu; a.charges += x.chargesJeu; a.marge += x.margeJeu; a.encaisseTTC += x.encaisseJeuTTC; a.mixtes += x.mixte ? 1 : 0; a.estimes += (x.paiement.estime && !x.paiement.recale) || !x.port.recale ? 1 : 0; for (const [p, q] of Object.entries(x.packs)) a.packs[p] = (a.packs[p] || 0) + q; return a; }, { n: 0, boites: 0, extensions: 0, stickers: 0, htJeu: 0, tvaJeu: 0, portFacture: 0, recettes: 0, port: 0, manutention: 0, paiement: 0, charges: 0, marge: 0, encaisseTTC: 0, mixtes: 0, estimes: 0, packs: {} });
+  for (const k of Object.keys(S)) if (typeof S[k] === 'number') S[k] = r2(S[k]);
+  const sim = fabricationSimulee(D.P, o.tirage);
+  // substitution composant par composant : la facture de l'imprimeur remplace le jeu, les extensions et les stickers simulés ; celle du transport remplace le transport simulé
+  const fabReelImpression = r2(fraisValides('fabrication')), fabReelTransport = r2(fraisValides('transport_amont'));
+  const impression = (o.utiliserReel && fabReelImpression > 0) ? fabReelImpression : r2(sim.jeu + sim.extensions + sim.stickers);
+  const transport = (o.utiliserReel && fabReelTransport > 0) ? fabReelTransport : sim.transport;
+  const fabReel = r2(fabReelImpression + fabReelTransport);
+  const fabrication = r2(impression + transport);
+  const fabricationEstReelle = o.utiliserReel && fabReelImpression > 0 && fabReelTransport > 0;
+  const fabricationPartiellementReelle = o.utiliserReel && (fabReelImpression > 0 || fabReelTransport > 0) && !fabricationEstReelle;
+  const pubDepensee = r2(fraisValides('publicite'));
+  const pub = r2(Math.min(pubDepensee, o.budgetPub || 0));
+  const marque = r2(fraisValides('marque'));
+  const autres = r2(fraisValides(['autre', 'port']));
+  const beneficeNet = r2(S.marge - fabrication - pub - marque - autres);
+  const partBD = r2(beneficeNet * D.P.contrat.partage_bd), partEnlysee = r2(beneficeNet - partBD);
+  const avancesBD = r2(D.frais.filter(f => f.statut === 'valide' && f.partage === '50/50' && f.payeur === 'BD').reduce((s, f) => s + f.ht, 0));
+  const avancesEnlysee = r2(D.frais.filter(f => f.statut === 'valide' && f.partage === '50/50' && f.payeur === 'Enlysée').reduce((s, f) => s + f.ht, 0));
+  const versEnlyseeVersBD = r2(D.versements.filter(v => v.de === 'Enlysée').reduce((s, v) => s + v.montant, 0));
+  const versBDVersEnlysee = r2(D.versements.filter(v => v.de === 'BD').reduce((s, v) => s + v.montant, 0));
+  const duABD = r2(partBD + avancesBD - versEnlyseeVersBD + versBDVersEnlysee);
+  const stockRestant = Math.max(0, (o.tirage || 0) - S.boites);
+  return { toutes, campagne, S, sim, fabReel, fabrication, impression, transport, fabricationEstReelle, fabricationPartiellementReelle, impressionReelle: o.utiliserReel && fabReelImpression > 0, transportReel: o.utiliserReel && fabReelTransport > 0, pubDepensee, pub, budgetPub: o.budgetPub || 0, marque, autres, beneficeNet, partBD, partEnlysee, avancesBD, avancesEnlysee, versEnlyseeVersBD, versBDVersEnlysee, duABD, stockRestant, couverture: fabrication > 0 ? S.marge / fabrication : null, options: o };
+}
+
+// ---------- graphiques SVG ----------
+const bulle = $('#infobulle');
+function montrerBulle(e, html) { bulle.innerHTML = html; bulle.style.display = 'block'; const x = Math.min(e.clientX + 12, innerWidth - 280), y = e.clientY + 14; bulle.style.left = x + 'px'; bulle.style.top = y + 'px'; }
+function cacherBulle() { bulle.style.display = 'none'; }
+function svgCascade(etapes) {
+  // etapes : [{lib, val, type:'depart'|'delta'|'total'}]
+  const W = 620, H = 300, m = { g: 8, d: 8, h: 26, b: 56 }; const n = etapes.length; const larg = (W - m.g - m.d) / n; const bw = Math.min(46, larg * .62);
+  let cumul = 0; const boites = [];
+  for (const e of etapes) { if (e.type === 'depart' || e.type === 'total') { boites.push({ ...e, y0: 0, y1: e.val }); cumul = e.val; } else { boites.push({ ...e, y0: cumul, y1: cumul + e.val }); cumul += e.val; } }
+  const vals = boites.flatMap(b => [b.y0, b.y1]); const maxV = Math.max(0, ...vals), minV = Math.min(0, ...vals); const range = (maxV - minV) || 1;
+  const y = v => m.h + (maxV - v) / range * (H - m.h - m.b);
+  let s = `<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Du chiffre d'affaires au bénéfice net">`;
+  s += `<line class="axe" x1="${m.g}" x2="${W - m.d}" y1="${y(0)}" y2="${y(0)}" stroke-width="1"/>`;
+  boites.forEach((b, i) => {
+    const x = m.g + i * larg + (larg - bw) / 2; const top = Math.min(y(b.y0), y(b.y1)), h = Math.max(2, Math.abs(y(b.y0) - y(b.y1)));
+    const coul = b.type === 'delta' ? (b.val < 0 ? 'var(--s1)' : 'var(--ok)') : 'var(--marine)';
+    s += `<rect class="barre" x="${x}" y="${top}" width="${bw}" height="${h}" rx="3" fill="${coul}" data-i="${i}"/>`;
+    const lab = eurS(b.type === 'delta' ? b.val : b.y1);
+    s += `<text x="${x + bw / 2}" y="${(b.type === 'delta' && b.val < 0) || b.y1 < 0 ? top + h + 14 : top - 6}" text-anchor="middle" class="lib" font-size="11">${lab}</text>`;
+    const mots = b.lib.split(' '); let l1 = '', l2 = ''; for (const w of mots) { if ((l1 + ' ' + w).trim().length <= 10 && !l2) l1 = (l1 + ' ' + w).trim(); else l2 = (l2 + ' ' + w).trim(); }
+    s += `<text x="${x + bw / 2}" y="${H - m.b + 18}" text-anchor="middle">${echap(l1)}</text>${l2 ? `<text x="${x + bw / 2}" y="${H - m.b + 32}" text-anchor="middle">${echap(l2)}</text>` : ''}`;
+  });
+  s += '</svg>';
+  return { svg: s, boites };
+}
+function svgBarresJour(jours) {
+  // jours : [{jour:'2026-09-09', boites, commandes, ht}]
+  const W = 620, H = 230, m = { g: 40, d: 10, h: 16, b: 34 }; const n = Math.max(1, jours.length); const larg = (W - m.g - m.d) / n; const bw = Math.max(2, Math.min(28, larg * .7));
+  const maxV = Math.max(1, ...jours.map(j => j.boites)); const y = v => m.h + (maxV - v) / maxV * (H - m.h - m.b);
+  let s = `<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Boîtes vendues par jour">`;
+  [0, .5, 1].forEach(t => { const v = Math.round(maxV * t); s += `<line class="axe" x1="${m.g}" x2="${W - m.d}" y1="${y(v)}" y2="${y(v)}" stroke-width="1"/><text x="${m.g - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`; });
+  jours.forEach((j, i) => { const x = m.g + i * larg + (larg - bw) / 2; s += `<rect class="barre" x="${x}" y="${y(j.boites)}" width="${bw}" height="${Math.max(0, y(0) - y(j.boites))}" rx="3" fill="var(--s2)" data-i="${i}"/>`; if (n <= 14 || i % Math.ceil(n / 14) === 0) s += `<text x="${x + bw / 2}" y="${H - 12}" text-anchor="middle">${j.jour.slice(8, 10)}/${j.jour.slice(5, 7)}</text>`; });
+  s += '</svg>'; return s;
+}
+function svgBarresH(items, couleurs) {
+  const W = 520, lh = 30, H = items.length * lh + 6; const maxV = Math.max(1, ...items.map(i => i.val)); const g = 190;
+  let s = `<svg class="graph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Répartition des packs">`;
+  items.forEach((it, i) => { const y = i * lh + 4, w = (W - g - 90) * it.val / maxV; s += `<text x="${g - 8}" y="${y + 15}" text-anchor="end" class="lib">${echap(it.lib)}</text><rect x="${g}" y="${y}" width="${Math.max(2, w)}" height="${lh - 10}" rx="3" fill="${couleurs[i % couleurs.length]}"/><text x="${g + w + 8}" y="${y + 15}">${nb(it.val)} · ${pct(it.part)}</text>`; });
+  return s + '</svg>';
+}
+
+// ---------- rendu ----------
+function kpi(lab, val, sous, cls) { return `<div class="carte kpi ${cls || ''}"><div class="lab">${lab}</div><div class="val ${typeof val === 'number' && val < 0 ? 'neg' : ''}">${typeof val === 'number' ? eurS(val) : val}</div>${sous ? `<div class="sous">${sous}</div>` : ''}</div>`; }
+function rendreBord() {
+  const { S } = R; const v = $('#vue-bord');
+  const parJour = {}; for (const x of R.campagne) { const j = jourLocal(x.c.date); parJour[j] = parJour[j] || { jour: j, boites: 0, commandes: 0, ht: 0 }; parJour[j].boites += x.boites; parJour[j].commandes++; parJour[j].ht += x.htJeu; }
+  const jours = Object.values(parJour).sort((a, b) => a.jour < b.jour ? -1 : 1);
+  const ordre = ['jeu', 'jeu-ext', 'totale', 'totale-jeu']; const noms = {}; for (const c of Object.values(D.P.catalogue)) noms[c.court] = c.nom;
+  const totalPacks = Object.values(S.packs).reduce((a, b) => a + b, 0) || 1;
+  const packs = ordre.map(k => ({ lib: noms[k], val: S.packs[k] || 0, part: (S.packs[k] || 0) / totalPacks }));
+  const casc = svgCascade([
+    { lib: 'Recettes HT jeu', val: S.recettes, type: 'depart' }, { lib: 'Port réel', val: -S.port, type: 'delta' }, { lib: 'Manutention', val: -S.manutention, type: 'delta' }, { lib: 'Paiement', val: -S.paiement, type: 'delta' },
+    { lib: 'Fabrication', val: -R.fabrication, type: 'delta' }, { lib: 'Publicité', val: -R.pub, type: 'delta' }, { lib: 'Marque domaines', val: -(R.marque + R.autres), type: 'delta' }, { lib: 'Bénéfice net', val: R.beneficeNet, type: 'total' }]);
+  const partPack1 = (S.packs.jeu || 0) / totalPacks;
+  const fin = new Date(D.P.contrat.fin_campagne); const jrestants = Math.max(0, Math.ceil((fin - new Date()) / 86400000));
+  v.innerHTML = `
+  <div class="grille g4">
+    ${kpi('Commandes de campagne', nb(S.n), `${nb(S.boites)} boîtes · ${nb(S.extensions)} extensions · ${nb(S.stickers)} planches`)}
+    ${kpi('Recettes HT du jeu', S.recettes, `dont port facturé ${eur(S.portFacture)} · TVA collectée ${eur(S.tvaJeu)}`)}
+    ${kpi('Charges par commande', -S.charges, `port ${eur(S.port)} · manutention ${eur(S.manutention)} · paiement ${eur(S.paiement)}`)}
+    ${kpi('Marge après commandes', S.marge, `${eur(r2(S.marge / (S.n || 1)))} par commande`)}
+  </div>
+  <div class="grille g4 espace">
+    ${kpi('Fabrication ' + (R.fabricationEstReelle ? '<span class="badge reel">réel</span>' : R.fabricationPartiellementReelle ? '<span class="badge est">en partie réelle</span>' : '<span class="badge est">simulée</span>'), -R.fabrication, `impression ${eur(R.impression)} ${R.impressionReelle ? '(facture)' : `(simulée : ${nb(R.sim.tirage)} boîtes à ${eur(R.sim.unitaire)}, extensions, stickers)`} · transport ${eur(R.transport)} ${R.transportReel ? '(facture)' : '(simulé)'}`)}
+    ${kpi('Bénéfice net de la campagne', R.beneficeNet, R.couverture != null ? `fabrication couverte à ${pct(R.couverture)}` : '', 'accent')}
+    ${kpi('Part de chaque coéditeur', R.partBD, `50 % chacun · Enlysée perçoit en plus la manutention, ${eur(S.manutention)}`)}
+    ${R.duABD >= 0 ? kpi('Dû à Bandes Détournées aujourd\'hui', R.duABD, `part ${eur(R.partBD)} + avances BD ${eur(R.avancesBD)} − versements reçus ${eur(R.versEnlyseeVersBD)}`) : kpi('Si on arrêtait aujourd\'hui : à apporter par BD', -R.duABD, 'article 6 : la fabrication n\'est pas couverte, chaque partie complète à parts égales')}
+  </div>
+  ${S.estimes ? `<p class="alerte espace">${nb(S.estimes)} commande(s) reposent encore sur des frais estimés (port par grille, Stripe ou PayPal au taux convenu). Saisissez les factures du mois dans « Réel mensuel » pour les recaler. La fabrication ${R.fabricationEstReelle ? 'est au réel.' : R.fabricationPartiellementReelle ? 'est en partie réelle : il manque encore ' + (R.impressionReelle ? 'la facture de transport.' : 'la facture de l\'imprimeur.') : 'est simulée tant que les factures de l\'imprimeur et du transport ne sont pas saisies et validées.'}</p>` : ''}
+  ${partPack1 > .3 ? `<p class="alerte rouge espace">Vigilance : le pack « Le jeu » seul dépasse 30 % des packs (${pct(partPack1)}). Le modèle prévoyait de renforcer la valeur des extensions dans ce cas, sans toucher aux prix.</p>` : ''}
+  <div class="grille g2 espace">
+    <div class="carte"><h3>Des recettes au bénéfice net</h3>${casc.svg}<p class="note">Chaque barre rouge est une charge déductible de l'annexe 1. Fabrication ${R.fabricationEstReelle ? 'au réel' : 'simulée'}, publicité plafonnée au budget validé (${eur(R.budgetPub)}).</p></div>
+    <div class="carte"><h3>Boîtes vendues par jour</h3>${svgBarresJour(jours)}<p class="note">${nb(S.boites)} boîtes depuis le ${dateFr(D.P.contrat.debut_campagne)} · fin de campagne le ${dateFr(D.P.contrat.fin_campagne)}, dans ${jrestants} jours.</p></div>
+  </div>
+  <div class="grille g2 espace">
+    <div class="carte"><h3>Répartition des packs</h3>${svgBarresH(packs, ['var(--s2)', 'var(--s3)', 'var(--s1)', 'var(--s4)'])}<p class="note">${nb(S.mixtes)} paniers mixtes avec d'autres articles de la boutique : leurs charges sont réparties au prorata des encaissés HT (annexe 1, point 4).</p></div>
+    <div class="carte"><h3>Trésorerie et stock</h3><ul class="etapes">
+      <li><span>Encaissé TTC pour le jeu (avec sa part de port)</span><span>${eur(S.encaisseTTC)}</span></li>
+      <li><span>dont TVA à reverser par Enlysée<em>hors partage, l'État la récupère</em></span><span>${eur(S.tvaJeu)}</span></li>
+      <li><span>Fabrication à régler par Enlysée sur les fonds encaissés<em>article 6 ; si les fonds manquent, chaque partie complète à parts égales</em></span><span>${eur(R.fabrication)}</span></li>
+      <li><span>Stock restant après la campagne, à ce jour<em>tirage ${nb(R.options.tirage)} − ${nb(S.boites)} boîtes vendues ; copropriété 50/50, article 2</em></span><span>${nb(R.stockRestant)} boîtes</span></li>
+      <li><span>Reversement à BD au plus tard<em>article 7 : 4 mois après la fin de campagne</em></span><span>${dateFr(new Date(fin.getFullYear(), fin.getMonth() + D.P.contrat.delai_reversement_mois, fin.getDate()))}</span></li>
+    </ul></div>
+  </div>`;
+  $$('rect.barre', v).forEach(rc => {
+    rc.addEventListener('mousemove', e => {
+      const svg = rc.closest('svg'); const i = +rc.dataset.i;
+      if (svg.getAttribute('aria-label').startsWith('Du chiffre')) { const b = casc.boites[i]; montrerBulle(e, `<b>${echap(b.lib)}</b><br>${b.type === 'delta' ? eurS(b.val) : eur(b.y1)}`); }
+      else { const j = jours[i]; montrerBulle(e, `<b>${dateFr(j.jour)}</b><br>${j.boites} boîtes · ${j.commandes} commandes<br>${eur(r2(j.ht))} HT`); }
+    });
+    rc.addEventListener('mouseleave', cacherBulle);
+  });
+}
+function rendreCommandes() {
+  const v = $('#vue-commandes');
+  let liste = filtreCommandes === 'jeu' ? R.campagne : filtreCommandes === 'mixtes' ? R.campagne.filter(x => x.mixte) : filtreCommandes === 'estimes' ? R.campagne.filter(x => (x.paiement.estime && !x.paiement.recale) || !x.port.recale) : R.toutes.filter(x => jourLocal(x.c.date) >= D.P.contrat.debut_campagne);
+  liste = liste.slice().sort((a, b) => a.c.date < b.c.date ? 1 : -1);
+  const T = liste.reduce((a, x) => { a.ht += x.htJeu; a.rec += x.recetteJeu; a.ch += x.chargesJeu; a.m += x.margeJeu; a.b += x.boites; return a; }, { ht: 0, rec: 0, ch: 0, m: 0, b: 0 });
+  v.innerHTML = `<div class="ligne" style="justify-content:space-between"><h2>Commandes</h2><div class="ligne">
+    <select class="champ" id="filtre-cmd" style="width:auto"><option value="jeu" ${filtreCommandes === 'jeu' ? 'selected' : ''}>Commandes de campagne avec le jeu</option><option value="mixtes" ${filtreCommandes === 'mixtes' ? 'selected' : ''}>Paniers mixtes seulement</option><option value="estimes" ${filtreCommandes === 'estimes' ? 'selected' : ''}>Avec frais estimés</option><option value="toutes" ${filtreCommandes === 'toutes' ? 'selected' : ''}>Toutes les commandes de la boutique depuis l'ouverture</option></select>
+    <button class="btn clair" id="btn-csv">Exporter en CSV</button></div></div>
+  <p class="note">Cliquez sur une commande pour voir le calcul détaillé. Les colonnes concernent la part du jeu dans la commande.</p>
+  <div class="carte espace" style="padding:0"><div class="defile"><table><thead><tr><th>Commande</th><th>Date</th><th>Contenu</th><th class="n">Boîtes</th><th class="n">HT jeu</th><th class="n">Part jeu</th><th class="n">Recette</th><th class="n">Port réel</th><th class="n">Paiement</th><th class="n">Charges</th><th class="n">Marge</th><th>État</th></tr></thead><tbody>
+  ${liste.map((x, i) => `<tr class="clic" data-n="${echap(x.c.n)}"><td><b>${echap(x.c.n)}</b></td><td>${heureFr(x.c.date)}</td><td class="w">${x.lignes.map(l => `${l.qte > 1 ? l.qte + ' × ' : ''}${echap(l.titre)}${l.variante_titre ? ' · ' + echap(l.variante_titre) : ''}`).join('<br>')}</td><td class="n">${x.boites}</td><td class="n">${eur(x.htJeu)}</td><td class="n">${pct(x.partJeu)}</td><td class="n">${eur(x.recetteJeu)}</td><td class="n">${eur(r2(x.port.retenu * x.partJeu))} ${x.port.recale ? '<span class="badge reel">réel</span>' : '<span class="badge est">est.</span>'}</td><td class="n">${eur(r2((x.paiement.retenu + x.paiement.commissionRetenue) * x.partJeu))} ${x.paiement.estime && !x.paiement.recale ? '<span class="badge est">est.</span>' : '<span class="badge reel">réel</span>'}</td><td class="n">${eur(x.chargesJeu)}</td><td class="n"><b>${eur(x.margeJeu)}</b></td><td>${x.c.annulee ? '<span class="badge bd">annulée</span>' : x.remboursee ? '<span class="badge bd">remboursée</span>' : x.rembJeu ? '<span class="badge est">rembours. partiel</span>' : ''}${x.mixte ? ' <span class="badge">mixte</span>' : ''}${x.c.pourboire ? ` <span class="badge" title="hors périmètre">pourboire ${eur(x.c.pourboire)}</span>` : ''}</td></tr>`).join('')}
+  </tbody><tfoot><tr><td colspan="3">${nb(liste.length)} commandes</td><td class="n">${nb(T.b)}</td><td class="n">${eur(r2(T.ht))}</td><td></td><td class="n">${eur(r2(T.rec))}</td><td></td><td></td><td class="n">${eur(r2(T.ch))}</td><td class="n">${eur(r2(T.m))}</td><td></td></tr></tfoot></table></div></div>`;
+  $('#filtre-cmd').onchange = e => { filtreCommandes = e.target.value; rendreCommandes(); };
+  $$('tr.clic', v).forEach(tr => tr.onclick = () => ouvrirDetail(tr.dataset.n));
+  $('#btn-csv').onclick = () => {
+    const cols = ['commande', 'date', 'boites', 'extensions', 'stickers', 'ht_jeu', 'tva_jeu', 'part_jeu', 'port_facture_part_jeu', 'recette_jeu', 'port_reel_retenu', 'manutention', 'frais_paiement', 'commission_shopify', 'charges_part_jeu', 'marge_jeu', 'passerelle', 'mode_port', 'pays', 'mixte', 'annulee', 'remboursee'];
+    const lignes = [cols.join(';')].concat(liste.map(x => [x.c.n, x.c.date, x.boites, x.extensions, x.stickers, x.htJeu, x.tvaJeu, r2(x.partJeu * 100), x.portFactureJeu, x.recetteJeu, x.port.retenu, x.manutention, x.paiement.retenu, x.paiement.commissionRetenue, x.chargesJeu, x.margeJeu, x.paiement.libelle, x.c.port.mode || '', x.c.pays || '', x.mixte ? 1 : 0, x.c.annulee ? 1 : 0, x.remboursee ? 1 : 0].map(v => String(v).replace('.', ',')).join(';')));
+    telecharger('gaucheoudroite-commandes-' + new Date().toISOString().slice(0, 10) + '.csv', '﻿' + lignes.join('\n'), 'text/csv;charset=utf-8');
+  };
+}
+function ouvrirDetail(n) {
+  const x = R.toutes.find(t => t.c.n === n); if (!x) return; const c = x.c;
+  const li = (lib, val, em) => `<li><span>${lib}${em ? `<em>${em}</em>` : ''}</span><span>${val}</span></li>`;
+  $('#detail-corps').innerHTML = `<button class="fermer" aria-label="Fermer">×</button><h2>${echap(c.n)} <span class="badge">${echap(c.statut)}</span></h2><p class="note">${heureFr(c.date)} · ${echap(c.pays || '')} · ${echap(c.port.mode || 'sans livraison')} · payé via ${echap(x.paiement.libelle)}${c.remises.length ? ' · code ' + echap(c.remises.join(', ')) : ''}</p>
+  <h3 class="espace">Lignes de la commande</h3><ul class="etapes">${x.lignes.map(l => li(`${l.qte > 1 ? l.qte + ' × ' : ''}${echap(l.titre)}${l.variante_titre ? ' · ' + echap(l.variante_titre) : ''}`, eur(l.ht) + ' HT', l.jeu ? 'article du jeu' : 'autre article de la boutique, hors partage')).join('')}${c.pourboire ? li('Pourboire du client', eur(c.pourboire), 'hors périmètre, décision du 9 septembre') : ''}${li('Port facturé au client', eur(c.port.ht) + ' HT')}</ul>
+  <h3 class="espace">Recette du jeu <span class="badge">annexe 1, 1 et 4</span></h3><ul class="etapes">${li('Encaissé HT des lignes du jeu', eur(x.htJeu), x.rembJeu ? `après remboursement de ${eur(x.rembJeu)}` : '')}${li('Part du jeu dans la commande', pct(x.partJeu), `${eur(x.htJeu)} sur ${eur(x.htTotal)} d'encaissés HT`)}${li('Quote-part du port facturé', eur(x.portFactureJeu))}<li class="total"><span>Recette du jeu</span><span>${eur(x.recetteJeu)}</span></li></ul>
+  <h3 class="espace">Charges de la commande <span class="badge">annexe 1, 2</span></h3><ul class="etapes">${li('Port réel ' + (x.port.recale ? '<span class="badge reel">recalé sur la facture du mois</span>' : '<span class="badge est">estimé par la grille</span>'), eur(x.port.retenu), `${echap(c.port.mode || '')}, ${x.port.poids} kg${x.port.recale ? ', estimation ' + eur(x.port.estime) : ''}`)}${li('Manutention et emballage', eur(x.manutention), 'forfait par commande expédiée, versé à Enlysée')}${li('Frais de paiement ' + (x.paiement.estime && !x.paiement.recale ? '<span class="badge est">estimé</span>' : '<span class="badge reel">réel</span>'), eur(x.paiement.retenu), x.paiement.estime ? `${echap(x.paiement.libelle)} au taux convenu sur ${eur(c.ttc)} TTC` : 'frais fournis par Shopify Payments')}${x.paiement.commissionRetenue ? li('Commission Shopify sur paiement tiers', eur(x.paiement.commissionRetenue), `${pct(D.P.paiement.commission_shopify_tiers)} du TTC`) : ''}${li('Total des charges de la commande', eur(x.chargesCommande))}${li('Part du jeu dans ces charges', eur(x.chargesJeu), `× ${pct(x.partJeu)}`)}<li class="total"><span>Marge de la commande pour le jeu</span><span>${eur(x.margeJeu)}</span></li></ul>
+  <p class="note espace">La fabrication, la publicité et les frais de marque ne sont pas imputés par commande : ils sont déduits une fois du total de la campagne, voir le tableau de bord.</p>`;
+  $('#detail').classList.add('on'); $('.fermer', $('#detail')).onclick = fermerDetail;
+}
+function fermerDetail() { $('#detail').classList.remove('on'); }
+$('#detail').addEventListener('click', e => { if (e.target === $('#detail')) fermerDetail(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fermerDetail(); });
+
+function rendreFrais() {
+  const v = $('#vue-frais'); const cats = D.P.categories_frais; const catLib = code => (cats.find(c => c.code === code) || {}).libelle || code;
+  const liste = D.frais.slice().sort((a, b) => a.date < b.date ? 1 : -1);
+  const tot = p => r2(D.frais.filter(f => f.statut === 'valide' && f.partage === '50/50' && f.payeur === p).reduce((s, f) => s + f.ht, 0));
+  v.innerHTML = `<h2>Frais engagés par chaque partie</h2>
+  <p class="note">Chaque partie saisit ce qu'elle a payé pour le jeu. Un frais entre dans le calcul quand l'autre partie l'a validé. Les frais partagés à 50/50 sont déduits du bénéfice net et l'avance est remboursée à celui qui a payé ; les frais « 100 % payeur » sont hors partage, pour information.</p>
+  <div class="grille g3 espace">${kpi('Avances validées d\'Enlysée', tot('Enlysée'), 'frais partagés payés par Enlysée')}${kpi('Avances validées de Bandes Détournées', tot('BD'), 'frais partagés payés par BD, remboursés dans le solde')}${kpi('En attente de validation', nb(D.frais.filter(f => f.statut === 'propose').length), 'frais proposés par une partie')}</div>
+  <div class="carte espace"><h3>Ajouter un frais</h3><form class="formulaire" id="form-frais">
+    <label>Date<input type="date" name="date" required value="${new Date().toISOString().slice(0, 10)}"></label>
+    <label>Payé par<select name="payeur"><option ${identite && identite.partie === 'Enlysée' ? 'selected' : ''}>Enlysée</option><option ${identite && identite.partie === 'BD' ? 'selected' : ''}>BD</option></select></label>
+    <label>Catégorie<select name="categorie">${cats.map(c => `<option value="${c.code}">${echap(c.libelle)}</option>`).join('')}</select></label>
+    <label>Montant HT<input type="number" step="0.01" name="ht" required></label>
+    <label>TVA<input type="number" step="0.01" name="tva" value="0"></label>
+    <label>Partage<select name="partage"><option>50/50</option><option>100 % payeur</option></select></label>
+    <label class="large">Libellé<input name="libelle" required placeholder="Ex. : facture imprimeur n° 123, acompte 50 %"></label>
+    <label class="large">Justificatif (lien vers la facture, Drive ou autre)<input name="justificatif" placeholder="https://…"></label>
+    <label class="large">Note<input name="note" placeholder="Référence au contrat, contexte"></label>
+    <div><button class="btn rouge" type="submit">Proposer ce frais</button></div></form></div>
+  <div class="carte espace" style="padding:0"><div class="defile"><table><thead><tr><th>Date</th><th>Payé par</th><th>Catégorie</th><th>Libellé</th><th class="n">HT</th><th class="n">TTC</th><th>Partage</th><th>Statut</th><th>Saisi par</th><th></th></tr></thead><tbody>
+  ${liste.length ? liste.map(f => `<tr><td>${dateFr(f.date)}</td><td><span class="badge ${f.payeur === 'BD' ? 'bd' : 'enl'}">${echap(f.payeur)}</span></td><td>${echap(catLib(f.categorie))}</td><td class="w">${echap(f.libelle)}${f.justificatif ? ` · <a href="${echap(f.justificatif)}" target="_blank" rel="noopener">justificatif</a>` : ''}${f.note ? `<br><span class="note">${echap(f.note)}</span>` : ''}</td><td class="n">${eur(f.ht)}</td><td class="n">${eur(f.ttc)}</td><td>${echap(f.partage)}</td><td><span class="badge ${f.statut}">${f.statut === 'valide' ? 'validé par ' + echap(f.valide_par) : 'proposé'}</span></td><td>${echap(f.saisi_par)}</td><td>${f.statut === 'propose' ? `${peutValider(f) ? `<button class="btn petit" data-valider="${f.id}">Valider</button>` : ''} <button class="btn petit clair" data-supprimer="${f.id}">Supprimer</button>` : ''}</td></tr>`).join('') : '<tr><td colspan="10" class="note">Aucun frais saisi.</td></tr>'}
+  </tbody></table></div></div>`;
+  $('#form-frais').onsubmit = async e => {
+    e.preventDefault(); const fd = new FormData(e.target); const ht = +fd.get('ht'), tva = +fd.get('tva') || 0;
+    const f = { id: idNouveau('f'), date: fd.get('date'), payeur: fd.get('payeur'), categorie: fd.get('categorie'), libelle: fd.get('libelle').trim(), ht: r2(ht), tva: r2(tva), ttc: r2(ht + tva), justificatif: fd.get('justificatif').trim(), partage: fd.get('partage'), note: fd.get('note').trim(), statut: 'propose', saisi_par: identite.nom, saisi_par_partie: identite.partie, cree_le: maintenant(), valide_par: null, valide_le: null };
+    await sauver(async () => { D.frais.push(f); await ecrire('frais.json', D.frais, `Frais proposé : ${f.libelle} (${f.ht} EUR HT, ${f.payeur})`); await journaliser(`Frais proposé : ${f.libelle}, ${eur(f.ht)} HT payé par ${f.payeur}.`); });
+  };
+  $$('[data-valider]', v).forEach(b => b.onclick = () => sauver(async () => { const f = D.frais.find(x => x.id === b.dataset.valider); f.statut = 'valide'; f.valide_par = identite.nom; f.valide_le = maintenant(); await ecrire('frais.json', D.frais, `Frais validé : ${f.libelle}`); await journaliser(`Frais validé : ${f.libelle}, ${eur(f.ht)} HT.`); }));
+  $$('[data-supprimer]', v).forEach(b => b.onclick = () => { if (!confirm('Supprimer ce frais proposé ?')) return; sauver(async () => { const f = D.frais.find(x => x.id === b.dataset.supprimer); D.frais = D.frais.filter(x => x.id !== f.id); await ecrire('frais.json', D.frais, `Frais supprimé : ${f.libelle}`); await journaliser(`Frais supprimé : ${f.libelle}.`); }); });
+}
+function peutValider(f) { return identite && identite.partie !== (f.saisi_par_partie || f.payeur); }
+
+function rendreReel() {
+  const v = $('#vue-reel');
+  const mois = Array.from(new Set(D.ventes.filter(c => !c.test).map(c => moisLocal(c.date)))).sort();
+  const K = coefficientsMois();
+  v.innerHTML = `<h2>Réel mensuel : factures de port et relevés de paiement</h2>
+  <p class="note">Ces factures couvrent toute la boutique, pas seulement le jeu. Saisissez le total HT de chaque facture du mois : l'application recale proportionnellement les estimations de toutes les commandes du mois, puis n'impute au jeu que sa part. Les commandes payées par Shopify Payments ont déjà leurs frais réels.</p>
+  ${mois.map(m => {
+    const cmds = D.ventes.filter(c => moisLocal(c.date) === m && !c.annulee && !c.test); const r = D.reel.find(x => x.mois === m) || { mois: m, port: {}, paiement: {}, commission: {} };
+    const estPort = g => ({ ht: r2(cmds.filter(c => c.port.mode && groupePort(c.port.mode) === g).reduce((s, c) => s + estimerPort(c), 0)), n: cmds.filter(c => c.port.mode && groupePort(c.port.mode) === g).length });
+    const estPai = p => ({ ht: r2(cmds.filter(c => c.paiement.passerelle === p).reduce((s, c) => s + estimerPaiement(c).frais, 0)), n: cmds.filter(c => c.paiement.passerelle === p).length });
+    const estCom = r2(cmds.reduce((s, c) => s + estimerPaiement(c).commission, 0));
+    const champ = (nom, val, est) => `<label>${nom}<input type="number" step="0.01" name="${nom}" value="${val != null ? val : ''}" placeholder="HT"><span class="note">estimé : ${eur(est.ht)}${est.n != null ? ' · ' + est.n + ' commandes' : ''}</span></label>`;
+    return `<div class="carte mois"><form class="formulaire" data-mois="${m}"><h3 class="large">${moisFr(m)} <span class="badge">${cmds.length} commandes de la boutique</span> ${K[m] ? '<span class="badge reel">recalé</span>' : '<span class="badge est">estimations</span>'}</h3>
+      ${champ('Chronopost', (r.port.Chronopost || {}).ht, estPort('Chronopost'))}${champ('La Poste', (r.port['La Poste'] || {}).ht, estPort('La Poste'))}
+      ${champ('Stripe', (r.paiement['Stripe Card Payments'] || {}).ht, estPai('Stripe Card Payments'))}${champ('PayPal', (r.paiement.paypal || {}).ht, estPai('paypal'))}${champ('Commission Shopify', (r.commission || {}).ht, { ht: estCom })}
+      <label class="large">Note<input name="note" value="${echap(r.note || '')}" placeholder="numéros de factures, remarques"></label>
+      <div><button class="btn" type="submit">Enregistrer ${moisFr(m)}</button> ${r.saisi_par ? `<span class="note">saisi par ${echap(r.saisi_par)} le ${dateFr(r.maj)}</span>` : ''}</div></form></div>`;
+  }).join('')}`;
+  $$('form[data-mois]', v).forEach(f => f.onsubmit = async e => {
+    e.preventDefault(); const fd = new FormData(f); const m = f.dataset.mois; const num = k => { const x = fd.get(k); return x === '' || x == null ? null : { ht: r2(+x) }; };
+    const r = { mois: m, port: { Chronopost: num('Chronopost'), 'La Poste': num('La Poste') }, paiement: { 'Stripe Card Payments': num('Stripe'), paypal: num('PayPal') }, commission: num('Commission Shopify'), note: fd.get('note').trim(), saisi_par: identite.nom, maj: maintenant() };
+    await sauver(async () => { D.reel = D.reel.filter(x => x.mois !== m).concat([r]); await ecrire('reel-mensuel.json', D.reel, `Réel mensuel ${m}`); await journaliser(`Réel mensuel de ${moisFr(m)} enregistré.`); });
+  });
+}
+function rendreSimulation() {
+  const v = $('#vue-simulation'); const S = R.S;
+  const etat = { tirage: R.options.tirage, budgetPub: R.options.budgetPub, commandes: S.n, pubDepense: Math.max(R.pubDepensee, R.options.budgetPub) };
+  v.innerHTML = `<h2>Simulation</h2><p class="note">Faites varier le tirage, le budget de publicité et le nombre final de commandes. Les moyennes par commande sont celles observées à ce jour (mix de packs, panier, charges). Rien n'est enregistré ici : pour changer les valeurs de référence, passez par Paramètres.</p>
+  <div class="carte espace"><div class="grille g3">
+    <div class="curseur"><label>Tirage du jeu</label><div class="val" id="sim-tirage-val"></div><input type="range" id="sim-tirage" min="2000" max="10000" step="500" value="${etat.tirage}"></div>
+    <div class="curseur"><label>Budget de publicité validé et dépensé</label><div class="val" id="sim-pub-val"></div><input type="range" id="sim-pub" min="0" max="15000" step="250" value="${etat.budgetPub}"></div>
+    <div class="curseur"><label>Commandes à la fin de la campagne</label><div class="val" id="sim-cmd-val"></div><input type="range" id="sim-cmd" min="${S.n}" max="${Math.max(3000, S.n)}" step="10" value="${S.n}"></div>
+  </div></div>
+  <div id="sim-resultat" class="espace"></div>`;
+  const maj = () => {
+    const tirage = +$('#sim-tirage').value, pub = +$('#sim-pub').value, ncmd = +$('#sim-cmd').value;
+    $('#sim-tirage-val').textContent = nb(tirage) + ' boîtes'; $('#sim-pub-val').textContent = eur(pub); $('#sim-cmd-val').textContent = nb(ncmd) + ' commandes';
+    const facteur = S.n ? ncmd / S.n : 0; const sim = fabricationSimulee(D.P, tirage);
+    const marge = r2(S.marge * facteur), boites = Math.round(S.boites * facteur), manut = r2(S.manutention * facteur);
+    const fabrication = r2((R.impressionReelle ? R.impression : sim.jeu + sim.extensions + sim.stickers) + (R.transportReel ? R.transport : sim.transport));
+    const net = r2(marge - fabrication - pub - R.marque - R.autres); const part = r2(net * D.P.contrat.partage_bd);
+    const stock = Math.max(0, tirage - boites); const ruptureA = S.boites && S.n ? Math.floor(tirage / (S.boites / S.n)) : null;
+    $('#sim-resultat').innerHTML = `<div class="grille g4">${kpi('Marge après commandes', marge, `${nb(boites)} boîtes, ${eur(r2(S.marge / (S.n || 1)))} par commande`)}${kpi('Fabrication', -fabrication, R.impressionReelle ? `impression au réel ${eur(R.impression)}` : `${eur(sim.unitaire)} la boîte à ${nb(tirage)} + extensions ${eur(sim.extensions)} + stickers ${eur(sim.stickers)}` + (R.transportReel ? ` + transport réel ${eur(R.transport)}` : ` + transport ${eur(sim.transport)}`))}${kpi('Bénéfice net', net, `publicité ${eur(pub)} · marque ${eur(R.marque)}`, 'accent')}${kpi('Part de chaque coéditeur', part, `Enlysée + manutention ${eur(manut)}`)}</div>
+    <div class="grille g3 espace">${kpi('Stock restant après la campagne', nb(stock) + ' boîtes', 'à vendre via Hobo et en direct, copropriété 50/50')}${kpi('Le tirage suffit jusqu\'à', ruptureA ? nb(ruptureA) + ' commandes' : '–', 'au mix de packs actuel')}${kpi('Seuil de fabrication couverte', S.n && S.marge > 0 ? nb(Math.ceil(fabrication / (S.marge / S.n))) + ' commandes' : '–', 'commandes nécessaires pour que la marge paie la fabrication')}</div>
+    <p class="note espace">Rappel du contrat : le bénéfice net est partagé à 50 % après déduction de toute la fabrication, même si une partie du tirage reste en stock ; ce stock est la copropriété des deux parties (article 2) et sera vendu ensuite selon les articles 4 et 5.</p>`;
+  };
+  ['sim-tirage', 'sim-pub', 'sim-cmd'].forEach(id => $('#' + id).oninput = maj); maj();
+}
+function texteReleve() {
+  const S = R.S; const L = [];
+  L.push(`RELEVÉ DE CAMPAGNE GAUCHEOUDROITE · établi le ${dateFr(new Date())} à ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`);
+  L.push(`Contrat de coédition Enlysée × Bandes Détournées, ${D.P.contrat.reference}. Article 3 et annexe 1.`);
+  L.push(`Période : du ${dateFr(D.P.contrat.debut_campagne)} au ${dateFr(D.P.contrat.fin_campagne)} (campagne en cours, chiffres à date). Montants hors TVA.`);
+  L.push(''); L.push('1. RECETTES NETTES');
+  L.push(`Commandes contenant le jeu, hors annulées et remboursées : ${nb(S.n)} (${nb(S.boites)} boîtes, ${nb(S.extensions)} extensions, ${nb(S.stickers)} planches de stickers ; ${nb(S.mixtes)} paniers mixtes au prorata).`);
+  L.push(`Encaissé HT des articles du jeu : ${eur(S.htJeu)}`); L.push(`Quote-part du port facturé aux clients : ${eur(S.portFacture)}`); L.push(`Recettes nettes du jeu : ${eur(S.recettes)}`);
+  L.push(''); L.push('2. CHARGES DÉDUCTIBLES PAR COMMANDE (part du jeu)');
+  L.push(`Port réel des envois : ${eur(S.port)}`); L.push(`Manutention et emballage, forfait ${eur(D.P.contrat.manutention_par_commande_ht)} par commande : ${eur(S.manutention)} (versé à Enlysée)`); L.push(`Frais de paiement et commissions de plateforme : ${eur(S.paiement)}`); L.push(`Marge après charges de commandes : ${eur(S.marge)}`);
+  L.push(''); L.push('3. CHARGES DÉDUCTIBLES DE LA CAMPAGNE');
+  L.push(`Fabrication : ${eur(R.impression)} ${R.impressionReelle ? '(factures validées)' : `(SIMULATION : tirage ${nb(R.sim.tirage)} à ${eur(R.sim.unitaire)}, extensions ${eur(R.sim.extensions)}, stickers ${eur(R.sim.stickers)})`}`); L.push(`Transport amont : ${eur(R.transport)} ${R.transportReel ? '(facture validée)' : '(SIMULATION)'}`);
+  L.push(`Publicité : ${eur(R.pub)} (dépensée ${eur(R.pubDepensee)}, budget validé ${eur(R.budgetPub)})`); L.push(`Marque et noms de domaine : ${eur(R.marque)}`); if (R.autres) L.push(`Autres charges validées : ${eur(R.autres)}`);
+  L.push(''); L.push('4. BÉNÉFICE NET ET RÉPARTITION');
+  L.push(`Bénéfice net de la campagne : ${eurS(R.beneficeNet)}`); L.push(`Part Bandes Détournées (50 %) : ${eurS(R.partBD)}`); L.push(`Part Enlysée (50 %) : ${eurS(R.partEnlysee)}, plus la manutention ${eur(S.manutention)}`);
+  L.push(''); L.push('5. SOLDE');
+  L.push(`Avances de BD sur frais partagés validés : ${eur(R.avancesBD)}`); L.push(`Avances d'Enlysée sur frais partagés validés : ${eur(R.avancesEnlysee)} (retenues sur les fonds encaissés)`); L.push(`Versements déjà effectués d'Enlysée à BD : ${eur(R.versEnlyseeVersBD)} ; de BD à Enlysée : ${eur(R.versBDVersEnlysee)}`);
+  L.push(`Dû par Enlysée à Bandes Détournées à ce jour : ${eurS(R.duABD)} (article 7 : au plus tard 4 mois après la fin de campagne, avec ce relevé et les justificatifs)`);
+  L.push(''); L.push(`Frais estimés en attente de justificatifs : ${nb(S.estimes)} commandes. Justificatifs : exports de commandes (onglet Commandes, CSV), factures saisies dans Frais.`);
+  return L.join('\n');
+}
+function rendreReleve() {
+  const v = $('#vue-releve');
+  v.innerHTML = `<div class="ligne" style="justify-content:space-between"><h2>Relevé de campagne</h2><div class="ligne"><button class="btn clair" id="btn-copier">Copier le relevé</button><button class="btn" id="btn-releve">Télécharger le relevé</button></div></div>
+  <pre class="releve espace" id="releve">${echap(texteReleve())}</pre>
+  <h2 class="espace">Versements entre les parties</h2><p class="note">Enregistrez ici chaque virement réel : reversement d'Enlysée à BD (article 7), ou complément de BD pour la fabrication (article 6). Ils viennent en déduction du solde dû.</p>
+  <div class="carte espace"><form class="formulaire" id="form-versement"><label>Date<input type="date" name="date" required value="${new Date().toISOString().slice(0, 10)}"></label><label>De<select name="de"><option>Enlysée</option><option>BD</option></select></label><label>Montant<input type="number" step="0.01" name="montant" required></label><label class="large">Libellé<input name="libelle" required placeholder="Ex. : acompte sur la part de campagne"></label><div><button class="btn rouge" type="submit">Enregistrer le versement</button></div></form></div>
+  <div class="carte espace" style="padding:0"><div class="defile"><table><thead><tr><th>Date</th><th>De</th><th>À</th><th class="n">Montant</th><th>Libellé</th><th>Saisi par</th></tr></thead><tbody>${D.versements.length ? D.versements.slice().sort((a, b) => a.date < b.date ? 1 : -1).map(x => `<tr><td>${dateFr(x.date)}</td><td>${echap(x.de)}</td><td>${x.de === 'BD' ? 'Enlysée' : 'BD'}</td><td class="n">${eur(x.montant)}</td><td class="w">${echap(x.libelle)}</td><td>${echap(x.saisi_par)}</td></tr>`).join('') : '<tr><td colspan="6" class="note">Aucun versement.</td></tr>'}</tbody></table></div></div>`;
+  $('#btn-releve').onclick = () => telecharger('gaucheoudroite-releve-' + new Date().toISOString().slice(0, 10) + '.txt', texteReleve(), 'text/plain;charset=utf-8');
+  $('#btn-copier').onclick = () => navigator.clipboard.writeText(texteReleve()).then(() => { $('#btn-copier').textContent = 'Copié'; setTimeout(() => $('#btn-copier').textContent = 'Copier le relevé', 1500); });
+  $('#form-versement').onsubmit = async e => { e.preventDefault(); const fd = new FormData(e.target); const x = { id: idNouveau('v'), date: fd.get('date'), de: fd.get('de'), montant: r2(+fd.get('montant')), libelle: fd.get('libelle').trim(), saisi_par: identite.nom, cree_le: maintenant() }; await sauver(async () => { D.versements.push(x); await ecrire('versements.json', D.versements, `Versement ${x.de} : ${x.montant} EUR`); await journaliser(`Versement enregistré : ${eur(x.montant)} de ${x.de}, ${x.libelle}.`); }); };
+}
+function rendreParametres() {
+  const v = $('#vue-parametres'); const P = D.P;
+  const num = (chemin, lab, step) => { const val = chemin.split('.').reduce((o, k) => o[k], P); return `<label>${lab}<input type="number" step="${step || '0.01'}" data-chemin="${chemin}" value="${val}"></label>`; };
+  v.innerHTML = `<h2>Paramètres</h2><p class="note">Valeurs de référence du calcul. Toute modification est journalisée. Les règles elles-mêmes (liste des charges, prorata, 50/50) sont dans le code et suivent le contrat V2.</p>
+  <form id="form-param">
+  <div class="carte espace"><h3>Contrat</h3><div class="formulaire">${num('contrat.manutention_par_commande_ht', 'Manutention par commande (EUR HT)')}${num('contrat.budget_pub_campagne_ht', 'Budget publicité validé (EUR HT)', '1')}${num('contrat.partage_bd', 'Part de BD (0,5 = 50 %)', '0.01')}<label>Début de campagne<input type="date" data-chemin="contrat.debut_campagne" value="${P.contrat.debut_campagne}"></label><label>Fin de campagne<input type="date" data-chemin="contrat.fin_campagne" value="${P.contrat.fin_campagne}"></label></div></div>
+  <div class="carte espace"><h3>Fabrication (simulation tant que les factures ne sont pas validées)</h3><div class="formulaire">${num('fabrication.tirage', 'Tirage du jeu', '100')}${num('fabrication.extensions.nb', 'Nombre d\'extensions', '1')}${num('fabrication.extensions.tirage_par_extension', 'Tirage par extension', '100')}${num('fabrication.extensions.cout_unitaire', 'Coût unitaire extension (EUR HT)')}${num('fabrication.stickers.tirage', 'Tirage des planches de stickers', '100')}${num('fabrication.stickers.cout_unitaire', 'Coût unitaire planche (EUR HT)')}${num('fabrication.transport_amont', 'Transport amont (EUR HT)', '1')}<label>Devis jeu : [[tirage, EUR HT la boîte], …]<input data-json="fabrication.devis_jeu" value="${echap(JSON.stringify(P.fabrication.devis_jeu))}"></label><label>Utiliser les factures réelles dès qu'elles sont validées<select data-bool="fabrication.utiliser_reel_si_disponible"><option value="true" ${P.fabrication.utiliser_reel_si_disponible ? 'selected' : ''}>oui</option><option value="false" ${!P.fabrication.utiliser_reel_si_disponible ? 'selected' : ''}>non</option></select></label></div></div>
+  <div class="carte espace"><h3>Frais de paiement estimés</h3><div class="formulaire">${Object.entries(P.paiement.passerelles).map(([k, c]) => `${num(`paiement.passerelles.${k}.taux`, c.libelle + ' : taux', '0.001')}${num(`paiement.passerelles.${k}.fixe`, c.libelle + ' : fixe (EUR)')}`).join('')}${num('paiement.commission_shopify_tiers', 'Commission Shopify sur paiements tiers (taux)', '0.001')}</div></div>
+  <div class="carte espace"><h3>Grille de port estimée (EUR HT par colis)</h3><p class="note">Par mode de livraison Shopify : liste de paliers [poids maxi en kg, coût]. Poids d'emballage ajouté à chaque commande : ${num('port.poids_emballage', 'kg', '0.01')}</p><textarea class="champ" rows="10" data-json="port.grille">${echap(JSON.stringify(P.port.grille, null, 1))}</textarea></div>
+  <div class="carte espace"><h3>Personnes</h3><p class="note">Nom et partie proposés à l'ouverture.</p><textarea class="champ" rows="4" data-json="personnes">${echap(JSON.stringify(P.personnes))}</textarea></div>
+  <div class="espace"><button class="btn rouge" type="submit">Enregistrer les paramètres</button> <span class="note">Version ${P.version}, mise à jour ${P.maj}</span></div></form>`;
+  $('#form-param').onsubmit = async e => {
+    e.preventDefault(); const N = JSON.parse(JSON.stringify(P)); const poser = (chemin, val) => { const ks = chemin.split('.'); let o = N; for (const k of ks.slice(0, -1)) o = o[k]; o[ks[ks.length - 1]] = val; };
+    try {
+      $$('[data-chemin]', v).forEach(i => poser(i.dataset.chemin, i.type === 'number' ? +i.value : i.value));
+      $$('[data-json]', v).forEach(i => poser(i.dataset.json, JSON.parse(i.value)));
+      $$('[data-bool]', v).forEach(i => poser(i.dataset.bool, i.value === 'true'));
+    } catch (err) { alert('JSON invalide : ' + err.message); return; }
+    N.maj = new Date().toISOString().slice(0, 10);
+    await sauver(async () => { D.P = N; await ecrire('parametres.json', N, 'Paramètres modifiés'); await journaliser('Paramètres modifiés.'); });
+  };
+}
+function rendreJournal() { $('#vue-journal').innerHTML = `<h2>Journal</h2><p class="note">Toutes les saisies et validations, la plus récente en premier. Le dépôt Git garde en plus l'historique complet de chaque fichier.</p><ul class="journal carte espace">${D.journal.map(j => `<li><time>${heureFr(j.quand)} · ${echap(j.qui)}</time>${echap(j.quoi)}</li>`).join('') || '<li>Rien pour le moment.</li>'}</ul>`; }
+
+function telecharger(nom, contenu, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([contenu], { type })); a.download = nom; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+async function sauver(fn) { try { await fn(); rendre(); } catch (e) { alert('Enregistrement impossible : ' + e.message); await chargerTout(); } }
+function rendre() {
+  R = calculer();
+  ({ bord: rendreBord, commandes: rendreCommandes, frais: rendreFrais, reel: rendreReel, simulation: rendreSimulation, releve: rendreReleve, parametres: rendreParametres, journal: rendreJournal })[vueCourante]();
+}
+$('#onglets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; vueCourante = b.dataset.vue; $$('#onglets button').forEach(x => x.classList.toggle('on', x === b)); $$('.vue').forEach(x => x.classList.toggle('on', x.id === 'vue-' + vueCourante)); rendre(); window.scrollTo(0, 0); });
+$('#btn-recharger').onclick = () => chargerTout().catch(e => alert(e.message));
+$('#btn-identite').onclick = async () => { await demanderIdentite(); rendre(); };
+
+// ---------- démarrage ----------
+(async function () {
+  try {
+    await ouvrirDepot();
+    try { identite = JSON.parse(localStorage.getItem('godlj-compta-identite')); } catch (e) {}
+    await chargerTout();
+    if (!identite) await demanderIdentite(); else $('#qui').textContent = identite.nom + ' · ' + identite.partie;
+    if (LOCAL) $('#maj').textContent += ' · mode local';
+  } catch (e) { console.error(e); $('#maj').textContent = 'erreur : ' + e.message; }
+})();
+})();
+</script>
+</body>
+</html>

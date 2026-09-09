@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Chiffrer le jeton GitHub</title>
+<style>body{font-family:Inter,system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 20px;color:#1F2048;line-height:1.5}h1{font-size:1.3rem}label{display:block;font-weight:600;margin-top:14px;font-size:.9rem}input,textarea{width:100%;padding:9px;border:1px solid #C9CBD8;border-radius:6px;font:inherit;margin-top:4px}button{margin-top:16px;background:#CF415D;color:#fff;border:0;border-radius:6px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}textarea{font-family:ui-monospace,monospace;font-size:.8rem}p{font-size:.9rem;color:#5B5E7B}</style></head>
+<body><h1>Chiffrer le jeton GitHub de l'application de comptes</h1>
+<p>Tout se passe dans votre navigateur, rien n'est envoyé nulle part. Collez le jeton d'accès GitHub (fine-grained, limité au dépôt gaucheoudroite-compta, permission Contents en lecture et écriture) et choisissez la phrase de passe que vous partagerez avec Bandes Détournées. Enregistrez le résultat sous le nom <b>jeton.json</b> à côté de index.html, puis déployez.</p>
+<label>Jeton GitHub<input id="jeton" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+<label>Phrase de passe partagée (longue, au moins 4 mots)<input id="phrase" type="text" autocomplete="off" placeholder="ex. : guillotine tofu boussole 8000"></label>
+<button id="go">Chiffrer</button>
+<label>Résultat, à enregistrer dans jeton.json<textarea id="sortie" rows="6" readonly></textarea></label>
+<button id="dl" style="display:none;background:#1F2048">Télécharger jeton.json</button>
+<script>
+const b64 = a => btoa(String.fromCharCode(...new Uint8Array(a)));
+document.getElementById('go').onclick = async () => {
+  const jeton = document.getElementById('jeton').value.trim(), phrase = document.getElementById('phrase').value;
+  if (!jeton || phrase.length < 12) { alert('Jeton manquant ou phrase trop courte (12 caractères minimum).'); return; }
+  const enc = new TextEncoder(), sel = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const cle = await crypto.subtle.importKey('raw', enc.encode(phrase), 'PBKDF2', false, ['deriveKey']);
+  const aes = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: sel, iterations: 600000, hash: 'SHA-256' }, cle, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+  const donnees = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, aes, enc.encode(jeton));
+  const out = JSON.stringify({ kdf: 'PBKDF2-SHA256', iterations: 600000, sel: b64(sel), iv: b64(iv), donnees: b64(donnees), cree_le: new Date().toISOString().slice(0, 10) }, null, 1);
+  document.getElementById('sortie').value = out;
+  const dl = document.getElementById('dl'); dl.style.display = 'inline-block';
+  dl.onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([out], { type: 'application/json' })); a.download = 'jeton.json'; a.click(); };
+};
+</script></body></html>

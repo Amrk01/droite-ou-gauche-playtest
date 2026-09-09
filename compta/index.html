@@ -262,7 +262,7 @@ function interpoler(points, x) {
   return p[p.length - 1][1];
 }
 const groupePort = mode => /chronopost/i.test(mode || '') ? 'Chronopost' : 'La Poste';
-function poidsCommande(c) { return r2(c.lignes.reduce((s, l) => s + (l.poids || 0) * l.qte, 0) + (D.P.port.poids_emballage || 0)); }
+function poidsCommande(c) { const lignes = c.lignes.reduce((s, l) => s + (l.poids || 0) * l.qte, 0); return r2((c.poids_total != null && c.poids_total > 0 ? c.poids_total : lignes) + (D.P.port.poids_emballage || 0)); }
 function estimerPort(c) {
   if (!c.port.mode) return 0;
   const g = D.P.port.grille[c.port.mode]; const poids = poidsCommande(c);

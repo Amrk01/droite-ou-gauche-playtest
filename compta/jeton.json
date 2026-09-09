@@ -1,0 +1,8 @@
+{
+ "kdf": "PBKDF2-SHA256",
+ "iterations": 600000,
+ "sel": "BVAf5Q6F/AIdxqTumtBRBQ==",
+ "iv": "VaZfKDy4hfBaysF9",
+ "donnees": "i0GkEGJsLv2INWJRZ2iwsvlura0eaXJaB9eDcgPZg9iGBlwJwoMn4uV9k1OP+zPPm56qVqMTcbzD2E9FQYMrbnJEf/fjyCN2Zj73ppkjmw6r9tbY9SruLUiLyca1umiCuxOvAM2vLIs+Ol0GTw==",
+ "cree_le": "2026-09-09"
+}

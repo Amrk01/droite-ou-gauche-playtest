@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><title>Gaucheoudroite · le vote des camarades</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,700;0,800;1,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root { --fond:#F6F3EE; --carte:#fff; --encre:#1F2048; --texte:#2B2C48; --sourd:#6A6C86; --ligne:#E2DCD5; --marine:#1F2048; --rouge:#CF415D; --rose:#F083A0; --bleu:#77ADDB; --vert:#1c7c43; --ombre:0 14px 34px rgba(31,32,72,.16); }
+@media (prefers-color-scheme: dark) { :root { --fond:#121329; --carte:#1D1E3C; --encre:#fff; --texte:#E6E4F2; --sourd:#A9ABC6; --ligne:#31335A; --vert:#44b877; --ombre:0 14px 34px rgba(0,0,0,.5); } }
+* { box-sizing:border-box; } [hidden] { display:none !important; }
+html, body { margin:0; background:var(--fond); color:var(--texte); font-family:'Inter',system-ui,sans-serif; font-size:16px; line-height:1.45; -webkit-font-smoothing:antialiased; }
+body { min-height:100dvh; padding-bottom:env(safe-area-inset-bottom); }
+h1, h2, .titre { font-family:'Epilogue','Trebuchet MS',sans-serif; font-weight:800; letter-spacing:-.02em; color:var(--encre); margin:0; }
+button { font:inherit; cursor:pointer; border-radius:10px; border:1px solid var(--ligne); background:var(--carte); color:var(--encre); font-weight:600; padding:10px 14px; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible { outline:3px solid var(--rose); outline-offset:2px; }
+button:disabled { opacity:.45; cursor:default; }
+input, textarea { font:inherit; width:100%; padding:12px 14px; border:1px solid var(--ligne); border-radius:10px; background:var(--carte); color:var(--texte); }
+.page { max-width:560px; margin:0 auto; padding:18px 18px 40px; }
+.marque { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+.marque b { font-family:'Epilogue',sans-serif; font-weight:800; font-size:1.05rem; color:var(--encre); letter-spacing:-.02em; }
+.marque b i { font-style:normal; color:var(--rouge); }
+.marque span { color:var(--sourd); font-size:.85rem; }
+/* accueil */
+.accueil h1 { font-size:clamp(1.9rem,8vw,2.6rem); line-height:1; margin:26px 0 12px; }
+.accueil h1 em { font-style:italic; color:var(--rouge); }
+.accueil p { margin:0 0 12px; }
+.regles { list-style:none; padding:0; margin:16px 0 20px; display:grid; gap:8px; }
+.regles li { display:grid; grid-template-columns:64px 1fr; gap:10px; align-items:center; font-size:.95rem; }
+.pastille { font-family:'Epilogue',sans-serif; font-weight:800; font-size:.85rem; text-align:center; border-radius:999px; padding:5px 0; color:#fff; }
+.p-oui { background:var(--vert); } .p-bof { background:var(--bleu); color:var(--marine); } .p-non { background:var(--rouge); }
+.champ label { display:block; font-weight:600; margin:0 0 6px; color:var(--encre); }
+.principal { background:var(--rouge); border-color:var(--rouge); color:#fff; width:100%; padding:14px; font-size:1.05rem; margin-top:12px; }
+.petit { font-size:.85rem; color:var(--sourd); }
+/* vote */
+.haut { display:flex; align-items:center; gap:10px; margin-top:10px; }
+.barre { flex:1; height:8px; border-radius:99px; background:var(--ligne); overflow:hidden; }
+.barre i { display:block; height:100%; background:var(--rouge); border-radius:99px; transition:width .25s; }
+.compte { font-variant-numeric:tabular-nums; font-size:.85rem; color:var(--sourd); white-space:nowrap; }
+.lien { background:none; border:0; padding:6px 4px; color:var(--sourd); font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+.jeu { margin:16px 0 14px; border-radius:20px; overflow:hidden; box-shadow:var(--ombre); }
+.face { padding:26px 22px; min-height:128px; display:flex; align-items:center; justify-content:center; text-align:center; font-family:'Epilogue',sans-serif; font-weight:800; font-size:clamp(1.25rem,5.6vw,1.7rem); line-height:1.1; letter-spacing:-.02em; color:#fff; text-wrap:balance; }
+.recto { background:var(--marine); } .verso { background:var(--rouge); }
+@media (prefers-color-scheme: dark) { .recto { background:#2A2C63; } }
+.ou { height:0; position:relative; z-index:1; text-align:center; }
+.ou span { position:absolute; left:50%; top:0; transform:translate(-50%,-50%); background:#fff; color:var(--marine); font-family:'Epilogue',sans-serif; font-weight:800; font-size:.75rem; border-radius:99px; padding:4px 10px; text-transform:uppercase; letter-spacing:.06em; }
+.votes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.votes button { padding:16px 6px; font-family:'Epilogue',sans-serif; font-weight:800; font-size:1.1rem; border-width:2px; }
+.votes .non { border-color:var(--rouge); color:var(--rouge); } .votes .bof { border-color:var(--bleu); color:var(--encre); } .votes .oui { border-color:var(--vert); color:var(--vert); }
+.votes .non[aria-pressed="true"] { background:var(--rouge); color:#fff; } .votes .bof[aria-pressed="true"] { background:var(--bleu); color:var(--marine); } .votes .oui[aria-pressed="true"] { background:var(--vert); color:#fff; }
+.remarque { margin:12px 0 0; } .remarque textarea { min-height:52px; resize:vertical; font-size:.95rem; }
+.nav { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
+.raccourcis { text-align:center; margin-top:6px; } @media (hover:none) { .raccourcis { display:none; } }
+/* liste */
+.liste { display:grid; gap:6px; margin-top:14px; }
+.ligne { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; text-align:left; padding:10px 12px; font-weight:500; font-size:.92rem; }
+.ligne small { display:block; color:var(--sourd); }
+.etat { font-family:'Epilogue',sans-serif; font-weight:800; font-size:.75rem; border-radius:99px; padding:3px 9px; color:#fff; }
+.etat.vide { background:var(--ligne); color:var(--sourd); }
+/* envoi */
+.bilan { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:16px 0; }
+.bilan div { border:1px solid var(--ligne); border-radius:12px; padding:10px; text-align:center; background:var(--carte); }
+.bilan b { display:block; font-family:'Epilogue',sans-serif; font-size:1.5rem; color:var(--encre); font-variant-numeric:tabular-nums; }
+.envois { display:grid; gap:8px; margin-top:12px; }
+.code { word-break:break-all; font-family:ui-monospace,Menlo,monospace; font-size:.75rem; background:var(--carte); border:1px dashed var(--ligne); border-radius:10px; padding:10px; color:var(--sourd); max-height:120px; overflow:auto; }
+.ok { color:var(--vert); font-weight:600; min-height:1.4em; }
+/* dépouillement */
+.large { max-width:1100px; }
+.cadre { overflow-x:auto; border:1px solid var(--ligne); border-radius:12px; background:var(--carte); margin-top:12px; }
+table { border-collapse:collapse; width:100%; font-size:.9rem; } th, td { padding:8px 10px; border-bottom:1px solid var(--ligne); text-align:left; vertical-align:top; }
+th { font-family:'Epilogue',sans-serif; font-size:.8rem; color:var(--sourd); white-space:nowrap; position:sticky; top:0; background:var(--carte); } td.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.outils { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+.jauge { display:flex; height:8px; width:90px; border-radius:99px; overflow:hidden; background:var(--ligne); } .jauge i { display:block; height:100%; }
+</style></head><body>
+<div class="page" id="page"></div>
+<script>
+var DECKS = {"cine": {"titre": "Silence, ça tourne !", "court": "extension ciné", "cartes": [{"id": "t001", "r": "Les films de Quentin Tarantino", "v": "Les films de Quentin Dupieux"}, {"id": "t002", "r": "Indiana Jones", "v": "Bridget Jones"}, {"id": "t003", "r": "La Palme d'or", "v": "Le Grand Prix de Gérardmer"}, {"id": "t004", "r": "Bong Joon-ho à Hollywood", "v": "Bong Joon-ho en Corée"}, {"id": "t005", "r": "Le Gendarme de Saint-Tropez", "v": "La Grande Vadrouille"}, {"id": "t006", "r": "Regelegorila", "v": "Les Cahiers du cinéma"}, {"id": "t008", "r": "L'IMAX 70 mm", "v": "Le stream sur smartphone"}, {"id": "t009", "r": "Le noir et blanc", "v": "Le cinéma 4DX"}, {"id": "t010", "r": "Le Dolby Atmos", "v": "Les films muets"}, {"id": "t011", "r": "Le Rocky Horror Picture Show", "v": "Drag Race France"}, {"id": "t012", "r": "E.T.", "v": "Alien"}, {"id": "t013", "r": "Brigitte Bardot", "v": "Beethoven (le chien)"}, {"id": "t014", "r": "Woody Allen", "v": "Woody de Toy Story"}, {"id": "t015", "r": "Adèle Haenel qui se lève", "v": "La baffe de Will Smith"}, {"id": "t016", "r": "Le Pianiste", "v": "La Leçon de piano"}, {"id": "t017", "r": "Alec Guinness dans Lawrence d'Arabie", "v": "Alec Guinness dans Star Wars"}, {"id": "t018", "r": "Dune de Lynch", "v": "Dune de Villeneuve"}, {"id": "t019", "r": "Predator", "v": "Conan le Barbare"}, {"id": "t020", "r": "Fahrenheit 9/11", "v": "37°2 le matin"}, {"id": "t021", "r": "Joachim Trier", "v": "Justine Triet"}, {"id": "t023", "r": "Savoir prononcer Matthew McConaughey", "v": "Savoir prononcer Apichatpong Weerasethakul"}, {"id": "t024", "r": "True Detective", "v": "X-Files"}, {"id": "t025", "r": "Fire Walk with Me", "v": "Portrait de la jeune fille en feu"}, {"id": "t026", "r": "David Lynch", "v": "David Cronenberg"}, {"id": "t027", "r": "Séparer l'homme de l'artiste", "v": "La Légion d'honneur de Depardieu"}, {"id": "t028", "r": "Le Seigneur des anneaux", "v": "Le Silence des agneaux"}, {"id": "t029", "r": "Hannibal Lecter", "v": "Barbaque (Fabrice Eboué)"}, {"id": "t030", "r": "Fight Club", "v": "American Psycho"}, {"id": "t031", "r": "J. K. Rowling", "v": "Les sœurs Wachowski"}, {"id": "t032", "r": "Malcolm", "v": "Ma famille d'abord"}, {"id": "t033", "r": "The Office UK", "v": "The Office US"}, {"id": "t034", "r": "Walter White", "v": "Hal, le père dans Malcolm"}, {"id": "t035", "r": "Saul Goodman", "v": "Harvey Specter"}, {"id": "t036", "r": "Godard", "v": "Truffaut"}, {"id": "t037", "r": "Varda", "v": "Demy"}, {"id": "t038", "r": "Bardot", "v": "Deneuve"}, {"id": "t039", "r": "Delon", "v": "Belmondo"}, {"id": "t040", "r": "James Bond", "v": "Johnny English"}, {"id": "t041", "r": "Cars", "v": "Titane"}, {"id": "t042", "r": "Fast and Furious", "v": "Drive"}, {"id": "t043", "r": "La Nouvelle Vague", "v": "Le MCU"}, {"id": "t045", "r": "Man of Steel", "v": "Superman (2025)"}, {"id": "t046", "r": "Million Dollar Baby", "v": "Slumdog Millionaire"}, {"id": "t047", "r": "Hollywood", "v": "Bollywood"}, {"id": "t048", "r": "Costa-Gavras", "v": "Romain Gavras"}, {"id": "t049", "r": "Les Misérables (Ladj Ly)", "v": "Les Misérables (Victor Hugo)"}, {"id": "t050", "r": "Les Parapluies de Cherbourg", "v": "La La Land"}, {"id": "t051", "r": "La Ligne rouge", "v": "Le Ruban blanc"}, {"id": "t052", "r": "Le vent se lève (Miyazaki)", "v": "Le vent se lève (Ken Loach)"}, {"id": "t053", "r": "Ghibli", "v": "Disney"}, {"id": "t054", "r": "Les Minions", "v": "Les Na'vi"}, {"id": "t055", "r": "Avatar (James Cameron)", "v": "Avatar, le dernier maître de l'air"}, {"id": "t056", "r": "Titanic", "v": "Pearl Harbor"}, {"id": "t057", "r": "Jean Moulin", "v": "Gilles Lellouche"}, {"id": "t058", "r": "La Zone d'intérêt", "v": "Une zone à défendre"}, {"id": "t059", "r": "Danse avec les loups", "v": "Le Loup de Wall Street"}, {"id": "t060", "r": "BAC Nord", "v": "Polisse"}, {"id": "t061", "r": "Problemos", "v": "Neuilly sa mère !"}, {"id": "t062", "r": "George Lucas", "v": "Kurosawa"}, {"id": "t063", "r": "Les Jedi", "v": "Les samouraïs"}, {"id": "t064", "r": "Le CNC", "v": "Canal+"}, {"id": "t065", "r": "Louis de Funès", "v": "Eddie Murphy"}, {"id": "t066", "r": "OSS 117 (Hazanavicius)", "v": "OSS 117 (Bedos)"}, {"id": "t067", "r": "Hubert Bonisseur de La Bath (OSS 117)", "v": "Austin Powers"}, {"id": "t068", "r": "Intouchables", "v": "It Follows"}, {"id": "t069", "r": "Scarface", "v": "Scar du Roi Lion"}, {"id": "t070", "r": "Les Soprano", "v": "Soprano"}, {"id": "t071", "r": "Tarkovski", "v": "Toledano et Nakache"}, {"id": "t072", "r": "Un film hongrois muet en noir et blanc de 7 h", "v": "Un film sur TikTok en 67 parties"}, {"id": "t073", "r": "Taxi Driver", "v": "Taxi"}, {"id": "t074", "r": "Vermines", "v": "Mille et une pattes"}, {"id": "t075", "r": "The Truman Show", "v": "Secret Story"}, {"id": "t076", "r": "Joker (le film de 2019)", "v": "Coluche"}, {"id": "t077", "r": "Everything Everywhere All at Once", "v": "Nowhere"}, {"id": "t078", "r": "Brokeback Mountain", "v": "Clint Eastwood"}, {"id": "t079", "r": "Kev Adams", "v": "La Famille Addams"}, {"id": "t080", "r": "L'Armée des douze singes", "v": "La Planète des singes"}, {"id": "t081", "r": "Rocky I", "v": "Rocky IV"}, {"id": "t082", "r": "Le pop-corn sucré", "v": "Le pop-corn salé"}, {"id": "t083", "r": "La salle art et essai", "v": "UGC"}, {"id": "t084", "r": "La VF", "v": "La VO"}, {"id": "t085", "r": "Regarder en vitesse 1,25", "v": "Regarder en plusieurs fois"}, {"id": "t086", "r": "Netflix and chill", "v": "Un date au ciné"}, {"id": "t087", "r": "Les plateformes de streaming", "v": "Les plateformes de « streaming »"}, {"id": "t088", "r": "Un film docu", "v": "Un film de cul"}, {"id": "t089", "r": "La séance du matin", "v": "La séance du vendredi soir"}, {"id": "t090", "r": "Regarder un film dans l'avion", "v": "Regarder un film dans le métro"}, {"id": "t091", "r": "John Wick", "v": "Neo"}, {"id": "t092", "r": "Michael Keaton", "v": "Julien Lepers"}, {"id": "t093", "r": "« Toi, t'as pas une gueule de porte-bonheur »", "v": "« You're one ugly motherfucker »"}, {"id": "t094", "r": "The Hangover", "v": "Very Bad Trip"}, {"id": "t095", "r": "Pixar", "v": "DreamWorks"}, {"id": "t096", "r": "The Revenant", "v": "Frère des ours"}, {"id": "t097", "r": "O'Brother", "v": "Band of Brothers"}, {"id": "t098", "r": "Tout sur ma mère", "v": "Mon beau-père et moi"}, {"id": "t099", "r": "Hard Boiled", "v": "Mission impossible 2"}, {"id": "t100", "r": "Le Roi et l'Oiseau", "v": "Le Roi Lion"}, {"id": "t101", "r": "Le Godzilla américain", "v": "Le Godzilla japonais"}, {"id": "t102", "r": "Ratatouille", "v": "La Soupe aux choux"}, {"id": "t103", "r": "La Vie d'Adèle", "v": "Adèle Blanc-Sec"}, {"id": "t104", "r": "L'école de la vie", "v": "Léa Seydoux"}, {"id": "t105", "r": "La mort de la maman de Bambi", "v": "La mort de Cotillard dans Batman"}, {"id": "t106", "r": "Les femmes chez Scorsese", "v": "Les femmes chez Nolan"}, {"id": "t107", "r": "A24", "v": "Dogme 95"}, {"id": "t108", "r": "2001 (Kubrick)", "v": "2012 (Emmerich)"}, {"id": "t109", "r": "Hans Zimmer", "v": "Ludwig Göransson"}, {"id": "t110", "r": "Scary Movie", "v": "La Cité de la peur"}, {"id": "t111", "r": "Le prof dans Whiplash", "v": "Le prof dans Le Cercle des poètes disparus"}, {"id": "t112", "r": "Quand Harry rencontre Sally", "v": "Harry Potter"}, {"id": "t113", "r": "« Tu es un sorcier, Harry »", "v": "« Luke, je suis ton père »"}, {"id": "t114", "r": "Star Wars", "v": "Star Trek"}, {"id": "t115", "r": "François Bégaudeau", "v": "André Bazin"}, {"id": "t116", "r": "Entre les murs", "v": "The Wall (Pink Floyd)"}, {"id": "t117", "r": "Les Visiteurs", "v": "Les Envahisseurs"}, {"id": "t118", "r": "Epstein", "v": "La Cité des enfants perdus"}, {"id": "t119", "r": "Maïwenn", "v": "Luc Besson"}, {"id": "t120", "r": "Donald Trump dans Maman, j'ai encore raté l'avion", "v": "Elon Musk dans Iron Man 2"}, {"id": "t121", "r": "Jean-Pierre Mocky", "v": "Jean-Pierre Pernaut"}, {"id": "t122", "r": "Les vidéoclubs", "v": "Les DivX sous le manteau"}, {"id": "t123", "r": "La Nuit des rois", "v": "La nuit du 4 août"}, {"id": "t124", "r": "La Bataille d'Alger", "v": "Une bataille après l'autre"}, {"id": "t125", "r": "Eddington", "v": "Paddington"}, {"id": "t126", "r": "Pedro Pascal", "v": "Pascal Praud"}, {"id": "t127", "r": "Ghost Dog", "v": "Beethoven"}, {"id": "t128", "r": "Keira Knightley", "v": "Natalie Portman"}, {"id": "t129", "r": "Thelma et Louise", "v": "Dumb and Dumber"}, {"id": "t130", "r": "Ridley Scott", "v": "Tony Scott"}, {"id": "t131", "r": "Paul Thomas Anderson", "v": "Paul W. S. Anderson"}, {"id": "t132", "r": "Wes Anderson", "v": "Pamela Anderson"}, {"id": "t133", "r": "John Williams", "v": "Robin Williams"}, {"id": "t134", "r": "Jonathan Cohen", "v": "Nathan Fielder"}, {"id": "t135", "r": "Johnny Depp", "v": "Amber Heard"}, {"id": "t136", "r": "La Montagne sacrée", "v": "Kaizen"}, {"id": "t137", "r": "Tilda Swinton", "v": "Sydney Sweeney"}, {"id": "t138", "r": "Le fusil de Tchekhov", "v": "La toupie d'Inception"}, {"id": "t139", "r": "Les plans-séquences", "v": "Le montage des films de Nolan"}, {"id": "t140", "r": "Les Fils de l'homme", "v": "Les Filles du docteur March"}, {"id": "p003", "r": "Le discours de Justine Triet à Cannes", "v": "Cannes en 68"}, {"id": "p009", "r": "Barbie", "v": "Oppenheimer"}, {"id": "p011", "r": "Omar Sy en Arsène Lupin", "v": "Une Petite Sirène noire"}, {"id": "p012", "r": "Bigard qui doute du 11-Septembre", "v": "Juliette Binoche qui doute des vaccins"}, {"id": "p016", "r": "Leonardo DiCaprio en jet privé", "v": "Leonardo DiCaprio à la tribune de l'ONU pour le climat"}, {"id": "p018", "r": "Kristen Stewart pieds nus à Cannes", "v": "Les talons obligatoires à Cannes"}, {"id": "p019", "r": "Marie-Antoinette de Sofia Coppola", "v": "Marie-Antoinette décapitée à la cérémonie des JO"}, {"id": "p020", "r": "La Haine, le film", "v": "La Haine, la comédie musicale"}, {"id": "p024", "r": "Gal Gadot", "v": "Rachel Zegler"}, {"id": "p032", "r": "Le landau dans l'escalier du Cuirassé Potemkine", "v": "Une poussette en manif"}, {"id": "p033", "r": "Eisenstein", "v": "Leni Riefenstahl"}, {"id": "p034", "r": "Persepolis", "v": "Le débat sur le voile"}, {"id": "p037", "r": "Old Boy", "v": "Julian Assange"}, {"id": "p041", "r": "Mon voisin Totoro", "v": "Mon voisin vote RN"}, {"id": "p043", "r": "« Plutôt être un cochon qu'un fasciste »", "v": "« Plutôt Hitler que le Front populaire »"}, {"id": "p045", "r": "Perfect Days", "v": "« Traverser la rue pour trouver un travail »"}, {"id": "p048", "r": "Winnie l'ourson", "v": "Xi Jinping"}, {"id": "p049", "r": "Jackie Chan au Parti communiste chinois", "v": "Steven Seagal citoyen russe"}, {"id": "p052", "r": "RRR", "v": "Astérix chez les Bretons"}, {"id": "p053", "r": "Black Panther", "v": "Les Black Panthers"}, {"id": "p059", "r": "Moi, Daniel Blake", "v": "Un rendez-vous à la CAF"}, {"id": "p062", "r": "Chicken Run", "v": "L214"}, {"id": "p067", "r": "Sans filtre", "v": "La Croisière s'amuse"}, {"id": "p072", "r": "Emilia Pérez", "v": "Emily in Paris"}, {"id": "p074", "r": "Javier Milei", "v": "Massacre à la tronçonneuse"}, {"id": "p077", "r": "Jojo Rabbit", "v": "Les Jeunes avec Bardella"}, {"id": "p090", "r": "Inglourious Basterds", "v": "Débattre avec l'extrême droite"}, {"id": "p092", "r": "La marche des Ents", "v": "Les Soulèvements de la Terre"}, {"id": "p095", "r": "Le masque de V pour Vendetta", "v": "Le masque du Joker en manif"}, {"id": "p100", "r": "« Yippee-ki-yay, pauvre con »", "v": "« Casse-toi, pauv' con »"}, {"id": "p101", "r": "« I'll be back »", "v": "Le « Au revoir » de Giscard"}, {"id": "p103", "r": "« Je suis le roi du monde ! »", "v": "« La République, c'est moi ! »"}, {"id": "p106", "r": "« Le monde se divise en deux catégories »", "v": "« Ceux qui réussissent et ceux qui ne sont rien »"}, {"id": "p107", "r": "« C'est pas faux »", "v": "« En même temps »"}, {"id": "p112", "r": "« Il en faut peu pour être heureux »", "v": "« Travailler plus pour gagner plus »"}, {"id": "p113", "r": "« Je suis Spartacus »", "v": "« Je suis Charlie »"}, {"id": "p125", "r": "Blanche-Neige", "v": "Blanche Gardin"}, {"id": "p145", "r": "Le Prénom", "v": "Les prénoms selon Zemmour"}, {"id": "p151", "r": "Battle Royale", "v": "Parcoursup"}, {"id": "p153", "r": "Poudlard", "v": "Stanislas"}, {"id": "p162", "r": "Starship Troopers", "v": "Top Gun"}, {"id": "p163", "r": "Qu'est-ce qu'on a fait au Bon Dieu ?", "v": "Les Tuche"}, {"id": "p185", "r": "Les prédictions des Simpson", "v": "Jacques Attali"}, {"id": "p186", "r": "South Park", "v": "Jurassic Park"}, {"id": "p195", "r": "Les Oompa Loompas", "v": "Les livreurs Deliveroo"}, {"id": "p204", "r": "Alice Guy", "v": "Les frères Lumière"}, {"id": "p205", "r": "Une James Bond femme", "v": "Un James Bond noir"}, {"id": "p206", "r": "Un acteur de 60 ans avec une actrice de 25", "v": "Une actrice de 60 ans avec un acteur de 25"}, {"id": "p207", "r": "Le test de Bechdel", "v": "La parité"}, {"id": "p210", "r": "La demoiselle en détresse", "v": "La « femme forte » écrite par un homme"}, {"id": "p211", "r": "La final girl", "v": "Le Noir qui meurt en premier"}, {"id": "p217", "r": "Le méchant russe des années 80", "v": "Le méchant arabe des années 2000"}, {"id": "p222", "r": "Le film du dimanche soir sur TF1", "v": "Le film du dimanche soir sur Arte"}, {"id": "p228", "r": "Le doublage québécois", "v": "Le doublage français"}], "h": "d03e0c61"}};
+var POIDS = { oui: 1, bof: 0, non: -1 }, CH = { '': '0', oui: '1', bof: '2', non: '3' }, DE = { '0': '', '1': 'oui', '2': 'bof', '3': 'non' };
+var page = document.getElementById('page'), deckId = Object.keys(DECKS)[0], deck = DECKS[deckId], S = null, vue = 'accueil';
+function el(h) { var d = document.createElement('div'); d.innerHTML = h; return d.firstElementChild; }
+function ech(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function norm(n) { return n.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' '); }
+function lire(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (x) { return null; } }
+function ecrire(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (x) {} }
+function cle(nom) { return 'godlj-vote:' + deckId + ':' + norm(nom); }
+function graine(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function melange(ids, s) { var a = ids.slice(), x = s || 1; function r() { x |= 0; x = x + 0x6D2B79F5 | 0; var t = Math.imul(x ^ x >>> 15, 1 | x); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; } for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function carte(id) { return deck.cartes.find(function (c) { return c.id === id; }); }
+function faits() { return deck.cartes.filter(function (c) { return S.votes[c.id] && S.votes[c.id].v; }).length; }
+function sauver() { ecrire(cle(S.nom), S); ecrire('godlj-vote:dernier', { deck: deckId, nom: S.nom }); }
+function marque(sous) { return '<div class="marque"><b>Gauche<i>ou</i>droite</b><span>' + ech(sous) + '</span></div>'; }
+
+/* ---------- code à envoyer ---------- */
+function b64u(a) { var s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function unb64u(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+function flux(octets, F) { var f = new F('deflate-raw'), w = f.writable.getWriter(); w.write(octets); w.close(); return new Response(f.readable).arrayBuffer().then(function (b) { return new Uint8Array(b); }); }
+function coder(S) {
+  var k = '', r = {};
+  deck.cartes.forEach(function (c, i) { var v = S.votes[c.id] || {}; k += CH[v.v || '']; if ((v.r || '').trim()) r[i] = v.r.trim(); });
+  var octets = new TextEncoder().encode(JSON.stringify({ n: S.nom, d: deckId, h: deck.h, t: Date.now(), k: k, r: r }));
+  if (!('CompressionStream' in window)) return Promise.resolve('GODLJ-VOTE.j.' + b64u(octets));
+  return flux(octets, CompressionStream).then(function (z) { return 'GODLJ-VOTE.z.' + b64u(z); }).catch(function () { return 'GODLJ-VOTE.j.' + b64u(octets); });
+}
+function decoder(code) {
+  var m = /^GODLJ-VOTE\.([zj])\.([A-Za-z0-9_-]+)$/.exec(code); if (!m) return Promise.reject(new Error('code illisible'));
+  var octets = unb64u(m[2]);
+  var p = m[1] === 'z' ? ('DecompressionStream' in window ? flux(octets, DecompressionStream) : Promise.reject(new Error('navigateur trop ancien pour lire ce code'))) : Promise.resolve(octets);
+  return p.then(function (o) { return JSON.parse(new TextDecoder().decode(o)); });
+}
+
+/* ---------- accueil ---------- */
+function accueil() {
+  vue = 'accueil'; var dernier = lire('godlj-vote:dernier');
+  page.className = 'page accueil';
+  page.innerHTML = marque('le vote des camarades')
+    + '<h1>' + ech(deck.titre) + ' : on <em>tranche</em>.</h1>'
+    + '<p>' + deck.cartes.length + ' cartes à juger pour l\'extension, une par une. Compte dix à quinze minutes, en une ou plusieurs fois : tes votes restent sur cet appareil jusqu\'à ce que tu les envoies.</p>'
+    + '<ul class="regles"><li><span class="pastille p-oui">Oui</span><span>Je la veux dans l\'extension.</span></li><li><span class="pastille p-bof">Bof</span><span>Pourquoi pas, sans plus.</span></li><li><span class="pastille p-non">Non</span><span>On l\'enlève.</span></li></ul>'
+    + '<p class="petit">Le critère : la carte fait rire parce que les deux faces vont ensemble, et chaque face doit pouvoir se placer seule à gauche ou à droite. Une remarque est possible sur chaque carte (une meilleure face, une faute, une réf que personne n\'aura).</p>'
+    + '<div class="champ"><label for="nom">Ton prénom</label><input id="nom" autocomplete="given-name" autocapitalize="words" value="' + ech(dernier && dernier.deck === deckId ? dernier.nom : '') + '"></div>'
+    + '<button class="principal" id="go" type="button">C\'est parti</button>'
+    + '<p class="petit" id="reprise" style="margin-top:10px"></p>';
+  var nom = page.querySelector('#nom'), go = page.querySelector('#go');
+  function maj() { var s = nom.value.trim() && lire(cle(nom.value)); var n = s ? Object.keys(s.votes).filter(function (k) { return s.votes[k].v; }).length : 0; page.querySelector('#reprise').textContent = n ? 'On reprend où tu en étais : ' + n + ' cartes déjà votées.' : ''; go.textContent = n ? 'Reprendre' : 'C\'est parti'; }
+  nom.addEventListener('input', maj); maj();
+  function partir() { var n = nom.value.trim(); if (!n) { nom.focus(); return; } S = lire(cle(n)) || { nom: n, votes: {}, pos: 0 }; S.nom = n; S.ordre = melange(deck.cartes.map(function (c) { return c.id; }), graine(norm(n))); var i = S.ordre.findIndex(function (id) { return !(S.votes[id] && S.votes[id].v); }); S.pos = i < 0 ? 0 : i; sauver(); i < 0 ? envoi() : voter(); }
+  go.addEventListener('click', partir); nom.addEventListener('keydown', function (e) { if (e.key === 'Enter') partir(); });
+}
+
+/* ---------- vote ---------- */
+function voter() {
+  vue = 'vote'; var id = S.ordre[S.pos], c = carte(id), v = S.votes[id] || {}, n = faits(), N = deck.cartes.length;
+  page.className = 'page';
+  page.innerHTML = marque(S.nom + ' · ' + deck.court)
+    + '<div class="haut"><div class="barre" role="progressbar" aria-valuemin="0" aria-valuemax="' + N + '" aria-valuenow="' + n + '"><i style="width:' + (100 * n / N) + '%"></i></div><span class="compte">' + n + ' / ' + N + '</span></div>'
+    + '<div class="jeu"><div class="face recto">' + ech(c.r) + '</div><div class="ou"><span>ou</span></div><div class="face verso">' + ech(c.v) + '</div></div>'
+    + '<div class="votes">' + ['non', 'bof', 'oui'].map(function (k) { return '<button type="button" class="' + k + '" data-v="' + k + '" aria-pressed="' + (v.v === k) + '">' + k.charAt(0).toUpperCase() + k.slice(1) + '</button>'; }).join('') + '</div>'
+    + '<div class="remarque"><textarea id="rem" placeholder="Une remarque ? (facultatif, à écrire avant de voter)">' + ech(v.r || '') + '</textarea></div>'
+    + '<div class="nav"><button class="lien" id="prec" type="button"' + (S.pos ? '' : ' disabled') + '>Précédente</button><button class="lien" id="tout" type="button">Voir toutes les cartes</button><button class="lien" id="suiv" type="button">' + (S.pos < N - 1 ? 'Passer' : 'Terminer') + '</button></div>'
+    + '<p class="petit raccourcis">Au clavier : 1 non, 2 bof, 3 oui, flèches pour naviguer.</p>';
+  var rem = page.querySelector('#rem');
+  function garder() { var t = rem.value.trim(); if (t || S.votes[id]) { S.votes[id] = S.votes[id] || {}; S.votes[id].r = t; sauver(); } }
+  rem.addEventListener('input', garder);
+  page.querySelectorAll('.votes button').forEach(function (b) { b.addEventListener('click', function () { S.votes[id] = { v: b.dataset.v, r: rem.value.trim() }; sauver(); page.querySelectorAll('.votes button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); setTimeout(avancer, 160); }); });
+  page.querySelector('#prec').addEventListener('click', function () { garder(); if (S.pos) { S.pos--; sauver(); voter(); } });
+  page.querySelector('#suiv').addEventListener('click', function () { garder(); avancer(true); });
+  page.querySelector('#tout').addEventListener('click', function () { garder(); liste(); });
+  window.scrollTo(0, 0);
+}
+function avancer(simple) {
+  var N = deck.cartes.length;
+  if (simple === true) { if (S.pos < N - 1) { S.pos++; sauver(); voter(); } else envoi(); return; }
+  for (var k = 1; k <= N; k++) { var p = (S.pos + k) % N; if (!(S.votes[S.ordre[p]] && S.votes[S.ordre[p]].v)) { S.pos = p; sauver(); voter(); return; } }
+  envoi();
+}
+document.addEventListener('keydown', function (e) {
+  if (vue !== 'vote' || /TEXTAREA|INPUT/.test(document.activeElement.tagName)) return;
+  var t = { '1': 'non', '2': 'bof', '3': 'oui' }[e.key]; if (t) { page.querySelector('.votes .' + t).click(); return; }
+  if (e.key === 'ArrowLeft') page.querySelector('#prec').click(); if (e.key === 'ArrowRight') page.querySelector('#suiv').click();
+});
+
+/* ---------- toutes les cartes ---------- */
+function liste() {
+  vue = 'liste'; page.className = 'page';
+  page.innerHTML = marque(S.nom + ' · ' + deck.court) + '<div class="outils"><button type="button" id="retour">Revenir au vote</button><button type="button" id="fin">Envoyer mes votes</button></div><div class="liste"></div>';
+  var z = page.querySelector('.liste');
+  S.ordre.forEach(function (id, i) { var c = carte(id), v = (S.votes[id] || {}).v || ''; var b = el('<button type="button" class="ligne"><span>' + ech(c.r) + '<small>' + ech(c.v) + '</small></span><span class="etat ' + (v ? 'p-' + v : 'vide') + '">' + (v || 'à voter') + '</span></button>'); b.addEventListener('click', function () { S.pos = i; sauver(); voter(); }); z.appendChild(b); });
+  page.querySelector('#retour').addEventListener('click', function () { avancer(); }); page.querySelector('#fin').addEventListener('click', envoi); window.scrollTo(0, 0);
+}
+
+/* ---------- envoi ---------- */
+function envoi() {
+  vue = 'envoi'; var n = { oui: 0, bof: 0, non: 0 }, N = deck.cartes.length; deck.cartes.forEach(function (c) { var v = (S.votes[c.id] || {}).v; if (v) n[v]++; }); var reste = N - n.oui - n.bof - n.non;
+  page.className = 'page';
+  page.innerHTML = marque(S.nom + ' · ' + deck.court) + '<h1 style="font-size:1.8rem;margin-top:22px">' + (reste ? 'Il te reste ' + reste + ' carte' + (reste > 1 ? 's' : '') : 'C\'est voté') + '</h1>'
+    + '<div class="bilan"><div><b>' + n.oui + '</b>oui</div><div><b>' + n.bof + '</b>bof</div><div><b>' + n.non + '</b>non</div></div>'
+    + '<p>' + (reste ? 'Tu peux envoyer maintenant et compléter plus tard : seul ton dernier envoi compte.' : 'Dernière étape : envoie tes votes à Théophile. Le message contient un code, il ne faut pas le modifier.') + '</p>'
+    + '<div class="envois"><button class="principal" id="partager" type="button" style="margin-top:0">Envoyer mes votes</button><button type="button" id="wa">Par WhatsApp</button><button type="button" id="mail">Par e-mail</button><button type="button" id="copier">Copier le message</button></div>'
+    + '<p class="ok" id="ok" role="status"></p><div class="code" id="code">préparation du code…</div>'
+    + '<div class="nav"><button class="lien" id="retour" type="button">' + (reste ? 'Continuer à voter' : 'Revoir mes votes') + '</button><button class="lien" id="changer" type="button">Changer de prénom</button></div>';
+  var msg = '';
+  coder(S).then(function (code) { msg = 'Mes votes Gaucheoudroite, ' + deck.court + ' (' + S.nom + ', ' + (N - reste) + ' sur ' + N + ') : ' + code; page.querySelector('#code').textContent = code; });
+  function fait(t) { page.querySelector('#ok').textContent = t; S.envoye = Date.now(); sauver(); }
+  var bp = page.querySelector('#partager'); if (!navigator.share) bp.hidden = true;
+  bp.addEventListener('click', function () { if (msg) navigator.share({ text: msg }).then(function () { fait('Envoyé, merci camarade.'); }).catch(function () {}); });
+  page.querySelector('#wa').addEventListener('click', function () { if (msg) { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); fait('Choisis Théophile dans WhatsApp et envoie.'); } });
+  page.querySelector('#mail').addEventListener('click', function () { if (msg) { location.href = 'mailto:?subject=' + encodeURIComponent('Mes votes Gaucheoudroite (' + deck.court + ')') + '&body=' + encodeURIComponent(msg); fait('Ajoute l\'adresse de Théophile et envoie.'); } });
+  page.querySelector('#copier').addEventListener('click', function () { if (!msg) return; (navigator.clipboard ? navigator.clipboard.writeText(msg) : Promise.reject()).then(function () { fait('Copié. Colle-le dans un message à Théophile.'); }).catch(function () { prompt('Copie ce message :', msg); }); });
+  page.querySelector('#retour').addEventListener('click', function () { reste ? avancer() : liste(); }); page.querySelector('#changer').addEventListener('click', accueil); window.scrollTo(0, 0);
+}
+
+/* ---------- dépouillement (pour Théophile) : index.html#depouillement ---------- */
+function depouillement() {
+  vue = 'depouillement'; var CLE = 'godlj-vote-depouillement:' + deckId, recus = lire(CLE) || {}, tri = 'score';
+  page.className = 'page large';
+  page.innerHTML = marque('dépouillement · ' + deck.court) + '<h1 style="font-size:1.7rem;margin-top:18px">Le dépouillement</h1>'
+    + '<p class="petit">Colle ici les messages reçus, un ou plusieurs à la fois, tels quels. Tout reste dans ce navigateur. Un second envoi de la même personne remplace le premier.</p>'
+    + '<textarea id="colle" style="min-height:90px" placeholder="Mes votes Gaucheoudroite, … : GODLJ-VOTE.z.…"></textarea>'
+    + '<div class="outils"><button type="button" id="ajouter" style="background:var(--rouge);border-color:var(--rouge);color:#fff">Ajouter</button><span class="ok" id="ok" role="status"></span></div>'
+    + '<h2 style="font-size:1.1rem;margin-top:22px">Les votants</h2><div class="cadre"><table id="votants"></table></div>'
+    + '<h2 style="font-size:1.1rem;margin-top:22px">Les cartes</h2><div class="outils"><label class="petit">Trier par <select id="tri"><option value="score">score</option><option value="discorde">désaccord</option><option value="ordre">ordre du tableau</option></select></label><button type="button" id="tsv">Copier le tableau (pour une feuille de calcul)</button><button type="button" id="claude">Copier pour Claude</button></div><div class="cadre"><table id="cartes"></table></div>';
+  function lignes() {
+    var noms = Object.keys(recus);
+    var L = deck.cartes.map(function (c, i) { var o = { c: c, i: i, oui: 0, bof: 0, non: 0, rem: [] }; noms.forEach(function (k) { var p = recus[k], v = DE[p.k.charAt(i)] || ''; if (v) o[v]++; if (p.r && p.r[i]) o.rem.push(p.n + ' : ' + p.r[i]); }); o.n = o.oui + o.bof + o.non; o.score = o.n ? (o.oui - o.non) / o.n : 0; o.discorde = o.n ? Math.min(o.oui, o.non) / o.n : 0; return o; });
+    if (tri === 'score') L.sort(function (a, b) { return b.score - a.score || b.oui - a.oui; }); if (tri === 'discorde') L.sort(function (a, b) { return b.discorde - a.discorde; });
+    return L;
+  }
+  function rendre() {
+    var noms = Object.keys(recus), N = deck.cartes.length;
+    page.querySelector('#votants').innerHTML = '<tr><th>Prénom</th><th>Cartes votées</th><th>Envoyé le</th><th></th></tr>' + (noms.length ? noms.map(function (k) { var p = recus[k], n = p.k.replace(/0/g, '').length; return '<tr><td>' + ech(p.n) + '</td><td class="n">' + n + ' / ' + N + (n < N ? ' (incomplet)' : '') + '</td><td>' + new Date(p.t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) + '</td><td><button type="button" class="lien" data-k="' + ech(k) + '">retirer</button></td></tr>'; }).join('') : '<tr><td colspan="4" class="petit">Personne pour l\'instant.</td></tr>');
+    page.querySelectorAll('#votants button').forEach(function (b) { b.addEventListener('click', function () { delete recus[b.dataset.k]; ecrire(CLE, recus); rendre(); }); });
+    page.querySelector('#cartes').innerHTML = '<tr><th>Recto</th><th>Verso</th><th>Oui</th><th>Bof</th><th>Non</th><th>Score</th><th></th><th>Remarques</th></tr>' + lignes().map(function (o) { var t = o.n || 1; return '<tr><td>' + ech(o.c.r) + '</td><td>' + ech(o.c.v) + '</td><td class="n">' + o.oui + '</td><td class="n">' + o.bof + '</td><td class="n">' + o.non + '</td><td class="n">' + (o.n ? (o.score > 0 ? '+' : '') + o.score.toFixed(2).replace('.', ',') : '') + '</td><td><span class="jauge"><i style="width:' + 100 * o.oui / t + '%;background:var(--vert)"></i><i style="width:' + 100 * o.bof / t + '%;background:var(--bleu)"></i><i style="width:' + 100 * o.non / t + '%;background:var(--rouge)"></i></span></td><td>' + o.rem.map(ech).join('<br>') + '</td></tr>'; }).join('');
+  }
+  page.querySelector('#tri').addEventListener('change', function (e) { tri = e.target.value; rendre(); });
+  page.querySelector('#ajouter').addEventListener('click', function () {
+    var codes = page.querySelector('#colle').value.match(/GODLJ-VOTE\.[zj]\.[A-Za-z0-9_-]+/g) || [], ok = page.querySelector('#ok'); if (!codes.length) { ok.textContent = 'Aucun code trouvé dans ce texte.'; return; }
+    Promise.all(codes.map(function (c) { return decoder(c).catch(function (e) { return { erreur: e.message }; }); })).then(function (ps) {
+      var bons = 0, soucis = [];
+      ps.forEach(function (p) { if (p.erreur) soucis.push(p.erreur); else if (p.d !== deckId || p.h !== deck.h) soucis.push((p.n || '?') + ' : code d\'une autre version de la liste'); else { var k = norm(p.n); if (!recus[k] || recus[k].t <= p.t) recus[k] = p; bons++; } });
+      ecrire(CLE, recus); page.querySelector('#colle').value = ''; ok.textContent = bons + ' envoi' + (bons > 1 ? 's' : '') + ' ajouté' + (bons > 1 ? 's' : '') + (soucis.length ? ' ; ' + soucis.join(' ; ') : '') + '.'; rendre();
+    });
+  });
+  function copie(t) { (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { page.querySelector('#ok').textContent = 'Copié.'; }).catch(function () { prompt('Copie :', t); }); }
+  page.querySelector('#tsv').addEventListener('click', function () { copie('Recto\tVerso\tOui\tBof\tNon\tScore\tRemarques\n' + lignes().map(function (o) { return [o.c.r, o.c.v, o.oui, o.bof, o.non, o.n ? o.score.toFixed(2).replace('.', ',') : '', o.rem.join(' | ')].join('\t'); }).join('\n')); });
+  page.querySelector('#claude').addEventListener('click', function () { copie('=== VOTE DES CAMARADES · ' + deckId + ' · ' + deck.h + ' ===\n' + JSON.stringify({ votants: Object.keys(recus).map(function (k) { return { n: recus[k].n, t: recus[k].t, k: recus[k].k, r: recus[k].r }; }) })); });
+  rendre();
+}
+function route() { if (location.hash === '#depouillement') depouillement(); else accueil(); }
+window.addEventListener('hashchange', route); route();
+</script></body></html>
